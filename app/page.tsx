@@ -8,7 +8,7 @@ export default function Home() {
     <div>
       {/* <Navbar /> */}
       <Hero />
-      {/* <MarqueeStrip /> */}
+      {/* <MarqueeStrip /> sfdsfsdfs*/}
     </div>
   );
 }
