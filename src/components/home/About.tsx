@@ -52,7 +52,7 @@ export default function About() {
                                 width={220}
                                 height={220}
                                 alt="Certificate"
-                                className="object-contain"
+                                className="w-[220px] h-auto object-contain"
                             />
 
                         </div>
