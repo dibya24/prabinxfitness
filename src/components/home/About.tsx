@@ -15,17 +15,7 @@ export default function About() {
                     <div>
                         <div className="relative">
                             <h2
-                                className="
-                                absolute
-                  -top-5
-                  left-0
-                  text-3xl
-                  sm:text-5xl
-                  lg:text-6xl
-                  font-extrabold
-                  uppercase
-                  text-transparent
-                  "
+                                className="absolute -top-5 left-0 text-3xl sm:text-5xl lg:text-6xl font-extrabold uppercase text-transparent"
                                 style={{
                                     WebkitTextStroke: "1px rgba(255,255,255,.12)",
                                     fontFamily: "var(--font-oswald)",
@@ -36,17 +26,7 @@ export default function About() {
 
                             <h3
                                 style={{ fontFamily: "var(--font-oswald)" }}
-                                className="
-                                relative
-                  pt-4
-                  text-3xl
-                  sm:text-4xl
-                  lg:text-5xl
-                  leading-tight
-                  uppercase
-                  text-[#FFF7DF]
-                  font-medium
-                  "
+                                className="relative pt-4 text-3xl sm:text-4xl lg:text-5xl leading-tight uppercase text-[#FFF7DF] font-medium"
                             >
                                 Dedicated To Igniting Your
                                 <br />
@@ -80,15 +60,7 @@ export default function About() {
 
                         <h2
                             style={{ fontFamily: "var(--font-oswald)" }}
-                            className="
-                            text-xl
-                sm:text-2xl
-                lg:text-[27px]
-                uppercase
-                leading-snug
-                text-[#FFF7DF]
-                "
-                        >
+                            className="text-xl sm:text-2xl lg:text-[27px] uppercase leading-snug text-[#FFF7DF]">
                             RESULTS DRIVEN FITNESS,
                             DEDICATED TO HELPING YOU
                             TRAIN SMARTER,
@@ -101,15 +73,7 @@ export default function About() {
                         </h2>
 
                         <div className="flex">
-                            <p className="mt-6
-                sm:mt-8
-                lg:mt-10
-                max-w-xl
-                text-sm
-                sm:text-base
-                text-[#C0C0C0]
-                leading-relaxed
-                ">
+                            <p className="mt-6 sm:mt-8 lg:mt-10 max-w-xl text-sm sm:text-base text-[#C0C0C0] leading-relaxed">
                                 We help individuals achieve sustainable results through
                                 personalized coaching, progressive training programs,
                                 and nutrition strategies tailored to every lifestyle.

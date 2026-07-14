@@ -1,242 +1,234 @@
-"use client";
+import React from "react";
+import Link from "next/link";
+import { FaInstagram, FaTiktok } from "react-icons/fa";
+import { SiThreads } from "react-icons/si";
 
-import Image from "next/image";
+const Footer = () => {
+  return (
+    <section className="relative overflow-hidden bg-[#141414] py-12 lg:py-16">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
 
-export default function About() {
-    return (
-        <section
-            id="about"
-            className="overflow-hidden bg-[#0b0b0b] py-16 sm:py-20 lg:py-28 text-white"
+        {/* Brand Name */}
+
+        <h2
+          style={{ fontFamily: "var(--font-oswald)" }}
+          className="
+                        text-center
+                        uppercase
+                        font-medium
+                        leading-none
+
+                        text-[48px]
+                        sm:text-[70px]
+                        md:text-[100px]
+                        lg:text-[140px]
+                        xl:text-[180px]
+
+                        bg-gradient-to-b
+                        from-[#E8A428]
+                        to-[#141414]
+                        bg-clip-text
+                        text-transparent
+                    "
         >
-            <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          PrabinXFitness
+        </h2>
 
-                {/* ================= TOP ================= */}
+        {/* Navigation + Social */}
 
-                <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-
-                    {/* LEFT */}
-
-                    <div>
-
-                        <div className="relative">
-
-                            <h2
-                                className="
-                  absolute
-                  -top-5
-                  left-0
-                  text-3xl
-                  sm:text-5xl
-                  lg:text-6xl
-                  font-extrabold
-                  uppercase
-                  text-transparent
-                "
-                                style={{
-                                    WebkitTextStroke:
-                                        "1px rgba(255,255,255,.12)",
-                                    fontFamily: "var(--font-oswald)",
-                                }}
-                            >
-                                ABOUT ME
-                            </h2>
-
-                            <h3
-                                style={{
-                                    fontFamily: "var(--font-oswald)",
-                                }}
-                                className="
-                  relative
-                  pt-4
-                  text-3xl
-                  sm:text-4xl
-                  lg:text-5xl
-                  leading-tight
-                  uppercase
-                  text-[#FFF7DF]
-                  font-medium
-                "
-                            >
-                                Dedicated To Igniting Your
-                                <br />
-
-                                <span className="text-[#E8A428]">
-                                    Passion
-                                </span>{" "}
-                                For Health
-                            </h3>
-
-                        </div>
-
-                        <div className="mt-10 sm:mt-14 lg:mt-20">
-                            <Image
-                                src="/images/Active_iq.png"
-                                width={220}
-                                height={220}
-                                alt="Certificate"
-                                className="
-                  w-[140px]
-                  sm:w-[180px]
-                  lg:w-[220px]
-                  h-auto
-                  object-contain
-                "
-                            />
-                        </div>
-
-                    </div>
-
-                    {/* RIGHT */}
-
-                    <div className="flex flex-col justify-center">
-
-                        <h2
-                            style={{
-                                fontFamily: "var(--font-oswald)",
-                            }}
-                            className="
-                text-xl
-                sm:text-2xl
-                lg:text-[27px]
-                uppercase
-                leading-snug
-                text-[#FFF7DF]
-              "
-                        >
-                            RESULTS DRIVEN FITNESS,
-                            DEDICATED TO HELPING YOU
-                            TRAIN SMARTER,
-                            MOVE BETTER,
-                            AND LIVE STRONGER.
-
-                            WITH EXPERT AND CERTIFIED
-                            COACHING AND A SUPPORTIVE
-                            COMMUNITY.
-                        </h2>
-
-                        <p
-                            className="
-                mt-6
-                sm:mt-8
-                lg:mt-10
-                max-w-xl
-                text-sm
-                sm:text-base
-                text-[#C0C0C0]
-                leading-relaxed
-              "
-                        >
-                            We help individuals achieve
-                            sustainable results through
-                            personalized coaching,
-                            progressive training programs,
-                            and nutrition strategies tailored
-                            to every lifestyle.
-                        </p>
-
-                    </div>
-
-                </div>
-
-                {/* ================= BOTTOM ================= */}
-
-                <div
-                    className="
-            mt-14
-            sm:mt-20
-            lg:mt-24
-            grid
-            grid-cols-1
-            sm:grid-cols-2
-            xl:grid-cols-4
-            gap-5
-            lg:gap-8
-          "
-                >
-                    <StatCard
-                        title="ACTIVE IQ"
-                        subtitle="Certified"
-                        dark
-                    />
-
-                    <StatCard
-                        title="LEVEL 2"
-                        subtitle="Gym Instructor"
-                    />
-
-                    <StatCard
-                        title="LEVEL 3"
-                        subtitle="Personal Trainer"
-                    />
-
-                    <StatCard
-                        title="50+"
-                        subtitle="Clients"
-                        dark
-                    />
-                </div>
-
-            </div>
-        </section>
-    );
-}
-
-function StatCard({
-    title,
-    subtitle,
-    dark = false,
-}: {
-    title: string;
-    subtitle: string;
-    dark?: boolean;
-}) {
-    return (
         <div
-            className={`
-        relative
-        overflow-hidden
-        rounded-full
-        border-[3px]
-        lg:border-4
-        border-[#B98519]
-        px-6
-        sm:px-8
-        lg:px-12
-        py-4
-        lg:py-5
-        text-center
-        shadow-xl
-        ${dark
-                    ? "bg-[#4b4127]"
-                    : "bg-gradient-to-b from-[#f3bb39] via-[#a56b06] to-black"
-                }
-      `}
+          className="
+                        mt-8
+                        flex
+                        flex-col
+                        lg:flex-row
+                        items-center
+                        justify-between
+                        gap-8
+                    "
         >
-            <h3
-                style={{
-                    fontFamily: "var(--font-oswald)",
-                }}
-                className="
-          text-xl
-          sm:text-2xl
-          lg:text-[27px]
-          uppercase
-          text-[#FFF7DF]
-          font-semibold
-        "
-            >
-                {title}
-            </h3>
 
-            <p
-                className="
-          text-sm
-          sm:text-base
-          text-[#C0C0C0]
-        "
+          {/* Navigation */}
+
+          <nav
+            className="
+                            flex
+                            flex-wrap
+                            justify-center
+                            gap-5
+                            sm:gap-8
+                            lg:gap-10
+                        "
+          >
+            <Link
+              href="#story"
+              style={{ fontFamily: "var(--font-oswald)" }}
+              className="text-base sm:text-lg text-gray-300 transition hover:text-[#CFA74D]"
             >
-                {subtitle}
-            </p>
+              Story
+            </Link>
+
+            <Link
+              href="#coaching"
+              style={{ fontFamily: "var(--font-oswald)" }}
+              className="text-base sm:text-lg text-gray-300 transition hover:text-[#CFA74D]"
+            >
+              Coaching
+            </Link>
+
+            <Link
+              href="#results"
+              style={{ fontFamily: "var(--font-oswald)" }}
+              className="text-base sm:text-lg text-gray-300 transition hover:text-[#CFA74D]"
+            >
+              Results
+            </Link>
+
+            <Link
+              href="#contact"
+              style={{ fontFamily: "var(--font-oswald)" }}
+              className="text-base sm:text-lg text-gray-300 transition hover:text-[#CFA74D]"
+            >
+              Contact
+            </Link>
+          </nav>
+
+          {/* Social Icons */}
+
+          <div className="flex items-center gap-3">
+
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                                flex
+                                h-10
+                                w-10
+                                sm:h-11
+                                sm:w-11
+                                items-center
+                                justify-center
+                                border
+                                border-[#4A4A4A]
+                                text-[#CFA74D]
+                                transition-all
+                                duration-300
+                                hover:border-[#CFA74D]
+                                hover:bg-[#CFA74D]/10
+                            "
+            >
+              <FaInstagram className="h-5 w-5" />
+            </a>
+
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                                flex
+                                h-10
+                                w-10
+                                sm:h-11
+                                sm:w-11
+                                items-center
+                                justify-center
+                                border
+                                border-[#4A4A4A]
+                                text-[#CFA74D]
+                                transition-all
+                                duration-300
+                                hover:border-[#CFA74D]
+                                hover:bg-[#CFA74D]/10
+                            "
+            >
+              <SiThreads className="h-5 w-5" />
+            </a>
+
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                                flex
+                                h-10
+                                w-10
+                                sm:h-11
+                                sm:w-11
+                                items-center
+                                justify-center
+                                border
+                                border-[#4A4A4A]
+                                text-[#CFA74D]
+                                transition-all
+                                duration-300
+                                hover:border-[#CFA74D]
+                                hover:bg-[#CFA74D]/10
+                            "
+            >
+              <FaTiktok className="h-5 w-5" />
+            </a>
+
+          </div>
+
         </div>
-    );
-}
+
+        {/* Divider */}
+
+        <div className="my-8 lg:my-10 h-px w-full bg-[#4A4A4A]" />
+
+        {/* Bottom Section */}
+
+        <div
+          className="
+                        flex
+                        flex-col
+                        lg:flex-row
+                        items-center
+                        justify-between
+                        gap-4
+                        text-center
+                        lg:text-left
+                    "
+        >
+
+          <p
+            style={{ fontFamily: "var(--font-oswald)" }}
+            className="
+                            text-sm
+                            sm:text-base
+                            lg:text-lg
+                            text-[#FFF9E7]
+                        "
+          >
+            © PrabinXFitness. All Rights Reserved.
+          </p>
+
+          <p
+            style={{ fontFamily: "var(--font-oswald)" }}
+            className="
+                            text-sm
+                            sm:text-base
+                            lg:text-lg
+                            text-[#FFF9E7]
+                        "
+          >
+            Designed & Developed By{" "}
+            <a
+              href="https://dibyamaharjan.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#CFA74D]"
+            >
+              Dibya Maharjan
+            </a>
+          </p>
+
+        </div>
+
+      </div>
+    </section>
+  );
+};
+
+export default Footer;

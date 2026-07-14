@@ -8,9 +8,19 @@ const Form = () => {
                     {/* Title/Short Desc */}
                     <div>
                         <div>
-                            <div>
+                            <div className="relative">
                                 <h2
-                                    className="absolute top-20 text-6xl font-extrabold uppercase text-transparent"
+                                    className="
+                                    absolute
+                  -top-5
+                  left-0
+                  text-3xl
+                  sm:text-5xl
+                  lg:text-6xl
+                  font-extrabold
+                  uppercase
+                  text-transparent
+                  "
                                     style={{
                                         WebkitTextStroke: "1px rgba(255,255,255,.12)",
                                         fontFamily: "var(--font-oswald)",
@@ -21,7 +31,17 @@ const Form = () => {
 
                                 <h3
                                     style={{ fontFamily: "var(--font-oswald)" }}
-                                    className="relative text-5xl leading-tight uppercase text-[#FFF7DF] font-medium"
+                                    className="
+                                    relative
+                  pt-4
+                  text-3xl
+                  sm:text-4xl
+                  lg:text-5xl
+                  leading-tight
+                  uppercase
+                  text-[#FFF7DF]
+                  font-medium
+                  "
                                 >
                                     READY TO
                                     <br />

@@ -61,8 +61,8 @@ const Testimonials = () => {
 
                 .custom-pagination .swiper-pagination-bullet-active {
                     width: 24px;
-                    background: #F13333;
-                    box-shadow: 0 0 10px #F13333;
+                    background: #E8A428;
+                    box-shadow: 0 0 10px #E8A428;
                 }
 
                 @media (max-width: 768px) {
@@ -113,10 +113,10 @@ const Testimonials = () => {
 
           {/* NAVIGATION */}
           <div className="flex justify-end gap-3 mb-5">
-            <button className="testimonial-prev w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition cursor-pointer">
+            <button className="testimonial-prev w-10 h-10 rounded-full border border-[#E8A428]/20 flex items-center justify-center hover:bg-[#E8A428]/50 transition cursor-pointer">
               <ChevronLeft size={18} />
             </button>
-            <button className="testimonial-next w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition cursor-pointer">
+            <button className="testimonial-next w-10 h-10 rounded-full border border-[#E8A428]/20 flex items-center justify-center hover:bg-[#E8A428]/50 transition cursor-pointer">
               <ChevronRight size={18} />
             </button>
           </div>
@@ -152,28 +152,24 @@ const Testimonials = () => {
           >
             {testimonials.map((item, index) => (
               <SwiperSlide key={index}>
-                <div
-                  className="rounded-2xl p-6 h-full backdrop-blur-md transition"
-                  style={{
-                    background: "linear-gradient(to bottom, #F13333 0%, #070707 100%)",
-                  }}
-                >
+                <div className="rounded-2xl bg-gradient-to-b from-[#E8A428] to-[#070707] p-[2px]">
+                  <div className="rounded-2xl p-6 h-full bg-[#070707] backdrop-blur-md transition">
 
-                  {/* Quote Icon */}
-                  <Quote className="w-8 h-8 text-[#F0EBE6] mb-4 opacity-70" />
+                    {/* Quote Icon */}
+                    <Quote className="w-8 h-8 text-[#F0EBE6] mb-4 opacity-70" />
 
-                  <p className="geist text-[15px] opacity-80 mb-6">
-                    “{item.text}”
-                  </p>
+                    <p className="geist text-[15px] opacity-80 mb-6">
+                      “{item.text}”
+                    </p>
 
-                  <div>
-                    <h3 className="big-shoulders big-shoulders-medium text-[21px] text-[#F0EBE6]">
-                      {item.name}
-                    </h3>
-                    <span className=''>
-                      {item.location}
+                    <div>
+                      <h3 className="big-shoulders big-shoulders-medium text-[21px] text-[#F0EBE6]">
+                        {item.name}
+                      </h3>
 
-                    </span>
+                      <span>{item.location}</span>
+                    </div>
+
                   </div>
                 </div>
               </SwiperSlide>
