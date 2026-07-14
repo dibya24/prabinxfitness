@@ -1,4 +1,7 @@
 import Image from "next/image";
+import { CONTENT } from "@/src/constants/content";
+
+const whychoose = CONTENT.whyChoose;
 
 const leftFeatures = [
     {
@@ -41,26 +44,27 @@ export default function WhyChoose() {
                                 fontFamily: "var(--font-oswald)",
                             }}
                         >
-                            why choose me
+                            {whychoose.heading.backgroundTitle}
                         </h2>
 
                         <h3
                             style={{ fontFamily: "var(--font-oswald)" }}
                             className="relative pt-4 text-3xl sm:text-4xl lg:text-5xl leading-tight uppercase text-[#FFF7DF] font-medium"
                         >
-                            FITNESS SHOULD
+                            {whychoose.heading.title}
                             <br />
 
                             <span className="text-[#E8A428]">
-                                FEEL
+                                {whychoose.heading.highlightText}
                             </span>{" "}
-                            LIKE IT FITS
+
+                            {whychoose.heading.titleEnd}
                         </h3>
                     </div>
 
                     <div>
                         <p className="text-sm sm:text-base text-[#C0C0C0] leading-relaxed">
-                            Achieve your fitness goals with expert guidance, personalized support, and a results-driven approach.
+                            {whychoose.description}
                         </p>
                     </div>
                 </div>

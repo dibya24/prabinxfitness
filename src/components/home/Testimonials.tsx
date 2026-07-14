@@ -22,7 +22,7 @@ const testimonials = [
     name: "-Emily Coff",
     location: "London, UK",
     text: "It was the best money I've spent so far in Kathmandu in magic show, Absolutely hilarious! And he is such a nice person! Will definitely go see him again. Thank you for the amazing involvement."
-  },
+},
   {
     name: "-Shristi Miya",
     location: "London, UK",

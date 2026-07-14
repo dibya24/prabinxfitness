@@ -1,6 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import { CONTENT } from "@/src/constants/content";
+
+const about = CONTENT.about;
 
 export default function About() {
     return (
@@ -21,20 +24,21 @@ export default function About() {
                                     fontFamily: "var(--font-oswald)",
                                 }}
                             >
-                                ABOUT ME
+                                {about.heading.backgroundTitle}
                             </h2>
 
                             <h3
                                 style={{ fontFamily: "var(--font-oswald)" }}
                                 className="relative pt-4 text-3xl sm:text-4xl lg:text-5xl leading-tight uppercase text-[#FFF7DF] font-medium"
                             >
-                                Dedicated To Igniting Your
+                                {about.heading.title}
                                 <br />
 
                                 <span className="text-[#E8A428]">
-                                    Passion
+                                    {about.heading.highlightText}
                                 </span>{" "}
-                                For Health
+
+                                {about.heading.titleEnd}
                             </h3>
                         </div>
 
@@ -61,22 +65,12 @@ export default function About() {
                         <h2
                             style={{ fontFamily: "var(--font-oswald)" }}
                             className="text-xl sm:text-2xl lg:text-[27px] uppercase leading-snug text-[#FFF7DF]">
-                            RESULTS DRIVEN FITNESS,
-                            DEDICATED TO HELPING YOU
-                            TRAIN SMARTER,
-                            MOVE BETTER,
-                            AND LIVE STRONGER.
-
-                            WITH EXPERT AND CERTIFIED
-                            COACHING AND A SUPPORTIVE
-                            COMMUNITY.
+                            {about.description.mainHeading}
                         </h2>
 
                         <div className="flex">
                             <p className="mt-6 sm:mt-8 lg:mt-10 max-w-xl text-sm sm:text-base text-[#C0C0C0] leading-relaxed">
-                                We help individuals achieve sustainable results through
-                                personalized coaching, progressive training programs,
-                                and nutrition strategies tailored to every lifestyle.
+                                {about.description.paragraph}
                             </p>
                         </div>
 
@@ -85,39 +79,17 @@ export default function About() {
                 </div>
 
                 {/* ================= BOTTOM ================= */}
-                <div className="
-                mt-14
-            sm:mt-20
-            lg:mt-24
-            grid
-            grid-cols-1
-            sm:grid-cols-2
-            xl:grid-cols-4
-            gap-5
-            lg:gap-8
-            ">
-
-                    <StatCard
-                        title="ACTIVE IQ"
-                        subtitle="Certified"
-                        dark
-                    />
-
-                    <StatCard
-                        title="LEVEL 2"
-                        subtitle="Gym Instructor"
-                    />
-
-                    <StatCard
-                        title="LEVEL 3"
-                        subtitle="Personal Trainer"
-                    />
-
-                    <StatCard
-                        title="50+"
-                        subtitle="Clients"
-                        dark
-                    />
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 lg:gap-8">
+                    {
+                        about.stats.map((stat) => (
+                            <StatCard
+                                key={stat.id}
+                                title={stat.title}
+                                subtitle={stat.subtitle}
+                                dark={stat.dark}
+                            />
+                        ))
+                    }
 
                 </div>
 

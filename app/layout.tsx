@@ -8,6 +8,8 @@ import {
 import "./globals.css";
 import Navbar from "@/src/components/layout/Navbar";
 import Footer from "@/src/components/layout/Footer";
+import Preloader from "@/src/components/Preloader";
+import SmoothScroll from "@/src/components/SmoothScroll";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -53,9 +55,12 @@ export default function RootLayout({
       className={`${oswald.variable} ${poppins.variable} ${bebasNeue.variable} ${robotoCondensed.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Navbar />
-        {children}
-        <Footer />
+        <SmoothScroll>
+          <Preloader />
+          <Navbar />
+          {children}
+          <Footer />
+        </SmoothScroll>
       </body>
     </html>
   );
