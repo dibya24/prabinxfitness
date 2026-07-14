@@ -12,7 +12,9 @@ const serviceIcons = {
 
 const Services = () => {
     return (
-        <section className='relative overflow-hidden bg-[#141414] py-28'>
+        <section 
+        id = "coaching"
+        className='relative overflow-hidden bg-[#141414] py-28'>
             <div className='max-w-7xl mx-auto px-6 flex flex-col gap-[20px] lg:gap-[40px]'>
                 <div className='grid lg:grid-cols-2 gap-5'>
                     <div>

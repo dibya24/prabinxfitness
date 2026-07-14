@@ -44,7 +44,9 @@ const Testimonials = () => {
   //   });
   // }, []);
   return (
-    <div className="relative w-full bg-[#0F0F0F] overflow-hidden font-sans text-white">
+    <div 
+    id='results'
+    className="relative w-full bg-[#0F0F0F] overflow-hidden font-sans text-white">
       {/* INLINE STYLES (No external CSS needed) */}
       <style jsx global>
         {`

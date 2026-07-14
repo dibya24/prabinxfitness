@@ -1,234 +1,202 @@
-import React from "react";
-import Link from "next/link";
-import { FaInstagram, FaTiktok } from "react-icons/fa";
-import { SiThreads } from "react-icons/si";
+"use client";
 
-const Footer = () => {
-  return (
-    <section className="relative overflow-hidden bg-[#141414] py-12 lg:py-16">
-      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+import { useEffect, useState } from "react";
+import { Dumbbell } from "lucide-react";
 
-        {/* Brand Name */}
+export default function Preloader() {
 
-        <h2
-          style={{ fontFamily: "var(--font-oswald)" }}
-          className="
-                        text-center
+    const [progress, setProgress] = useState(0);
+    const [hide, setHide] = useState(false);
+
+
+    useEffect(() => {
+
+        const interval = setInterval(() => {
+
+            setProgress((prev) => {
+
+                if (prev >= 100) {
+
+                    clearInterval(interval);
+
+                    setTimeout(() => {
+                        setHide(true);
+                    }, 500);
+
+                    return 100;
+                }
+
+                return prev + 5;
+            });
+
+
+        }, 80);
+
+
+        return () => clearInterval(interval);
+
+    }, []);
+
+
+
+    return (
+
+        <div
+            className={`
+            fixed
+            inset-0
+            z-[99999]
+            flex
+            items-center
+            justify-center
+            bg-[#0b0b0b]
+            transition-all
+            duration-700
+
+            ${hide
+                    ? "opacity-0 pointer-events-none scale-110"
+                    : "opacity-100"
+                }
+            `}
+        >
+
+            <div className="flex flex-col items-center gap-8">
+
+
+                {/* Icon */}
+                <div
+                    className="
+                    relative
+                    flex
+                    h-20
+                    w-20
+                    items-center
+                    justify-center
+                    rounded-full
+                    border
+                    border-[#E8A428]
+                    "
+                >
+
+                    <div
+                        className="
+                        absolute
+                        inset-0
+                        rounded-full
+                        bg-[#E8A428]/20
+                        animate-ping
+                        "
+                    />
+
+                    <Dumbbell
+                        className="
+                        relative
+                        z-10
+                        h-9
+                        w-9
+                        text-[#E8A428]
+                        "
+                    />
+
+                </div>
+
+
+
+                {/* Logo Text */}
+
+                <div className="text-center">
+
+                    <h1
+                        style={{
+                            fontFamily: "var(--font-oswald)"
+                        }}
+                        className="
+                        text-4xl
                         uppercase
-                        font-medium
-                        leading-none
-
-                        text-[48px]
-                        sm:text-[70px]
-                        md:text-[100px]
-                        lg:text-[140px]
-                        xl:text-[180px]
-
-                        bg-gradient-to-b
-                        from-[#E8A428]
-                        to-[#141414]
-                        bg-clip-text
-                        text-transparent
-                    "
-        >
-          PrabinXFitness
-        </h2>
-
-        {/* Navigation + Social */}
-
-        <div
-          className="
-                        mt-8
-                        flex
-                        flex-col
-                        lg:flex-row
-                        items-center
-                        justify-between
-                        gap-8
-                    "
-        >
-
-          {/* Navigation */}
-
-          <nav
-            className="
-                            flex
-                            flex-wrap
-                            justify-center
-                            gap-5
-                            sm:gap-8
-                            lg:gap-10
+                        tracking-widest
+                        text-[#FFF7DF]
                         "
-          >
-            <Link
-              href="#story"
-              style={{ fontFamily: "var(--font-oswald)" }}
-              className="text-base sm:text-lg text-gray-300 transition hover:text-[#CFA74D]"
-            >
-              Story
-            </Link>
+                    >
+                        PRABIN
+                        <span className="text-[#E8A428]">
+                            MAHARJAN
+                        </span>
+                    </h1>
 
-            <Link
-              href="#coaching"
-              style={{ fontFamily: "var(--font-oswald)" }}
-              className="text-base sm:text-lg text-gray-300 transition hover:text-[#CFA74D]"
-            >
-              Coaching
-            </Link>
 
-            <Link
-              href="#results"
-              style={{ fontFamily: "var(--font-oswald)" }}
-              className="text-base sm:text-lg text-gray-300 transition hover:text-[#CFA74D]"
-            >
-              Results
-            </Link>
+                    <p
+                        style={{
+                            fontFamily: "var(--font-poppins)"
+                        }}
+                        className="
+                        mt-2
+                        text-xs
+                        uppercase
+                        tracking-[0.4em]
+                        text-[#A8A8A8]
+                        "
+                    >
+                        Certified Personal Trainer
+                    </p>
 
-            <Link
-              href="#contact"
-              style={{ fontFamily: "var(--font-oswald)" }}
-              className="text-base sm:text-lg text-gray-300 transition hover:text-[#CFA74D]"
-            >
-              Contact
-            </Link>
-          </nav>
+                </div>
 
-          {/* Social Icons */}
 
-          <div className="flex items-center gap-3">
 
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="
-                                flex
-                                h-10
-                                w-10
-                                sm:h-11
-                                sm:w-11
-                                items-center
-                                justify-center
-                                border
-                                border-[#4A4A4A]
-                                text-[#CFA74D]
-                                transition-all
-                                duration-300
-                                hover:border-[#CFA74D]
-                                hover:bg-[#CFA74D]/10
+                {/* Progress */}
+
+                <div className="w-[260px]">
+
+
+                    <div
+                        className="
+                        h-[3px]
+                        bg-[#222]
+                        overflow-hidden
+                        "
+                    >
+
+                        <div
+                            className="
+                            h-full
+                            bg-[#E8A428]
+                            transition-all
+                            duration-300
                             "
-            >
-              <FaInstagram className="h-5 w-5" />
-            </a>
+                            style={{
+                                width: `${progress}%`
+                            }}
+                        />
 
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="
-                                flex
-                                h-10
-                                w-10
-                                sm:h-11
-                                sm:w-11
-                                items-center
-                                justify-center
-                                border
-                                border-[#4A4A4A]
-                                text-[#CFA74D]
-                                transition-all
-                                duration-300
-                                hover:border-[#CFA74D]
-                                hover:bg-[#CFA74D]/10
+                    </div>
+
+
+                    <div className="mt-3 flex justify-between">
+
+                        <span className="text-xs text-[#999]">
+                            LOADING
+                        </span>
+
+
+                        <span
+                            className="
+                            text-sm
+                            text-[#E8A428]
                             "
-            >
-              <SiThreads className="h-5 w-5" />
-            </a>
+                        >
+                            {progress}%
+                        </span>
 
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="
-                                flex
-                                h-10
-                                w-10
-                                sm:h-11
-                                sm:w-11
-                                items-center
-                                justify-center
-                                border
-                                border-[#4A4A4A]
-                                text-[#CFA74D]
-                                transition-all
-                                duration-300
-                                hover:border-[#CFA74D]
-                                hover:bg-[#CFA74D]/10
-                            "
-            >
-              <FaTiktok className="h-5 w-5" />
-            </a>
+                    </div>
 
-          </div>
+
+                </div>
+
+
+            </div>
+
 
         </div>
 
-        {/* Divider */}
-
-        <div className="my-8 lg:my-10 h-px w-full bg-[#4A4A4A]" />
-
-        {/* Bottom Section */}
-
-        <div
-          className="
-                        flex
-                        flex-col
-                        lg:flex-row
-                        items-center
-                        justify-between
-                        gap-4
-                        text-center
-                        lg:text-left
-                    "
-        >
-
-          <p
-            style={{ fontFamily: "var(--font-oswald)" }}
-            className="
-                            text-sm
-                            sm:text-base
-                            lg:text-lg
-                            text-[#FFF9E7]
-                        "
-          >
-            © PrabinXFitness. All Rights Reserved.
-          </p>
-
-          <p
-            style={{ fontFamily: "var(--font-oswald)" }}
-            className="
-                            text-sm
-                            sm:text-base
-                            lg:text-lg
-                            text-[#FFF9E7]
-                        "
-          >
-            Designed & Developed By{" "}
-            <a
-              href="https://dibyamaharjan.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#CFA74D]"
-            >
-              Dibya Maharjan
-            </a>
-          </p>
-
-        </div>
-
-      </div>
-    </section>
-  );
-};
-
-export default Footer;
+    );
+}

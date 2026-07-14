@@ -42,17 +42,7 @@ export default function Preloader() {
     return (
 
         <div
-            className={`
-            fixed
-            inset-0
-            z-[99999]
-            flex
-            items-center
-            justify-center
-            bg-[#0b0b0b]
-            transition-all
-            duration-700
-
+            className={`fixed inset-0 z-[99999] flex items-center justify-center bg-[#0b0b0b] transition-all duration-700
             ${hide
                     ? "opacity-0 pointer-events-none scale-110"
                     : "opacity-100"
@@ -61,32 +51,10 @@ export default function Preloader() {
         >
 
             <div className="flex flex-col items-center gap-8">
-
-
                 {/* Icon */}
-                <div
-                    className="
-                    relative
-                    flex
-                    h-20
-                    w-20
-                    items-center
-                    justify-center
-                    rounded-full
-                    border
-                    border-[#E8A428]
-                    "
-                >
+                <div className="relative flex h-20 w-20 items-center justify-center rounded-full border border-[#E8A428]">
 
-                    <div
-                        className="
-                        absolute
-                        inset-0
-                        rounded-full
-                        bg-[#E8A428]/20
-                        animate-ping
-                        "
-                    />
+                    <div className="absolute inset-0 rounded-full bg-[#E8A428]/20 animate-ping" />
 
                     <Dumbbell
                         className="

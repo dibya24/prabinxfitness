@@ -2,7 +2,9 @@ import React from 'react'
 
 const Form = () => {
     return (
-        <section className='bg-[#0F0F0F] py-28 relative overflow-hidden'>
+        <section 
+        id='contact'
+        className='bg-[#0F0F0F] py-28 relative overflow-hidden'>
             <div className='max-w-7xl mx-auto px-6'>
                 <div className='grid lg:grid-cols-2 gap-5'>
                     {/* Title/Short Desc */}

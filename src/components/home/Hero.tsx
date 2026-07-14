@@ -1,12 +1,16 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export default function Hero() {
     return (
         <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black">
             {/* Gold Glow */}
-            <div
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.5 }}
                 className="pointer-events-none absolute inset-0"
                 style={{
                     background:

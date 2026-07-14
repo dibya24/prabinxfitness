@@ -8,7 +8,7 @@ const about = CONTENT.about;
 export default function About() {
     return (
         <section
-            id="about"
+            id="story"
             className="bg-[#0b0b0b] py-28 text-white overflow-hidden"
         >
             <div className="mx-auto max-w-7xl px-6">
