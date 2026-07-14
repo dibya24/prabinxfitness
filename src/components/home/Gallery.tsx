@@ -7,14 +7,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Flip } from 'gsap/all';
 
 import Image1 from "../../../public/images/Active_iq.png";
-import Image2 from "../../../public/images/Active_iq.png";
+import Image2 from "../../../public/images/gallery/two.png";
 import Image3 from "../../../public/images/Active_iq.png";
 import Image4 from "../../../public/images/Active_iq.png";
-import Image5 from "../../../public/images/Active_iq.png";
-import Image6 from "../../../public/images/Active_iq.png";
-import Image7 from "../../../public/images/Active_iq.png";
-import Image8 from "../../../public/images/Active_iq.png";
-import Image9 from "../../../public/images/Active_iq.png";
+import Image5 from "../../../public/images/gallery/three.png";
+import Image6 from "../../../public/images/gallery/four.png";
+import Image7 from "../../../public/images/gallery/six.png";
+import Image8 from "../../../public/images/gallery/client.jpg";
+import Image9 from "../../../public/images/gallery/one.png";
 import Image10 from "../../../public/images/Active_iq.png";
 
 const images = [

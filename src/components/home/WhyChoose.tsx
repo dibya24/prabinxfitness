@@ -115,7 +115,7 @@ export default function WhyChoose() {
                         <div className="relative w-[350px] h-[520px]">
 
                             <Image
-                                src="/images/C187B05D-DE03-47DD-BA7A-29E635CF901F 3.png"
+                                src="/images/gallery/one.png"
                                 alt="Trainer"
                                 fill
                                 className="object-cover"
@@ -197,7 +197,7 @@ export default function WhyChoose() {
                         <div className="relative w-[320px] h-[470px]">
 
                             <Image
-                                src="/images/C187B05D-DE03-47DD-BA7A-29E635CF901F 3.png"
+                                src="/images/gallery/one.png"
                                 alt="Trainer"
                                 fill
                                 className="object-cover"
@@ -239,7 +239,7 @@ export default function WhyChoose() {
                         <div className="relative w-[260px] sm:w-[300px] h-[380px] sm:h-[450px]">
 
                             <Image
-                                src="/images/trainer.png"
+                                src="/images/gallery/one.png"
                                 alt="Trainer"
                                 fill
                                 className="object-cover"
