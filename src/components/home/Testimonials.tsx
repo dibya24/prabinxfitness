@@ -1,357 +1,191 @@
-"use client";
+"use client"
 
-import React, { useEffect, useRef } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useEffect, useRef } from 'react'
+import { Swiper, SwiperSlide } from "swiper/react"
+import { Navigation, Pagination, Autoplay } from "swiper/modules"
+import { Quote, ChevronLeft, ChevronRight } from "lucide-react"
 
-interface Testimonial {
-    quote: string
-    name: string
-    role: string
-    company: string
-    tilt: number
-}
+import "aos/dist/aos.css";
+import AOS from "aos";
 
-const TESTIMONIALS: Testimonial[] = [
-    {
-        quote: "They didn't just ship the redesign — they rebuilt how we think about our product.",
-        name: 'Mira Okafor',
-        role: 'Head of Product',
-        company: 'Lumen Analytics',
-        tilt: -3,
-    },
-    {
-        quote: 'Every review call ended with more ideas than we started with. Rare.',
-        name: 'Devon Cole',
-        role: 'Founder',
-        company: 'Northwind',
-        tilt: 2,
-    },
-    {
-        quote: "Six weeks in, our activation rate doubled. The work spoke before the metrics did.",
-        name: 'Priya Raman',
-        role: 'VP Growth',
-        company: 'Fathom',
-        tilt: -2,
-    },
-    {
-        quote: "We've worked with a dozen agencies. This was the first one that argued with us — and was right.",
-        name: 'Sam Ilić',
-        role: 'CTO',
-        company: 'Vector Labs',
-        tilt: 3,
-    },
-    {
-        quote: 'The kind of craft you notice in the hover states nobody asked for.',
-        name: 'Elena Torres',
-        role: 'Design Lead',
-        company: 'Hearth',
-        tilt: -1.5,
-    },
-    {
-        quote: 'They handed off a system, not a deck. Eighteen months later it still holds.',
-        name: 'Jonas Whitfield',
-        role: 'Engineering Manager',
-        company: 'Fathom',
-        tilt: 2.5,
-    },
+import "swiper/css"
+import "swiper/css/navigation"
+import "swiper/css/pagination"
+
+const testimonials = [
+  {
+    name: "-Subash Achraya",
+    location: "London, UK",
+    text: "We got tickets from our friends because they didn't want to go. We didn't think it was going to be good but we went to try it out and I have to say it was one of the best magic show watched till date."
+  },
+  {
+    name: "-Emily Coff",
+    location: "London, UK",
+    text: "It was the best money I've spent so far in Kathmandu in magic show, Absolutely hilarious! And he is such a nice person! Will definitely go see him again. Thank you for the amazing involvement."
+  },
+  {
+    name: "-Shristi Miya",
+    location: "London, UK",
+    text: "Great time at the show. Saman thank you for making my time with my friend, Magic was mind blowing, You all were great. Keep Loving Magic and keep rising."
+  },
+  {
+    name: "Emily Davis",
+    location: "London, UK",
+    text: "Professional, engaging, and incredibly talented."
+  }
 ]
 
-gsap.registerPlugin(ScrollTrigger)
 
-const initials = (name: string): string =>
-    name
-        .split(' ')
-        .map((p) => p[0])
-        .join('')
-        .slice(0, 2)
-        .toUpperCase()
+const Testimonials = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1200,
+      easing: "ease-out-cubic",
+      once: true,
+    });
+  }, []);
+  return (
+    <div className="relative w-full bg-[#0F0F0F] overflow-hidden font-sans text-white">
+      {/* INLINE STYLES (No external CSS needed) */}
+      <style jsx global>
+        {`
+                .custom-pagination .swiper-pagination-bullet {
+                    width: 10px;
+                    height: 10px;
+                    background: rgba(255,255,255,0.3);
+                    opacity: 1;
+                    margin: 0 6px !important;
+                    border-radius: 999px;
+                    transition: all 0.3s ease;
+                }
 
-const Testimonials: React.FC = () => {
-    const sectionRef = useRef<HTMLElement>(null)
-    const markRef = useRef<HTMLDivElement>(null)
-    const rowARef = useRef<HTMLDivElement>(null)
-    const rowBRef = useRef<HTMLDivElement>(null)
+                .custom-pagination .swiper-pagination-bullet-active {
+                    width: 24px;
+                    background: #F13333;
+                    box-shadow: 0 0 10px #F13333;
+                }
 
-    useEffect(() => {
-        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-        const ctx = gsap.context(() => {
-            const cards = gsap.utils.toArray<HTMLElement>('.tst-card')
-
-            if (reduceMotion) {
-                gsap.set(cards, { opacity: 1, y: 0 })
-                return
-            }
-
-            cards.forEach((card) => {
-                const tilt = parseFloat(card.dataset.tilt || '0')
-                gsap.fromTo(
-                    card,
-                    { opacity: 0, y: 70, rotate: tilt * 2.2 },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        rotate: tilt,
-                        duration: 1,
-                        ease: 'power3.out',
-                        scrollTrigger: {
-                            trigger: card,
-                            start: 'top 92%',
-                        },
+                @media (max-width: 768px) {
+                    .testimonial-prev,
+                    .testimonial-next {
+                        display: none;
                     }
-                )
-            })
+                }
+            `}
+      </style>
 
-            const parallaxTrigger = {
-                trigger: sectionRef.current,
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: 0.6,
-            }
+      <div className='relative max-w-[1440px] mx-auto px-[20px] sm:px-[80px] py-[50px] sm:py-[100px] flex flex-col gap-[30px] z-10'>
+        {/* ========== HEADER ========== */}
+        <div className='grid lg:grid-cols-2 gap-5 items-end'>
+          {/* Title */}
+          <div>
+            <div>
+              <h2
+                className="absolute top-20 text-6xl font-extrabold uppercase text-transparent"
+                style={{
+                  WebkitTextStroke: "1px rgba(255,255,255,.12)",
+                  fontFamily: "var(--font-oswald)",
+                }}
+              >
+                Services Provided
+              </h2>
 
-            if (rowARef.current) {
-                gsap.to(rowARef.current, { yPercent: -10, ease: 'none', scrollTrigger: parallaxTrigger })
-            }
-            if (rowBRef.current) {
-                gsap.to(rowBRef.current, { yPercent: 8, ease: 'none', scrollTrigger: parallaxTrigger })
-            }
-            if (markRef.current) {
-                gsap.to(markRef.current, {
-                    rotate: 22,
-                    scale: 1.12,
-                    ease: 'none',
-                    scrollTrigger: parallaxTrigger,
-                })
-            }
-        }, sectionRef)
+              <h3
+                style={{ fontFamily: "var(--font-oswald)" }}
+                className="relative text-5xl leading-tight uppercase text-[#FFF7DF] font-medium"
+              >
+                ELEVATE YOUR
+                <br />
 
-        return () => ctx.revert()
-    }, [])
-
-    const rowA = TESTIMONIALS.slice(0, 3)
-    const rowB = TESTIMONIALS.slice(3, 6)
-
-    return (
-        <section className="tst-section" ref={sectionRef}>
-            <div className="tst-mark" ref={markRef} aria-hidden="true">
-                &rdquo;
+                <span className="text-[#E8A428]">
+                  FITNESS
+                </span>{" "}
+                EXPERIENCE
+              </h3>
             </div>
 
-            <header className="tst-header">
-                <span className="tst-eyebrow">Client voices</span>
-                <h2 className="tst-heading">
-                    Say it with <em>their</em> names on it.
-                </h2>
-                <p className="tst-subhead">
-                    Six people who had no reason to be kind about the work — and were.
-                </p>
-            </header>
+            <p
+              style={{ fontFamily: "var(--font-poppins)" }}
+              className='text-[16px] text-[#C0C0C0]'>
+              Personalized programs, expert coaching, and proven methods to help you achieve real results.
+            </p>
+          </div>
 
-            <div className="tst-grid">
-                <div className="tst-row" ref={rowARef}>
-                    {rowA.map((t) => (
-                        <TestimonialCard key={t.name} t={t} />
-                    ))}
-                </div>
-                <div className="tst-row tst-row--offset" ref={rowBRef}>
-                    {rowB.map((t) => (
-                        <TestimonialCard key={t.name} t={t} />
-                    ))}
-                </div>
-            </div>
-
-            <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Manrope:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
-
-        .tst-section {
-          position: relative;
-          overflow: hidden;
-          background: #150F1A;
-          padding: 7rem 6vw 8rem;
-          isolation: isolate;
-        }
-
-        .tst-mark {
-          position: absolute;
-          top: -8rem;
-          right: -2rem;
-          font-family: 'Fraunces', serif;
-          font-size: min(50vw, 42rem);
-          line-height: 1;
-          color: transparent;
-          -webkit-text-stroke: 1.5px rgba(245, 239, 230, 0.08);
-          pointer-events: none;
-          z-index: 0;
-          transform: rotate(8deg);
-          user-select: none;
-        }
-
-        .tst-header {
-          position: relative;
-          z-index: 1;
-          max-width: 42rem;
-          margin: 0 0 4.5rem;
-        }
-
-        .tst-eyebrow {
-          display: inline-block;
-          font-family: 'Space Mono', monospace;
-          font-size: 0.75rem;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: #FF8B5E;
-          margin-bottom: 1.1rem;
-        }
-
-        .tst-heading {
-          font-family: 'Fraunces', serif;
-          font-weight: 600;
-          font-size: clamp(2.2rem, 4.6vw, 3.6rem);
-          line-height: 1.08;
-          color: #F5EFE6;
-          margin: 0 0 1.1rem;
-          letter-spacing: -0.01em;
-        }
-
-        .tst-heading em {
-          font-style: italic;
-          font-weight: 500;
-          color: #7FE7C4;
-        }
-
-        .tst-subhead {
-          font-family: 'Manrope', sans-serif;
-          font-size: 1.05rem;
-          color: #9C8FA8;
-          line-height: 1.6;
-          margin: 0;
-        }
-
-        .tst-grid {
-          position: relative;
-          z-index: 1;
-          display: flex;
-          flex-direction: column;
-          gap: 2.5rem;
-        }
-
-        .tst-row {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 1.75rem;
-          will-change: transform;
-        }
-
-        .tst-row--offset {
-          margin-top: 2.5rem;
-        }
-
-        @media (max-width: 900px) {
-          .tst-row {
-            grid-template-columns: 1fr;
-          }
-          .tst-row--offset {
-            margin-top: 0;
-          }
-          .tst-section {
-            padding: 5rem 6vw 5rem;
-          }
-        }
-
-        .tst-card {
-          background: #201828;
-          border: 1px solid #2E2438;
-          border-radius: 14px;
-          padding: 2rem 1.9rem 1.7rem;
-          display: flex;
-          flex-direction: column;
-          gap: 1.6rem;
-          transform-origin: center bottom;
-          transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
-          will-change: transform, opacity;
-        }
-
-        .tst-card:hover {
-          transform: rotate(0deg) translateY(-4px) !important;
-          border-color: #FF8B5E;
-          box-shadow: 0 22px 40px -20px rgba(0, 0, 0, 0.55);
-        }
-
-        .tst-quote {
-          font-family: 'Fraunces', serif;
-          font-weight: 500;
-          font-style: italic;
-          font-size: 1.18rem;
-          line-height: 1.42;
-          color: #F5EFE6;
-          margin: 0;
-        }
-
-        .tst-footer {
-          display: flex;
-          align-items: center;
-          gap: 0.85rem;
-          margin-top: auto;
-        }
-
-        .tst-avatar {
-          flex-shrink: 0;
-          width: 2.6rem;
-          height: 2.6rem;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #FF8B5E, #7FE7C4);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-family: 'Space Mono', monospace;
-          font-size: 0.78rem;
-          font-weight: 700;
-          color: #150F1A;
-        }
-
-        .tst-person {
-          display: flex;
-          flex-direction: column;
-          line-height: 1.3;
-        }
-
-        .tst-name {
-          font-family: 'Manrope', sans-serif;
-          font-weight: 700;
-          font-size: 0.92rem;
-          color: #F5EFE6;
-        }
-
-        .tst-role {
-          font-family: 'Manrope', sans-serif;
-          font-size: 0.8rem;
-          color: #9C8FA8;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .tst-card {
-            transition: none;
-          }
-        }
-      `}</style>
-        </section>
-    )
-}
-
-const TestimonialCard: React.FC<{ t: Testimonial }> = ({ t }) => (
-    <article className="tst-card" data-tilt={t.tilt} style={{ transform: `rotate(${t.tilt}deg)` }}>
-        <p className="tst-quote">&ldquo;{t.quote}&rdquo;</p>
-        <div className="tst-footer">
-            <div className="tst-avatar">{initials(t.name)}</div>
-            <div className="tst-person">
-                <span className="tst-name">{t.name}</span>
-                <span className="tst-role">
-                    {t.role}, {t.company}
-                </span>
-            </div>
+          {/* NAVIGATION */}
+          <div className="flex justify-end gap-3 mb-5">
+            <button className="testimonial-prev w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition cursor-pointer">
+              <ChevronLeft size={18} />
+            </button>
+            <button className="testimonial-next w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition cursor-pointer">
+              <ChevronRight size={18} />
+            </button>
+          </div>
         </div>
-    </article>
-)
+
+        <div>
+          {/* CAROUSEL */}
+          <Swiper
+            modules={[Navigation, Pagination, Autoplay]}
+            spaceBetween={30}
+            slidesPerView={1}
+            loop={true}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            navigation={{
+              nextEl: ".testimonial-next",
+              prevEl: ".testimonial-prev",
+            }}
+            pagination={{
+              el: ".custom-pagination",
+              clickable: true,
+            }}
+            breakpoints={{
+              768: {
+                slidesPerView: 2,
+              },
+              1024: {
+                slidesPerView: 3,
+              },
+            }}
+          >
+            {testimonials.map((item, index) => (
+              <SwiperSlide key={index}>
+                <div
+                  className="rounded-2xl p-6 h-full backdrop-blur-md transition"
+                  style={{
+                    background: "linear-gradient(to bottom, #F13333 0%, #070707 100%)",
+                  }}
+                >
+
+                  {/* Quote Icon */}
+                  <Quote className="w-8 h-8 text-[#F0EBE6] mb-4 opacity-70" />
+
+                  <p className="geist text-[15px] opacity-80 mb-6">
+                    “{item.text}”
+                  </p>
+
+                  <div>
+                    <h3 className="big-shoulders big-shoulders-medium text-[21px] text-[#F0EBE6]">
+                      {item.name}
+                    </h3>
+                    <span className=''>
+                      {item.location}
+
+                    </span>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          {/* PAGINATION */}
+          <div className="custom-pagination flex justify-center mt-6"></div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export default Testimonials

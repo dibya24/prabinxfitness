@@ -27,12 +27,12 @@ export default function Hero() {
                 {/* Heading */}
                 <h1
                     style={{ fontFamily: "var(--font-oswald)" }}
-                    className="max-w-4xl text-4xl font-extrabold uppercase leading-[1.05] tracking-tight text-[#FFF7DF] sm:text-5xl md:text-6xl pt-8.75"
+                    className="max-w-4xl text-4xl font-extrabold uppercase leading-[1.2] tracking-tight text-[#FFF7DF] sm:text-5xl md:text-6xl pt-8.75"
                 >
-                    Reach Your Fitness Goals.
+                    Strength forged in <span className="text-[#E8A428]">Mountains.</span>
                     <br />
                     <span className="text-[#E8A428]">
-                        Faster, Smarter.
+                        refined in the <span className="text-[#FFF7DF]">desert.</span>
                     </span>
                 </h1>
 

@@ -10,18 +10,22 @@ export default function About() {
         >
             <div className="mx-auto max-w-7xl px-6">
 
-                {/* ================= TOP ================= */}
-
                 <div className="grid lg:grid-cols-2 gap-5">
 
-                    {/* LEFT */}
-
                     <div>
-
                         <div className="relative">
-
                             <h2
-                                className="absolute -top-8 left-0 text-6xl font-extrabold uppercase text-transparent"
+                                className="
+                                absolute
+                  -top-5
+                  left-0
+                  text-3xl
+                  sm:text-5xl
+                  lg:text-6xl
+                  font-extrabold
+                  uppercase
+                  text-transparent
+                  "
                                 style={{
                                     WebkitTextStroke: "1px rgba(255,255,255,.12)",
                                     fontFamily: "var(--font-oswald)",
@@ -32,7 +36,17 @@ export default function About() {
 
                             <h3
                                 style={{ fontFamily: "var(--font-oswald)" }}
-                                className="relative text-5xl leading-tight uppercase text-[#FFF7DF] font-medium"
+                                className="
+                                relative
+                  pt-4
+                  text-3xl
+                  sm:text-4xl
+                  lg:text-5xl
+                  leading-tight
+                  uppercase
+                  text-[#FFF7DF]
+                  font-medium
+                  "
                             >
                                 Dedicated To Igniting Your
                                 <br />
@@ -42,30 +56,38 @@ export default function About() {
                                 </span>{" "}
                                 For Health
                             </h3>
-
                         </div>
 
                         <div className="mt-20">
-
                             <Image
                                 src="/images/Active_iq.png"
                                 width={220}
                                 height={220}
                                 alt="Certificate"
-                                className="w-[220px] h-auto object-contain"
+                                className="
+                                w-[140px]
+                  sm:w-[180px]
+                  lg:w-[220px]
+                  h-auto
+                  object-contain
+                  "
                             />
-
                         </div>
 
                     </div>
-
-                    {/* RIGHT */}
 
                     <div>
 
                         <h2
                             style={{ fontFamily: "var(--font-oswald)" }}
-                            className="text-[27px] uppercase leading-snug text-[#FFF7DF]"
+                            className="
+                            text-xl
+                sm:text-2xl
+                lg:text-[27px]
+                uppercase
+                leading-snug
+                text-[#FFF7DF]
+                "
                         >
                             RESULTS DRIVEN FITNESS,
                             DEDICATED TO HELPING YOU
@@ -79,17 +101,19 @@ export default function About() {
                         </h2>
 
                         <div className="flex">
-                            <p className="mt-10 max-w-xl text-[16px] text-[#C0C0C0]">
+                            <p className="mt-6
+                sm:mt-8
+                lg:mt-10
+                max-w-xl
+                text-sm
+                sm:text-base
+                text-[#C0C0C0]
+                leading-relaxed
+                ">
                                 We help individuals achieve sustainable results through
                                 personalized coaching, progressive training programs,
                                 and nutrition strategies tailored to every lifestyle.
                             </p>
-
-                            <button
-                                className="mt-12 rounded-full bg-[#E8A428] px-10 py-4 font-semibold text-black transition hover:bg-white"
-                            >
-                                Make a Quick Call
-                            </button>
                         </div>
 
                     </div>
@@ -97,8 +121,17 @@ export default function About() {
                 </div>
 
                 {/* ================= BOTTOM ================= */}
-
-                <div className="mt-24 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
+                <div className="
+                mt-14
+            sm:mt-20
+            lg:mt-24
+            grid
+            grid-cols-1
+            sm:grid-cols-2
+            xl:grid-cols-4
+            gap-5
+            lg:gap-8
+            ">
 
                     <StatCard
                         title="ACTIVE IQ"
@@ -140,7 +173,19 @@ function StatCard({
 }) {
     return (
         <div
-            className={`relative overflow-hidden rounded-full border-4 border-[#B98519] px-12 py-5 text-center shadow-xl
+            className={`relative
+        overflow-hidden
+        rounded-full
+        border-[3px]
+        lg:border-4
+        border-[#B98519]
+        px-6
+        sm:px-8
+        lg:px-12
+        py-4
+        lg:py-5
+        text-center
+        shadow-xl
       ${dark
                     ? "bg-[#4b4127]"
                     : "bg-gradient-to-b from-[#f3bb39] via-[#a56b06] to-black"
@@ -148,12 +193,22 @@ function StatCard({
         >
             <h3
                 style={{ fontFamily: "var(--font-oswald)" }}
-                className="text-[27px] uppercase text-[#FFF7DF] font-semibold"
+                className="
+                text-xl
+          sm:text-2xl
+          lg:text-[27px]
+          uppercase
+          text-[#FFF7DF]
+          font-semibold
+          "
             >
                 {title}
             </h3>
 
-            <p className="text-[16px] text-[#C0C0C0]">
+            <p className="
+            text-sm
+          sm:text-base
+          text-[#C0C0C0]">
                 {subtitle}
             </p>
         </div>
