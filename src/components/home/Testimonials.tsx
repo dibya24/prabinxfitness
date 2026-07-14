@@ -75,7 +75,7 @@ const Testimonials = () => {
             `}
       </style>
 
-      <div className='relative max-w-[1440px] mx-auto px-[20px] sm:px-[80px] py-[50px] sm:py-[100px] flex flex-col gap-[30px] z-10'>
+      <div className='relative max-w-[1440px] mx-auto px-[20px] sm:px-[80px] py-20 flex flex-col gap-[30px] z-10'>
         {/* ========== HEADER ========== */}
         <div className='grid lg:grid-cols-2 gap-5 items-end'>
           {/* Title */}

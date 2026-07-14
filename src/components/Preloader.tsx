@@ -10,6 +10,11 @@ export default function Preloader() {
 
 
     useEffect(() => {
+        if (typeof window !== "undefined" && (window as any).__preloaderFinished) {
+            setHide(true);
+            setProgress(100);
+            return;
+        }
 
         const interval = setInterval(() => {
 
@@ -21,6 +26,10 @@ export default function Preloader() {
 
                     setTimeout(() => {
                         setHide(true);
+                        if (typeof window !== "undefined") {
+                            (window as any).__preloaderFinished = true;
+                            window.dispatchEvent(new Event("preloaderFinished"));
+                        }
                     }, 500);
 
                     return 100;

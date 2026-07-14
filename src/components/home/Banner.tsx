@@ -3,7 +3,7 @@ import React from "react";
 
 const Banner = () => {
     return (
-        <section className="bg-[#141414] py-6 sm:py-8 lg:py-12">
+        <section className="bg-[#141414]">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
                 <div

@@ -81,7 +81,7 @@ export default function MarqueeStrip() {
           from {
             transform: translateX(-50%);
           }
-          to {provid
+          to {
             transform: translateX(0);
           }
         }

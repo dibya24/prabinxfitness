@@ -16,13 +16,13 @@ export default function Home() {
       {/* <Navbar /> */}
       <Hero />
       <MarqueeStrip />
-      <About />
+      <About /> 
       <Services />
       <Banner />
-      <WhyChoose/>
-      <Testimonials/>
-      <Gallery/>
-      <Form/>
+      <WhyChoose />
+      <Testimonials />
+      <Gallery />
+      <Form />
     </div>
   );
 }

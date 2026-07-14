@@ -1,4 +1,3 @@
-import React from 'react'
 import { Dumbbell, Apple, MonitorSmartphone } from "lucide-react";
 import { CONTENT } from "@/src/constants/content";
 
@@ -12,28 +11,74 @@ const serviceIcons = {
 
 const Services = () => {
     return (
-        <section 
-        id = "coaching"
-        className='relative overflow-hidden bg-[#141414] py-28'>
-            <div className='max-w-7xl mx-auto px-6 flex flex-col gap-[20px] lg:gap-[40px]'>
-                <div className='grid lg:grid-cols-2 gap-5'>
-                    <div>
+        <section
+            id="coaching"
+            className="relative overflow-hidden bg-[#141414] py-20"
+        >
+            <div className="max-w-7xl mx-auto px-6 flex flex-col gap-12">
+
+
+                {/* HEADER */}
+                <div className="grid lg:grid-cols-2 gap-8 items-start">
+
+
+                    {/* LEFT */}
+                    <div
+                        data-aos="fade-up"
+                        data-aos-duration="1200"
+                    >
+
                         <div className="relative">
+
+                            {/* Background text */}
                             <h2
-                                className="absolute -top-5 left-0 text-3xl sm:text-5xl lg:text-6xl font-extrabold uppercase text-transparent"
+                                data-aos="zoom-in"
+                                data-aos-duration="1500"
                                 style={{
-                                    WebkitTextStroke: "1px rgba(255,255,255,.12)",
-                                    fontFamily: "var(--font-oswald)",
+                                    WebkitTextStroke:
+                                        "1px rgba(255,255,255,.12)",
+                                    fontFamily:
+                                        "var(--font-oswald)",
                                 }}
+                                className="
+                                absolute
+                                -top-6
+                                left-0
+                                text-4xl
+                                sm:text-5xl
+                                lg:text-6xl
+                                font-black
+                                uppercase
+                                text-transparent
+                                "
                             >
                                 {service.heading.backgroundTitle}
                             </h2>
 
+
+
                             <h3
-                                style={{ fontFamily: "var(--font-oswald)" }}
-                                className="relative pt-4 text-3xl sm:text-4xl lg:text-5xl leading-tight uppercase text-[#FFF7DF] font-medium"
+                                data-aos="fade-up"
+                                data-aos-delay="200"
+                                style={{
+                                    fontFamily:
+                                        "var(--font-oswald)",
+                                }}
+                                className="
+                                relative
+                                pt-5
+                                text-3xl
+                                sm:text-4xl
+                                lg:text-5xl
+                                leading-tight
+                                uppercase
+                                text-[#FFF7DF]
+                                font-medium
+                                "
                             >
+
                                 {service.heading.title}
+
                                 <br />
 
                                 <span className="text-[#E8A428]">
@@ -41,98 +86,239 @@ const Services = () => {
                                 </span>{" "}
 
                                 {service.heading.titleEnd}
+
                             </h3>
+
                         </div>
 
+
+
                         <p
-                            style={{ fontFamily: "var(--font-poppins)" }}
-                            className='text-sm sm:text-base leading-relaxed text-[#C0C0C0]'>
+                            data-aos="fade-up"
+                            data-aos-delay="400"
+                            style={{
+                                fontFamily:
+                                    "var(--font-poppins)",
+                            }}
+                            className="
+                            mt-5
+                            text-sm
+                            sm:text-base
+                            leading-relaxed
+                            text-[#C0C0C0]
+                            "
+                        >
                             {service.description}
                         </p>
+
                     </div>
 
-                    {/* RIGHT */}
-                    <div className='flex flex-row gap-4 lg:justify-end lg:items-start'>
-                        {service.buttons.map((stat) => (
+
+
+
+                    {/* BUTTONS */}
+                    <div
+                        data-aos="fade-left"
+                        data-aos-duration="1200"
+                        className="
+                        flex
+                        flex-row
+                        gap-4
+                        lg:justify-end
+                        lg:items-start
+                        "
+                    >
+
+                        {service.buttons.map((stat, index) => (
+
                             <button
-                                className="mt-12 rounded-full bg-[#E8A428] px-10 py-4 font-semibold text-black transition hover:bg-white"
                                 key={stat.id}
+                                data-aos="zoom-in"
+                                data-aos-delay={index * 200}
+                                className="
+                                mt-12
+                                rounded-full
+                                bg-[#E8A428]
+                                px-10
+                                py-4
+                                font-semibold
+                                text-black
+                                transition-all
+                                duration-300
+                                hover:bg-white
+                                hover:-translate-y-1
+                                "
                                 title={stat.text}
                             >
                                 {stat.text}
                             </button>
-                        ))
-                        }
+
+                        ))}
+
                     </div>
+
                 </div>
 
 
-                {/* ================= SERVICES ================= */}
 
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
 
-                    {service.cards.map((card) => {
+                {/* SERVICE CARDS */}
+                <div
+                    className="
+                    grid
+                    grid-cols-1
+                    md:grid-cols-2
+                    xl:grid-cols-3
+                    gap-5
+                    lg:gap-6
+                    "
+                >
 
-                        const Icon = serviceIcons[card.icon as keyof typeof serviceIcons];
+                    {service.cards.map((card, index) => {
+
+                        const Icon =
+                            serviceIcons[
+                                card.icon as keyof typeof serviceIcons
+                            ];
+
 
                         return (
+
                             <div
                                 key={card.id}
-                                className="bg-[#1a1a1a] border border-[#D6DCE5]/20 p-5 sm:p-6 lg:p-8 flex flex-col gap-5 transition-all duration-300 hover:border-[#E8A428]/50 hover:-translate-y-1"
+                                data-aos="fade-up"
+                                data-aos-duration="1000"
+                                data-aos-delay={index * 180}
+                                className="
+                                group
+                                bg-[#1a1a1a]
+                                border
+                                border-[#D6DCE5]/20
+                                p-5
+                                sm:p-6
+                                lg:p-8
+                                flex
+                                flex-col
+                                gap-5
+                                transition-all
+                                duration-500
+                                hover:border-[#E8A428]/50
+                                hover:-translate-y-2
+                                "
                             >
 
-                                {/* Icon */}
-                                <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center border border-[#E8A428]">
-                                    <Icon className="w-5 h-5 sm:w-7 sm:h-7 text-[#E8A428]" />
+
+                                {/* ICON */}
+                                <div
+                                    className="
+                                    w-12
+                                    h-12
+                                    sm:w-14
+                                    sm:h-14
+                                    flex
+                                    items-center
+                                    justify-center
+                                    border
+                                    border-[#E8A428]
+                                    transition-transform
+                                    duration-500
+                                    group-hover:scale-110
+                                    "
+                                >
+                                    <Icon
+                                        className="
+                                        w-5
+                                        h-5
+                                        sm:w-7
+                                        sm:h-7
+                                        text-[#E8A428]
+                                        "
+                                    />
                                 </div>
+
 
 
                                 <div className="flex flex-col gap-3">
 
+
                                     <h2
-                                        style={{ fontFamily: "var(--font-oswald)" }}
-                                        className="text-xl sm:text-2xl lg:text-[27px] font-medium text-[#FFF7DF]"
+                                        style={{
+                                            fontFamily:
+                                                "var(--font-oswald)",
+                                        }}
+                                        className="
+                                        text-xl
+                                        sm:text-2xl
+                                        lg:text-[27px]
+                                        font-medium
+                                        text-[#FFF7DF]
+                                        "
                                     >
                                         {card.title}
                                     </h2>
 
 
-                                    <div className="flex flex-col gap-4">
 
-                                        <p
-                                            style={{ fontFamily: "var(--font-poppins)" }}
-                                            className="text-sm sm:text-[14px] leading-relaxed text-[#C0C0C0]"
-                                        >
-                                            {card.description}
-                                        </p>
+                                    <p
+                                        style={{
+                                            fontFamily:
+                                                "var(--font-poppins)",
+                                        }}
+                                        className="
+                                        text-sm
+                                        sm:text-[14px]
+                                        leading-relaxed
+                                        text-[#C0C0C0]
+                                        "
+                                    >
+                                        {card.description}
+                                    </p>
 
 
-                                        <div className="flex flex-wrap gap-2">
 
-                                            {card.tags.map((tag, index) => (
-                                                <span
-                                                    key={index}
-                                                    style={{ fontFamily: "var(--font-poppins)" }}
-                                                    className="px-3 py-1 text-xs sm:text-sm border border-[#C0C0C0] text-[#C0C0C0]"
-                                                >
-                                                    {tag}
-                                                </span>
-                                            ))}
+                                    <div className="flex flex-wrap gap-2">
 
-                                        </div>
+                                        {card.tags.map((tag, tagIndex) => (
+
+                                            <span
+                                                key={tagIndex}
+                                                style={{
+                                                    fontFamily:
+                                                        "var(--font-poppins)",
+                                                }}
+                                                className="
+                                                px-3
+                                                py-1
+                                                text-xs
+                                                sm:text-sm
+                                                border
+                                                border-[#C0C0C0]
+                                                text-[#C0C0C0]
+                                                "
+                                            >
+                                                {tag}
+                                            </span>
+
+                                        ))}
 
                                     </div>
 
+
                                 </div>
 
+
                             </div>
+
                         );
                     })}
 
+
                 </div>
+
+
             </div>
         </section>
-    )
-}
+    );
+};
 
-export default Services
+export default Services;

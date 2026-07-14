@@ -31,7 +31,7 @@ const rightFeatures = [
 
 export default function WhyChoose() {
     return (
-        <section className="bg-[#141414] py-28 overflow-hidden">
+        <section className="bg-[#141414] py-20 overflow-hidden">
             <div className="mx-auto max-w-7xl px-6 flex flex-col  gap-[40px]">
 
                 {/* ======== Heading ======== */}

@@ -11,6 +11,7 @@ import Navbar from "@/src/components/layout/Navbar";
 import Footer from "@/src/components/layout/Footer";
 import Preloader from "@/src/components/Preloader";
 import SmoothScroll from "@/src/components/SmoothScroll";
+import AOSProvider from "@/src/components/providers/AOSProvider";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
 
   title: {
     default: "prabinxfitness | UK Certified Personal Trainer in Dubai",
-    template: "%s | Your Company Name",
+    template: "%s | PrabinxFitness",
   },
 
   description:
@@ -81,15 +82,14 @@ export const metadata: Metadata = {
 
   authors: [
     {
-      name: "Your Company",
+      name: "Prabin X Fitness",
     },
   ],
 
-  creator: "Your Company",
+  creator: "Prabin X Fitness",
+  publisher: "Prabin X Fitness",
 
-  publisher: "Your Company",
-
-  applicationName: "Your Company",
+  applicationName: "Prabin X Fitness",
 
   alternates: {
     canonical: "/",
@@ -98,7 +98,6 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    nocache: false,
     googleBot: {
       index: true,
       follow: true,
@@ -109,11 +108,11 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: "Your Company",
+    title: "Prabin X Fitness | UK Certified Personal Trainer Dubai",
     description:
-      "Luxury interior design services for homes, offices, and commercial spaces.",
+      "Transform your body with a UK-certified Level 2 Gym Instructor and Level 3 Personal Trainer based in Dubai.",
     url: "https://yourdomain.com",
-    siteName: "Your Company",
+    siteName: "Prabin X Fitness",
     locale: "en_US",
     type: "website",
     images: [
@@ -121,16 +120,16 @@ export const metadata: Metadata = {
         url: "/images/seo/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Your Company",
+        alt: "Prabin X Fitness",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Your Company",
+    title: "Prabin X Fitness | Personal Trainer Dubai",
     description:
-      "Luxury interior design services for homes and commercial spaces.",
+      "UK-certified personal training for strength, fat loss, and body transformation.",
     images: ["/images/seo/og-image.jpg"],
   },
 
@@ -140,7 +139,7 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
 
-  category: "Interior Design",
+  category: "Fitness",
 };
 
 export default function RootLayout({
@@ -154,12 +153,16 @@ export default function RootLayout({
       className={`${oswald.variable} ${poppins.variable} ${bebasNeue.variable} ${robotoCondensed.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <SmoothScroll>
-          <Preloader />
-          <Navbar />
-          {children}
-          <Footer />
-        </SmoothScroll>
+        <AOSProvider>
+          <SmoothScroll>
+            <Preloader />
+            <Navbar />
+
+            {children}
+
+            <Footer />
+          </SmoothScroll>
+        </AOSProvider>
       </body>
     </html>
   );

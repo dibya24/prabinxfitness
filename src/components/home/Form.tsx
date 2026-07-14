@@ -67,7 +67,7 @@ const Form = () => {
     return (
         <section
             id='contact'
-            className='bg-[#0F0F0F] py-28 relative overflow-hidden'>
+            className='bg-[#0F0F0F] py-20 relative overflow-hidden'>
             <div className='max-w-7xl mx-auto px-6'>
                 <div className='grid lg:grid-cols-2 gap-5'>
                     {/* Title/Short Desc */}
