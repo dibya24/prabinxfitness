@@ -1,28 +1,80 @@
-import React from 'react'
+"use client";
+
+import React, { useState } from "react";
+import emailjs from "@emailjs/browser";
 
 const Form = () => {
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        phone: "",
+        goal: "",
+        message: "",
+    });
+
+    const [loading, setLoading] = useState(false);
+
+    const handleChange = (
+        e: React.ChangeEvent<
+            HTMLInputElement |
+            HTMLTextAreaElement |
+            HTMLSelectElement
+        >
+    ) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const handleSubmit = async (
+        e: React.FormEvent<HTMLFormElement>
+    ) => {
+        e.preventDefault();
+
+        setLoading(true);
+
+        try {
+            await emailjs.send(
+                process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+                process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+                {
+                    name: formData.name,
+                    email: formData.email,
+                    phone: formData.phone,
+                    goal: formData.goal,
+                    message: formData.message,
+                },
+                process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+            );
+
+            alert("Message sent successfully!");
+
+            setFormData({
+                name: "",
+                email: "",
+                phone: "",
+                goal: "",
+                message: "",
+            });
+        } catch (error) {
+            console.error(error);
+            alert("Failed to send message.");
+        } finally {
+            setLoading(false);
+        }
+    };
     return (
-        <section 
-        id='contact'
-        className='bg-[#0F0F0F] py-28 relative overflow-hidden'>
+        <section
+            id='contact'
+            className='bg-[#0F0F0F] py-28 relative overflow-hidden'>
             <div className='max-w-7xl mx-auto px-6'>
                 <div className='grid lg:grid-cols-2 gap-5'>
                     {/* Title/Short Desc */}
                     <div>
                         <div>
                             <div className="relative">
-                                <h2
-                                    className="
-                                    absolute
-                  -top-5
-                  left-0
-                  text-3xl
-                  sm:text-5xl
-                  lg:text-6xl
-                  font-extrabold
-                  uppercase
-                  text-transparent
-                  "
+                                <h2 className="absolute -top-5 left-0 text-3xl sm:text-5xl lg:text-6xl font-extrabold uppercase text-transparent"
                                     style={{
                                         WebkitTextStroke: "1px rgba(255,255,255,.12)",
                                         fontFamily: "var(--font-oswald)",
@@ -33,18 +85,7 @@ const Form = () => {
 
                                 <h3
                                     style={{ fontFamily: "var(--font-oswald)" }}
-                                    className="
-                                    relative
-                  pt-4
-                  text-3xl
-                  sm:text-4xl
-                  lg:text-5xl
-                  leading-tight
-                  uppercase
-                  text-[#FFF7DF]
-                  font-medium
-                  "
-                                >
+                                    className="relative pt-4 text-3xl sm:text-4xl lg:text-5xl leading-tight uppercase text-[#FFF7DF] font-medium">
                                     READY TO
                                     <br />
 
@@ -162,7 +203,9 @@ const Form = () => {
 
                     {/* Form */}
                     <div className="rounded-[24px] border border-white/10 bg-[#151515] p-5 md:p-6 shadow-[0_20px_50px_rgba(0,0,0,.4)]">
-                        <form className="space-y-4">
+                        <form
+                            onSubmit={handleSubmit}
+                            className="space-y-4">
                             {/* Full Name */}
                             <div>
                                 <label
@@ -174,8 +217,12 @@ const Form = () => {
 
                                 <input
                                     id="name"
+                                    name="name"
                                     type="text"
+                                    value={formData.name}
+                                    onChange={handleChange}
                                     placeholder="Enter your full name"
+                                    required
                                     className="h-11 w-full rounded-xl border border-[#2B2B2B] bg-[#0F0F0F] px-4 text-sm text-white placeholder:text-[#666] outline-none transition-all duration-300 focus:border-[#E8A428] focus:ring-4 focus:ring-[#E8A428]/10"
                                 />
                             </div>
@@ -194,8 +241,12 @@ const Form = () => {
 
                                     <input
                                         id="email"
+                                        name="email"
                                         type="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
                                         placeholder="john@example.com"
+                                        required
                                         className="h-11 w-full rounded-xl border border-[#2B2B2B] bg-[#0F0F0F] px-4 text-sm text-white placeholder:text-[#666] outline-none transition-all duration-300 focus:border-[#E8A428] focus:ring-4 focus:ring-[#E8A428]/10"
                                     />
                                 </div>
@@ -211,8 +262,12 @@ const Form = () => {
 
                                     <input
                                         id="phone"
+                                        name="phone"
                                         type="tel"
+                                        value={formData.phone}
+                                        onChange={handleChange}
                                         placeholder="+977 98XXXXXXXX"
+                                        required
                                         className="h-11 w-full rounded-xl border border-[#2B2B2B] bg-[#0F0F0F] px-4 text-sm text-white placeholder:text-[#666] outline-none transition-all duration-300 focus:border-[#E8A428] focus:ring-4 focus:ring-[#E8A428]/10"
                                     />
                                 </div>
@@ -232,18 +287,39 @@ const Form = () => {
                                 <div className="relative">
                                     <select
                                         id="goal"
-                                        defaultValue=""
+                                        name="goal"
+                                        value={formData.goal}
+                                        onChange={handleChange}
+                                        required
                                         className="h-11 w-full appearance-none rounded-xl border border-[#2B2B2B] bg-[#0F0F0F] px-4 text-sm text-white outline-none transition-all duration-300 focus:border-[#E8A428] focus:ring-4 focus:ring-[#E8A428]/10"
                                     >
-                                        <option value="" disabled>
+                                        <option value="">
                                             Select your goal
                                         </option>
-                                        <option>Weight Loss</option>
-                                        <option>Muscle Gain</option>
-                                        <option>Strength Training</option>
-                                        <option>Body Transformation</option>
-                                        <option>General Fitness</option>
-                                        <option>Sports Performance</option>
+
+                                        <option value="Weight Loss">
+                                            Weight Loss
+                                        </option>
+
+                                        <option value="Muscle Gain">
+                                            Muscle Gain
+                                        </option>
+
+                                        <option value="Strength Training">
+                                            Strength Training
+                                        </option>
+
+                                        <option value="Body Transformation">
+                                            Body Transformation
+                                        </option>
+
+                                        <option value="General Fitness">
+                                            General Fitness
+                                        </option>
+
+                                        <option value="Sports Performance">
+                                            Sports Performance
+                                        </option>
                                     </select>
 
                                     <svg
@@ -274,7 +350,11 @@ const Form = () => {
 
                                 <textarea
                                     id="message"
+                                    name="message"
                                     rows={3}
+                                    value={formData.message}
+                                    onChange={handleChange}
+                                    required
                                     placeholder="Tell me about your fitness goals..."
                                     className="w-full resize-none rounded-xl border border-[#2B2B2B] bg-[#0F0F0F] p-3.5 text-sm text-white placeholder:text-[#666] outline-none transition-all duration-300 focus:border-[#E8A428] focus:ring-4 focus:ring-[#E8A428]/10"
                                 />
@@ -284,9 +364,10 @@ const Form = () => {
                             {/* Button */}
                             <button
                                 type="submit"
-                                className="group flex h-11 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#D8971D] via-[#E8A428] to-[#F2B63D] text-sm font-semibold text-[#111] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_8px_30px_rgba(232,164,40,.3)] cursor-pointer"
+                                disabled={loading}
+                                className="group flex h-11 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#D8971D] via-[#E8A428] to-[#F2B63D] text-sm font-semibold text-[#111] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_8px_30px_rgba(232,164,40,.3)] cursor-pointer disabled:opacity-50"
                             >
-                                Book Your Free Consultation
+                                {loading ? "Sending..." : "Book Your Free Consultation"}
 
                                 <svg
                                     className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
