@@ -6,7 +6,6 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules"
 import { Quote, ChevronLeft, ChevronRight } from "lucide-react"
 
 import "aos/dist/aos.css";
-import AOS from "aos";
 
 import "swiper/css"
 import "swiper/css/navigation"
@@ -37,13 +36,13 @@ const testimonials = [
 
 
 const Testimonials = () => {
-  useEffect(() => {
-    AOS.init({
-      duration: 1200,
-      easing: "ease-out-cubic",
-      once: true,
-    });
-  }, []);
+  // useEffect(() => {
+  //   AOS.init({
+  //     duration: 1200,
+  //     easing: "ease-out-cubic",
+  //     once: true,
+  //   });
+  // }, []);
   return (
     <div className="relative w-full bg-[#0F0F0F] overflow-hidden font-sans text-white">
       {/* INLINE STYLES (No external CSS needed) */}
