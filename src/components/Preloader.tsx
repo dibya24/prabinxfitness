@@ -10,11 +10,16 @@ export default function Preloader() {
 
 
     useEffect(() => {
-        if (typeof window !== "undefined" && (window as any).__preloaderFinished) {
+
+        if (
+            typeof window !== "undefined" &&
+            (window as any).__preloaderFinished
+        ) {
             setHide(true);
             setProgress(100);
             return;
         }
+
 
         const interval = setInterval(() => {
 
@@ -25,24 +30,47 @@ export default function Preloader() {
                     clearInterval(interval);
 
                     setTimeout(() => {
+
                         setHide(true);
+
                         if (typeof window !== "undefined") {
+
                             (window as any).__preloaderFinished = true;
-                            window.dispatchEvent(new Event("preloaderFinished"));
+
+                            window.dispatchEvent(
+                                new Event("preloaderFinished")
+                            );
                         }
-                    }, 500);
+
+                    }, 700);
+
 
                     return 100;
                 }
 
-                return prev + 5;
+
+                const remaining = 100 - prev;
+
+                const increment = Math.max(
+                    1,
+                    Math.ceil(remaining * 0.08)
+                );
+
+
+                return Math.min(
+                    prev + increment,
+                    100
+                );
+
             });
 
 
-        }, 80);
+        }, 90);
+
 
 
         return () => clearInterval(interval);
+
 
     }, []);
 
@@ -51,27 +79,127 @@ export default function Preloader() {
     return (
 
         <div
-            className={`fixed inset-0 z-[99999] flex items-center justify-center bg-[#0b0b0b] transition-all duration-700
-            ${hide
-                    ? "opacity-0 pointer-events-none scale-110"
-                    : "opacity-100"
-                }
+            className={`
+            fixed inset-0 z-[99999]
+            flex items-center justify-center
+            overflow-hidden
+            bg-[radial-gradient(circle_at_center,_#1a1a1a_0%,_#0b0b0b_55%,_#000000_100%)]
+            transition-all
+            duration-700
+            ease-out
+
+            ${
+                hide
+                    ? "opacity-0 blur-md scale-105 pointer-events-none"
+                    : "opacity-100 scale-100"
+            }
             `}
         >
 
-            <div className="flex flex-col items-center gap-8">
-                {/* Icon */}
-                <div className="relative flex h-20 w-20 items-center justify-center rounded-full border border-[#E8A428]">
 
-                    <div className="absolute inset-0 rounded-full bg-[#E8A428]/20 animate-ping" />
+            {/* Ambient Glow */}
+
+            <div
+                className="
+                absolute
+                h-[400px]
+                w-[400px]
+                rounded-full
+                bg-[#E8A428]/10
+                blur-[120px]
+                "
+            />
+
+
+
+            <div
+                className="
+                relative
+                flex
+                flex-col
+                items-center
+                gap-9
+                "
+            >
+
+
+
+                {/* Icon */}
+
+                <div
+                    className="
+                    relative
+                    flex
+                    h-24
+                    w-24
+                    items-center
+                    justify-center
+                    rounded-full
+                    "
+                >
+
+                    {/* Glow */}
+
+                    <div
+                        className="
+                        absolute
+                        inset-0
+                        rounded-full
+                        bg-[#E8A428]/20
+                        blur-xl
+                        "
+                    />
+
+
+                    {/* Outer Ring */}
+
+                    <div
+                        className="
+                        absolute
+                        inset-0
+                        rounded-full
+                        border
+                        border-[#E8A428]/50
+                        "
+                    />
+
+
+                    {/* Inner Ring */}
+
+                    <div
+                        className="
+                        absolute
+                        inset-3
+                        rounded-full
+                        border
+                        border-[#E8A428]/20
+                        "
+                    />
+
+
+
+                    {/* Pulse */}
+
+                    <div
+                        className="
+                        absolute
+                        inset-0
+                        rounded-full
+                        bg-[#E8A428]/10
+                        animate-ping
+                        "
+                    />
+
+
 
                     <Dumbbell
                         className="
                         relative
                         z-10
-                        h-9
-                        w-9
+                        h-10
+                        w-10
                         text-[#E8A428]
+                        animate-[spin_8s_linear_infinite]
                         "
                     />
 
@@ -79,26 +207,63 @@ export default function Preloader() {
 
 
 
-                {/* Logo Text */}
 
-                <div className="text-center">
+
+                {/* Brand */}
+
+                <div
+                    className="
+                    text-center
+                    "
+                >
+
 
                     <h1
                         style={{
                             fontFamily: "var(--font-oswald)"
                         }}
                         className="
-                        text-4xl
+                        text-5xl
+                        md:text-6xl
                         uppercase
-                        tracking-widest
+                        tracking-[0.18em]
+                        font-semibold
                         text-[#FFF7DF]
                         "
                     >
-                        PRABIN
-                        <span className="text-[#E8A428]">
+
+                        PRABIN{" "}
+
+                        <span
+                            className="
+                            text-[#E8A428]
+                            "
+                        >
                             MAHARJAN
                         </span>
+
+
                     </h1>
+
+
+
+                    <p
+                        style={{
+                            fontFamily: "var(--font-poppins)"
+                        }}
+                        className="
+                        mt-4
+                        text-xs
+                        uppercase
+                        tracking-[0.45em]
+                        text-[#999]
+                        "
+                    >
+
+                        Certified Personal Trainer
+
+                    </p>
+
 
 
                     <p
@@ -107,62 +272,109 @@ export default function Preloader() {
                         }}
                         className="
                         mt-2
-                        text-xs
-                        uppercase
-                        tracking-[0.4em]
-                        text-[#A8A8A8]
+                        text-sm
+                        text-[#666]
                         "
                     >
-                        Certified Personal Trainer
+
+                        Strength • Fat Loss • Muscle Building
+
                     </p>
+
 
                 </div>
 
 
 
+
+
+
                 {/* Progress */}
 
-                <div className="w-[260px]">
+                <div
+                    className="
+                    w-[280px]
+                    "
+                >
+
 
 
                     <div
                         className="
-                        h-[3px]
-                        bg-[#222]
+                        h-[5px]
                         overflow-hidden
+                        rounded-full
+                        bg-[#222]
                         "
                     >
 
                         <div
+
                             className="
                             h-full
-                            bg-[#E8A428]
+                            rounded-full
+                            bg-gradient-to-r
+                            from-[#A06B16]
+                            via-[#E8A428]
+                            to-[#FFD56A]
+                            shadow-[0_0_20px_rgba(232,164,40,0.8)]
                             transition-all
                             duration-300
                             "
                             style={{
                                 width: `${progress}%`
                             }}
+
                         />
+
 
                     </div>
 
 
-                    <div className="mt-3 flex justify-between">
 
-                        <span className="text-xs text-[#999]">
-                            LOADING
+
+
+                    <div
+                        className="
+                        mt-4
+                        flex
+                        items-center
+                        justify-between
+                        "
+                    >
+
+
+                        <span
+                            className="
+                            text-xs
+                            uppercase
+                            tracking-[0.35em]
+                            text-[#777]
+                            animate-pulse
+                            "
+                        >
+
+                            Loading...
+
                         </span>
+
+
 
 
                         <span
                             className="
                             text-sm
+                            font-medium
+                            tracking-wider
                             text-[#E8A428]
                             "
                         >
+
                             {progress}%
+
                         </span>
+
+
 
                     </div>
 
@@ -170,10 +382,44 @@ export default function Preloader() {
                 </div>
 
 
+
+
+
             </div>
+
+
+
+
+
+            {/* Bottom Accent */}
+
+            <div
+                className="
+                absolute
+                bottom-10
+                left-1/2
+                -translate-x-1/2
+                "
+            >
+
+                <div
+                    className="
+                    h-px
+                    w-32
+                    bg-gradient-to-r
+                    from-transparent
+                    via-[#E8A428]
+                    to-transparent
+                    "
+                />
+
+
+            </div>
+
 
 
         </div>
 
     );
+
 }
