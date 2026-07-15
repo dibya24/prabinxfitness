@@ -128,7 +128,10 @@ const Services = () => {
                                 key={stat.id}
                                 data-aos="zoom-in"
                                 data-aos-delay={index * 200}
-                                className={`mt-12 px-6 py-3 transition-all duration-300 cursor-pointer transition-all duration-300
+                                style={{
+                            fontFamily: "var(--font-roboto-condensed)",
+                        }}
+                                className={`mt-12 rounded-full px-8 py-2 text-[16px] font-semibold transition-all duration-300 cursor-pointer transition-all duration-300
 
                 ${index === 0 ? `bg-[#E8A428] text-black ` : `border border-[#E8A428] bg-transparent text-[#F4E3C1] hover:bg-[#E8A428] hover:text-black`}`}
                                 title={stat.text}

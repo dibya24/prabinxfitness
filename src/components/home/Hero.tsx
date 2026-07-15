@@ -119,9 +119,9 @@ export default function Hero() {
                 >
                     <button
                         style={{
-                            fontFamily: "var(--font-poppins)",
+                            fontFamily: "var(--font-roboto-condensed)",
                         }}
-                        className="cursor-pointer bg-[#E8A428] px-6 py-3 text-black transition-all duration-300 hover:scale-105"
+                        className="cursor-pointer rounded-full bg-[#E8A428] px-8 py-2 text-[16px] font-semibold text-black transition-all duration-300 hover:scale-105"
                     >
                         About Me
                     </button>
@@ -131,7 +131,7 @@ export default function Hero() {
                         style={{
                             fontFamily: "var(--font-poppins)",
                         }}
-                        className="cursor-pointer border border-[#CFA74D] py-3 px-6 text-[#E8A428] transition hover:bg-[#E8A428] transition-all duration-300 hover:text-black"
+                        className="cursor-pointer rounded-full border border-[#FFF6DF] px-8 py-2 text-[16px] font-semibold text-[#E8A428] transition hover:bg-[#E8A428] transition-all duration-300 hover:text-black"
                     >
                         Contact Now
                     </button>
