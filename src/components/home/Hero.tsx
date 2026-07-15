@@ -76,7 +76,7 @@ export default function Hero() {
                     style={{
                         fontFamily: "var(--font-oswald)",
                     }}
-                    className="max-w-4xl pt-8.75 text-4xl font-extrabold uppercase leading-[1.2] tracking-tight text-[#FFF7DF] sm:text-5xl md:text-6xl"
+                    className="max-w-4xl pt-8.75 text-4xl font-medium uppercase leading-[1.2] tracking-tight text-[#FFF7DF] sm:text-5xl md:text-6xl"
                 >
                     Strength forged in{" "}
                     <span className="text-[#E8A428]">
@@ -103,10 +103,9 @@ export default function Hero() {
                     style={{
                         fontFamily: "var(--font-poppins)",
                     }}
-                    className="mt-5 max-w-xl text-base leading-relaxed text-white/70 sm:text-lg"
+                    className="mt-5 max-w-3xl text-base leading-relaxed text-white/70 sm:text-md"
                 >
-                    Transform your body and build lasting confidence with
-                    personalized training designed for your goals.
+                    {`I'm Prabin — a certified Gym Instructor & Personal Trainer coaching strength, weight loss and muscle building, on the floor in the UAE and by video call everywhere else.`}
                 </p>
 
 
@@ -157,8 +156,6 @@ export default function Hero() {
                         className="h-auto w-full object-contain"
                     />
                 </div>
-
-
             </div>
 
         </section>

@@ -21,7 +21,7 @@ const testimonials = [
     name: "-Emily Coff",
     location: "London, UK",
     text: "It was the best money I've spent so far in Kathmandu in magic show, Absolutely hilarious! And he is such a nice person! Will definitely go see him again. Thank you for the amazing involvement."
-},
+  },
   {
     name: "-Shristi Miya",
     location: "London, UK",
@@ -30,7 +30,7 @@ const testimonials = [
   {
     name: "Emily Davis",
     location: "London, UK",
-    text: "Professional, engaging, and incredibly talented."
+    text: "It was the best money I've spent so far in Kathmandu in magic show, Absolutely hilarious! And he is such a nice person! Will definitely go see him again. Thank you for the amazing involvement."
   }
 ]
 
@@ -44,9 +44,9 @@ const Testimonials = () => {
   //   });
   // }, []);
   return (
-    <div 
-    id='results'
-    className="relative w-full bg-[#0F0F0F] overflow-hidden font-sans text-white">
+    <div
+      id='results'
+      className="relative w-full bg-[#0F0F0F] overflow-hidden font-sans text-white">
       {/* INLINE STYLES (No external CSS needed) */}
       <style jsx global>
         {`
@@ -79,12 +79,11 @@ const Testimonials = () => {
         {/* ========== HEADER ========== */}
         <div className='grid lg:grid-cols-2 gap-5 items-end'>
           {/* Title */}
-          <div>
-            <div>
+          <div className='flex flex-col gap-2'>
+            <div className='relative'>
               <h2
-                className="absolute top-20 text-6xl font-extrabold uppercase text-transparent"
+                className="absolute -top-6 left-0 text-4xl sm:text-5xl lg:text-6xl font-black uppercase text-transparent"
                 style={{
-                  WebkitTextStroke: "1px rgba(255,255,255,.12)",
                   fontFamily: "var(--font-oswald)",
                 }}
               >
@@ -93,21 +92,21 @@ const Testimonials = () => {
 
               <h3
                 style={{ fontFamily: "var(--font-oswald)" }}
-                className="relative text-5xl leading-tight uppercase text-[#FFF7DF] font-medium"
+                className="relative pt-5 text-3xl sm:text-4xl lg:text-5xl leading-tight uppercase text-[#FFF7DF] font-medium"
               >
                 ELEVATE YOUR
-                <br />
+                {" "}
 
                 <span className="text-[#E8A428]">
                   FITNESS
-                </span>{" "}
+                </span> {" "}
                 EXPERIENCE
               </h3>
             </div>
 
             <p
               style={{ fontFamily: "var(--font-poppins)" }}
-              className='text-[16px] text-[#C0C0C0]'>
+              className='text-sm sm:text-base leading-relaxed text-[#C0C0C0]'>
               Personalized programs, expert coaching, and proven methods to help you achieve real results.
             </p>
           </div>
@@ -153,22 +152,29 @@ const Testimonials = () => {
           >
             {testimonials.map((item, index) => (
               <SwiperSlide key={index}>
-                <div className="rounded-2xl bg-gradient-to-b from-[#E8A428] to-[#070707] p-[2px]">
-                  <div className="rounded-2xl p-6 h-full bg-[#070707] backdrop-blur-md transition">
+                <div className="rounded-2xl bg-gradient-to-b from-[#E8A428] to-[#0F0F0F] p-[2px]">
+                  <div className="rounded-2xl p-6 h-full bg-[#0F0F0F] backdrop-blur-md transition">
 
                     {/* Quote Icon */}
                     <Quote className="w-8 h-8 text-[#F0EBE6] mb-4 opacity-70" />
 
-                    <p className="geist text-[15px] opacity-80 mb-6">
+                    <p
+                      style={{ fontFamily: "var(--font-poppins)" }}
+                      className="text-[14px] opacity-80 mb-6 ">
                       “{item.text}”
                     </p>
 
                     <div>
-                      <h3 className="big-shoulders big-shoulders-medium text-[21px] text-[#F0EBE6]">
+                      <h3
+                        style={{ fontFamily: "var(--font-oswald)" }}
+                        className="big-shoulders big-shoulders-medium text-[21px] text-[#C0C0C0]">
                         {item.name}
                       </h3>
 
-                      <span>{item.location}</span>
+                      <span
+                        style={{ fontFamily: "var(--font-oswald)" }}
+                        className='font-light text-[#C0C0C0]'
+                      >{item.location}</span>
                     </div>
 
                   </div>

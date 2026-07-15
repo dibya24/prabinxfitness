@@ -74,9 +74,20 @@ export default function WhyChoose() {
 
                     {/* ========= DESKTOP ========= */}
                     <div className="hidden xl:flex justify-center items-center relative h-full">
+                        {/* IMAGE */}
+                        <div className="relative w-[350px] h-[520px]">
+
+                            <Image
+                                src="/images/gallery/one.png"
+                                alt="Trainer"
+                                fill
+                                className="object-cover"
+                            />
+
+                        </div>
 
                         {/* LEFT */}
-                        <div className="absolute left-0 bottom-16 w-[420px] h-full">
+                        <div className="absolute left-0 bottom-16 w-[500px] h-full">
 
                             {leftFeatures.map((item, index) => (
                                 <div
@@ -104,9 +115,9 @@ export default function WhyChoose() {
 
                                         </div>
 
-                                        <div className="flex-1 h-[1px] bg-[#D8D8D8] relative ml-6">
+                                        <div className="flex-1 h-[1px] bg-[#E8A428] relative ml-6">
 
-                                            <span className="absolute right-0 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-[#D9D9D9] border-[6px] border-[#B5B5B5]" />
+                                            <span className="absolute right-0 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-[#E8A428] border-[6px] border-[#fbdfaa]" />
 
                                         </div>
 
@@ -115,20 +126,10 @@ export default function WhyChoose() {
                             ))}
                         </div>
 
-                        {/* IMAGE */}
-                        <div className="relative w-[350px] h-[520px]">
 
-                            <Image
-                                src="/images/gallery/one.png"
-                                alt="Trainer"
-                                fill
-                                className="object-cover"
-                            />
-
-                        </div>
 
                         {/* RIGHT */}
-                        <div className="absolute right-0 w-[420px] h-full">
+                        <div className="absolute right-0 w-[500px] h-full">
 
                             {rightFeatures.map((item, index) => (
                                 <div
@@ -138,9 +139,9 @@ export default function WhyChoose() {
                                 >
                                     <div className="flex items-center">
 
-                                        <div className="flex-1 h-[1px] bg-[#D8D8D8] relative mr-6">
+                                        <div className="flex-1 h-[1px] bg-[#E8A428] relative mr-6">
 
-                                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-[#D9D9D9] border-[6px] border-[#B5B5B5]" />
+                                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-[#E8A428] border-[6px] border-[#fbdfaa]" />
 
                                         </div>
 
