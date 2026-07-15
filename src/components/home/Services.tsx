@@ -77,9 +77,8 @@ const Services = () => {
                                 "
                             >
 
-                                {service.heading.title}
+                                {service.heading.title} {" "}
 
-                                <br />
 
                                 <span className="text-[#E8A428]">
                                     {service.heading.highlightText}
@@ -120,13 +119,7 @@ const Services = () => {
                     <div
                         data-aos="fade-left"
                         data-aos-duration="1200"
-                        className="
-                        flex
-                        flex-row
-                        gap-4
-                        lg:justify-end
-                        lg:items-start
-                        "
+                        className="flex flex-row gap-5 lg:justify-end lg:items-start"
                     >
 
                         {service.buttons.map((stat, index) => (
@@ -135,22 +128,14 @@ const Services = () => {
                                 key={stat.id}
                                 data-aos="zoom-in"
                                 data-aos-delay={index * 200}
-                                className="
-                                mt-12
-                                rounded-full
-                                bg-[#E8A428]
-                                px-10
-                                py-4
-                                font-semibold
-                                text-black
-                                transition-all
-                                duration-300
-                                hover:bg-white
-                                hover:-translate-y-1
-                                "
+                                className={`mt-12 px-6 py-3 transition-all duration-300 cursor-pointer transition-all duration-300
+
+                ${index === 0 ? `bg-[#E8A428] text-black ` : `border border-[#E8A428] bg-transparent text-[#F4E3C1] hover:bg-[#E8A428] hover:text-black`}`}
                                 title={stat.text}
                             >
+
                                 {stat.text}
+
                             </button>
 
                         ))}
@@ -163,22 +148,13 @@ const Services = () => {
 
 
                 {/* SERVICE CARDS */}
-                <div
-                    className="
-                    grid
-                    grid-cols-1
-                    md:grid-cols-2
-                    xl:grid-cols-3
-                    gap-5
-                    lg:gap-6
-                    "
-                >
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 lg:gap-6">
 
                     {service.cards.map((card, index) => {
 
                         const Icon =
                             serviceIcons[
-                                card.icon as keyof typeof serviceIcons
+                            card.icon as keyof typeof serviceIcons
                             ];
 
 

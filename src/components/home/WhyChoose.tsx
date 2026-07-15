@@ -51,19 +51,19 @@ export default function WhyChoose() {
                             style={{ fontFamily: "var(--font-oswald)" }}
                             className="relative pt-4 text-3xl sm:text-4xl lg:text-5xl leading-tight uppercase text-[#FFF7DF] font-medium"
                         >
-                            {whychoose.heading.title}
-                            <br />
+                            {whychoose.heading.title}{" "}
 
                             <span className="text-[#E8A428]">
                                 {whychoose.heading.highlightText}
                             </span>{" "}
+                            <br />
 
                             {whychoose.heading.titleEnd}
                         </h3>
                     </div>
 
                     <div>
-                        <p className="text-sm sm:text-base text-[#C0C0C0] leading-relaxed">
+                        <p className="text-sm sm:text-base text-[#C0C0C0] text-right leading-relaxed">
                             {whychoose.description}
                         </p>
                     </div>
@@ -73,10 +73,10 @@ export default function WhyChoose() {
                 <div className="relative">
 
                     {/* ========= DESKTOP ========= */}
-                    <div className="hidden xl:flex justify-center items-center relative min-h-[650px]">
+                    <div className="hidden xl:flex justify-center items-center relative h-full">
 
                         {/* LEFT */}
-                        <div className="absolute left-0 w-[420px] h-full">
+                        <div className="absolute left-0 bottom-16 w-[420px] h-full">
 
                             {leftFeatures.map((item, index) => (
                                 <div

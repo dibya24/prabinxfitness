@@ -72,10 +72,10 @@ export const CONTENT = {
                 id: 1,
                 text: "Make a Quick Call",
             },
-            {
-                id: 2,
-                text: "Make a Quick Call",
-            },
+            // {
+            //     id: 2,
+            //     text: "Make a Quick Call",
+            // },
         ],
 
 

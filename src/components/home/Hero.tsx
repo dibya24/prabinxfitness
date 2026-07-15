@@ -15,6 +15,7 @@ export default function Hero() {
             return;
         }
 
+
         const handlePreloaderFinished = () => {
             setIsLoaded(true);
         };
@@ -121,7 +122,7 @@ export default function Hero() {
                         style={{
                             fontFamily: "var(--font-poppins)",
                         }}
-                        className="cursor-pointer rounded-md bg-[#E8A428] px-6 py-3 font-semibold text-black transition-all duration-300 hover:scale-105"
+                        className="cursor-pointer bg-[#E8A428] px-6 py-3 text-black transition-all duration-300 hover:scale-105"
                     >
                         About Me
                     </button>
@@ -131,7 +132,7 @@ export default function Hero() {
                         style={{
                             fontFamily: "var(--font-poppins)",
                         }}
-                        className="cursor-pointer rounded-md border border-[#E8A428] px-6 py-3 font-semibold text-white transition-all duration-300 hover:bg-[#E8A428] hover:text-black"
+                        className="cursor-pointer border border-[#CFA74D] py-3 px-6 text-[#E8A428] transition hover:bg-[#E8A428] transition-all duration-300 hover:text-black"
                     >
                         Contact Now
                     </button>

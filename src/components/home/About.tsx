@@ -13,7 +13,7 @@ export default function About() {
 
 
                 {/* TOP CONTENT */}
-                <div className="grid lg:grid-cols-2 gap-8 items-center">
+                <div className="grid lg:grid-cols-2 gap-8">
 
 
                     {/* LEFT */}
@@ -125,19 +125,23 @@ export default function About() {
 
                         <h2
                             style={{
-                                fontFamily:
-                                    "var(--font-oswald)",
+                                fontFamily: "var(--font-oswald)",
                             }}
                             className="
+                            relative
+                            overflow-hidden
                             text-xl
                             sm:text-2xl
                             lg:text-[30px]
                             uppercase
                             leading-snug
                             text-[#FFF7DF]
+                            animate-text-reveal
                             "
                         >
-                            {about.description.mainHeading}
+                            <span className="block">
+                                {about.description.mainHeading}
+                            </span>
                         </h2>
 
 
@@ -218,29 +222,11 @@ function StatCard({
     return (
 
         <div
-            className={`
-            relative
-            overflow-hidden
-            rounded-full
-            border-[3px]
-            lg:border-4
-            border-[#B98519]
-            px-6
-            sm:px-8
-            lg:px-12
-            py-4
-            lg:py-5
-            text-center
-            shadow-xl
-            transition-transform
-            duration-500
-            hover:-translate-y-2
-
-            ${
-                dark
-                ? "bg-[#4b4127]"
-                : "bg-gradient-to-b from-[#f3bb39] via-[#a56b06] to-black"
-            }
+            className={`relative overflow-hidden rounded-full border-[3px] lg:border-4 border-[#B98519] px-6 sm:px-8 lg:px-12 py-4 lg:py-5 text-center shadow-xl transition-transform duration-500 hover:-translate-y-2
+            ${dark
+                    ? "bg-[#4b4127]"
+                    : "bg-gradient-to-b from-[#f3bb39] via-[#a56b06] to-black"
+                }
             `}
         >
 
@@ -249,24 +235,13 @@ function StatCard({
                     fontFamily:
                         "var(--font-oswald)",
                 }}
-                className="
-                text-xl
-                sm:text-2xl
-                lg:text-[27px]
-                uppercase
-                text-[#FFF7DF]
-                font-semibold
-                "
+                className="text-xl sm:text-2xl lg:text-[27px] uppercase text-[#FFF7DF] font-semibold"
             >
                 {title}
             </h3>
 
 
-            <p className="
-                text-sm
-                sm:text-base
-                text-[#C0C0C0]
-            ">
+            <p className="text-sm sm:text-base text-[#C0C0C0]">
                 {subtitle}
             </p>
 

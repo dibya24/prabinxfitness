@@ -87,7 +87,7 @@ export default function Navbar() {
         <div className="hidden md:block">
           <button
             style={{ fontFamily: "var(--font-poppins)" }}
-            className="border border-[#CFA74D] px-6 py-3 text-sm text-[#F4E3C1] transition-all duration-300 hover:bg-[#CFA74D] hover:text-black"
+            className="cursor-pointer border border-[#E8A428] px-6 py-3 text-sm text-[#F4E3C1] transition-all duration-300 hover:bg-[#E8A428] hover:text-black"
           >
             Make a Call
           </button>
@@ -125,7 +125,9 @@ export default function Navbar() {
               </Link>
             ))}
 
-            <button className="border border-[#CFA74D] py-3 text-[#F4E3C1] transition hover:bg-[#CFA74D] hover:text-black">
+            <button 
+            className="cursor-pointer border border-[#E8A428] py-3 text-[#F4E3C1] transition hover:bg-[#E8A428] hover:text-black"
+            >
               Make a Call
             </button>
           </div>
