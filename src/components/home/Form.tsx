@@ -84,6 +84,8 @@ const Form = () => {
                                 </h2>
 
                                 <h3
+                                    data-aos="fade-up"
+                                    data-aos-delay="200"
                                     style={{ fontFamily: "var(--font-oswald)" }}
                                     className="relative pt-4 text-3xl sm:text-4xl lg:text-5xl leading-tight uppercase text-[#FFF7DF] font-medium">
                                     READY TO
@@ -97,6 +99,8 @@ const Form = () => {
                             </div>
 
                             <p
+                                data-aos="fade-up"
+                                data-aos-delay="300"
                                 style={{ fontFamily: "var(--font-poppins)" }}
                                 className='text-[16px] text-[#C0C0C0]'>
                                 I grew up in Kathmandu Valley, where physical discipline is woven into daily life - from the terraced farmlands to the trekking trials of the Himalayas. That environment my discipline.
@@ -107,7 +111,11 @@ const Form = () => {
                         <div className="mt-10 space-y-5">
 
                             {/* Location */}
-                            <div className="flex items-center gap-5">
+                            <div
+                                data-aos="fade-up"
+                                data-aos-delay="0"
+                                data-aos-duration="800"
+                                className="flex items-center gap-5">
                                 <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#E8A428]/20 bg-[#E8A428]/10">
                                     <svg
                                         className="h-5 w-5 text-[#E8A428]"
@@ -137,7 +145,11 @@ const Form = () => {
 
 
                             {/* Email */}
-                            <div className="flex items-center gap-5">
+                            <div
+                                data-aos="fade-up"
+                                data-aos-delay="150"
+                                data-aos-duration="800"
+                                className="flex items-center gap-5">
                                 <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#E8A428]/20 bg-[#E8A428]/10">
                                     <svg
                                         className="h-5 w-5 text-[#E8A428]"
@@ -171,7 +183,11 @@ const Form = () => {
 
 
                             {/* Call */}
-                            <div className="flex items-center gap-5">
+                            <div
+                                data-aos="fade-up"
+                                data-aos-delay="300"
+                                data-aos-duration="800"
+                                className="flex items-center gap-5">
                                 <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#E8A428]/20 bg-[#E8A428]/10">
                                     <svg
                                         className="h-5 w-5 text-[#E8A428]"
@@ -197,7 +213,6 @@ const Form = () => {
                                     </p>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 

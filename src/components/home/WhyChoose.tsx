@@ -48,6 +48,8 @@ export default function WhyChoose() {
                         </h2>
 
                         <h3
+                            data-aos="fade-up"
+                            data-aos-delay="200"
                             style={{ fontFamily: "var(--font-oswald)" }}
                             className="relative pt-4 text-3xl sm:text-4xl lg:text-5xl leading-tight uppercase text-[#FFF7DF] font-medium"
                         >
@@ -63,7 +65,10 @@ export default function WhyChoose() {
                     </div>
 
                     <div>
-                        <p className="text-sm sm:text-base text-[#C0C0C0] text-right leading-relaxed">
+                        <p
+                            data-aos="fade-up"
+                            data-aos-delay="300"
+                            className="text-sm sm:text-base text-[#C0C0C0] text-right leading-relaxed">
                             {whychoose.description}
                         </p>
                     </div>

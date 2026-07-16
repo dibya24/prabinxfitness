@@ -210,6 +210,63 @@ export const CONTENT = {
 
     // ================= TESTIMONIALS SECTION ================= //
     testimonials: {
+        heading: {
+            backgroundTitle: "TESTIMONIALS",
 
+            title: "WHAT MY",
+
+            highlightText: "CLIENTS",
+
+            titleEnd: "SAY",
+        },
+
+        description:
+            "Hear from clients who have transformed their fitness journey through personalized coaching, dedication, and consistent support.",
+
+        reviews: [
+            {
+                id: 1,
+
+                name: "Subash Achraya",
+
+                location: "London, UK",
+
+                text:
+                    "We got tickets from our friends because they didn't want to go. We didn't think it was going to be good but we went to try it out and I have to say it was one of the best magic shows I have watched till date.",
+            },
+
+            {
+                id: 2,
+
+                name: "Emily Coff",
+
+                location: "London, UK",
+
+                text:
+                    "It was the best money I've spent so far in Kathmandu on a magic show. Absolutely hilarious! He is such a nice person and the audience involvement made the experience unforgettable. I'll definitely go see him again.",
+            },
+
+            {
+                id: 3,
+
+                name: "Shristi Miya",
+
+                location: "London, UK",
+
+                text:
+                    "We had a fantastic time at the show. Saman, thank you for making our evening so memorable. The magic was truly mind-blowing and the performance exceeded our expectations. Keep spreading the magic!",
+            },
+
+            {
+                id: 4,
+
+                name: "Emily Davis",
+
+                location: "London, UK",
+
+                text:
+                    "An incredible performance from start to finish. The tricks were impressive, the humor kept everyone entertained, and the audience participation made it even more enjoyable. Highly recommended!",
+            },
+        ],
     },
 };

@@ -126,12 +126,11 @@ export default function Hero() {
                         About Me
                     </button>
 
-
                     <button
                         style={{
-                            fontFamily: "var(--font-poppins)",
+                            fontFamily: "var(--font-roboto-condensed)",
                         }}
-                        className="cursor-pointer rounded-full border border-[#FFF6DF] px-8 py-2 text-[16px] font-semibold text-[#E8A428] transition hover:bg-[#E8A428] transition-all duration-300 hover:text-black"
+                        className="cursor-pointer rounded-full border border-[#E8A428] px-8 py-2 text-[16px] font-semibold text-[#E8A428] transition hover:bg-[#E8A428] transition-all duration-300 hover:text-black"
                     >
                         Contact Now
                     </button>
@@ -148,7 +147,7 @@ export default function Hero() {
                     className="relative mt-8 w-[75vw] max-w-[400px]"
                 >
                     <Image
-                        src="/images/C187B05D-DE03-47DD-BA7A-29E635CF901F 3.png"
+                        src="/images/C187B05D-DE03-47DD-BA7A-29E635CF901F 2-Photoroom 1.png"
                         alt="Prabin, UK certified personal trainer"
                         width={400}
                         height={600}

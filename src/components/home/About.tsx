@@ -26,8 +26,8 @@ export default function About() {
 
                             {/* Background Text */}
                             <h2
-                                data-aos="zoom-in"
-                                data-aos-duration="1800"
+                                // data-aos="zoom-in"
+                                // data-aos-duration="1800"
                                 style={{
                                     WebkitTextStroke:
                                         "1px rgba(255,255,255,.12)",

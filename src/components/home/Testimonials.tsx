@@ -4,35 +4,15 @@ import { useEffect, useRef } from 'react'
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination, Autoplay } from "swiper/modules"
 import { Quote, ChevronLeft, ChevronRight } from "lucide-react"
+import { CONTENT } from '@/src/constants/content'
+
+const testimonial = CONTENT.testimonials
 
 import "aos/dist/aos.css";
 
 import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
-
-const testimonials = [
-  {
-    name: "-Subash Achraya",
-    location: "London, UK",
-    text: "We got tickets from our friends because they didn't want to go. We didn't think it was going to be good but we went to try it out and I have to say it was one of the best magic show watched till date."
-  },
-  {
-    name: "-Emily Coff",
-    location: "London, UK",
-    text: "It was the best money I've spent so far in Kathmandu in magic show, Absolutely hilarious! And he is such a nice person! Will definitely go see him again. Thank you for the amazing involvement."
-  },
-  {
-    name: "-Shristi Miya",
-    location: "London, UK",
-    text: "Great time at the show. Saman thank you for making my time with my friend, Magic was mind blowing, You all were great. Keep Loving Magic and keep rising."
-  },
-  {
-    name: "Emily Davis",
-    location: "London, UK",
-    text: "It was the best money I've spent so far in Kathmandu in magic show, Absolutely hilarious! And he is such a nice person! Will definitely go see him again. Thank you for the amazing involvement."
-  }
-]
 
 
 const Testimonials = () => {
@@ -82,32 +62,38 @@ const Testimonials = () => {
           <div className='flex flex-col gap-2'>
             <div className='relative'>
               <h2
-                className="absolute -top-6 left-0 text-4xl sm:text-5xl lg:text-6xl font-black uppercase text-transparent"
+                className="absolute -top-5 left-0 text-3xl sm:text-5xl lg:text-6xl font-extrabold uppercase text-transparent"
                 style={{
+                  WebkitTextStroke: "1px rgba(255,255,255,.12)",
                   fontFamily: "var(--font-oswald)",
                 }}
               >
-                Services Provided
+                {testimonial.heading.backgroundTitle}
               </h2>
 
               <h3
+              data-aos="fade-up"
+                            data-aos-delay="200"
                 style={{ fontFamily: "var(--font-oswald)" }}
                 className="relative pt-5 text-3xl sm:text-4xl lg:text-5xl leading-tight uppercase text-[#FFF7DF] font-medium"
               >
-                ELEVATE YOUR
+                {testimonial.heading.title}
                 {" "}
 
                 <span className="text-[#E8A428]">
-                  FITNESS
+                  {testimonial.heading.highlightText}
                 </span> {" "}
-                EXPERIENCE
+
+                {testimonial.heading.titleEnd}
               </h3>
             </div>
 
             <p
+            data-aos="fade-up"
+                            data-aos-delay="300"
               style={{ fontFamily: "var(--font-poppins)" }}
               className='text-sm sm:text-base leading-relaxed text-[#C0C0C0]'>
-              Personalized programs, expert coaching, and proven methods to help you achieve real results.
+              {testimonial.description}
             </p>
           </div>
 
@@ -150,31 +136,37 @@ const Testimonials = () => {
               },
             }}
           >
-            {testimonials.map((item, index) => (
-              <SwiperSlide key={index}>
-                <div className="rounded-2xl bg-gradient-to-b from-[#E8A428] to-[#0F0F0F] p-[2px]">
-                  <div className="rounded-2xl p-6 h-full bg-[#0F0F0F] backdrop-blur-md transition">
+            {CONTENT.testimonials.reviews.map((item) => (
+              <SwiperSlide key={item.id}>
+                <div className="rounded-2xl bg-gradient-to-b from-[#E8A428] to-[#0F0F0F] p-[2px] h-full">
+                  <div className="rounded-2xl p-6 h-full bg-[#0F0F0F] backdrop-blur-md transition hover:bg-[#141414]">
 
                     {/* Quote Icon */}
                     <Quote className="w-8 h-8 text-[#F0EBE6] mb-4 opacity-70" />
 
+                    {/* Testimonial */}
                     <p
                       style={{ fontFamily: "var(--font-poppins)" }}
-                      className="text-[14px] opacity-80 mb-6 ">
-                      “{item.text}”
+                      className="text-[14px] leading-7 text-[#C0C0C0] mb-6"
+                    >
+                      "{item.text}"
                     </p>
 
-                    <div>
+                    {/* Client Details */}
+                    <div className="mt-auto">
                       <h3
                         style={{ fontFamily: "var(--font-oswald)" }}
-                        className="big-shoulders big-shoulders-medium text-[21px] text-[#C0C0C0]">
+                        className="text-[21px] text-[#FFF7DF] uppercase"
+                      >
                         {item.name}
                       </h3>
 
                       <span
-                        style={{ fontFamily: "var(--font-oswald)" }}
-                        className='font-light text-[#C0C0C0]'
-                      >{item.location}</span>
+                        style={{ fontFamily: "var(--font-poppins)" }}
+                        className="text-sm text-[#C0C0C0]"
+                      >
+                        {item.location}
+                      </span>
                     </div>
 
                   </div>

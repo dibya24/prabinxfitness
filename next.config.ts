@@ -1,14 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: "export",
+
+  // Subfolder where your app is hosted
+  //   basePath: "/prabinxfitness",
+  // assetPrefix: "/prabinxfitness/",
+
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "assets.codepen.io",
-      },
-    ],
+    unoptimized: true,
   },
+
+  trailingSlash: true,
 };
 
 export default nextConfig;
