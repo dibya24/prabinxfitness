@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import images from "@/src/constants/images";
 
 export default function Hero() {
     const [isLoaded, setIsLoaded] = useState(false);
@@ -147,7 +148,7 @@ export default function Hero() {
                     className="relative mt-8 w-[75vw] max-w-[400px]"
                 >
                     <Image
-                        src="/images/C187B05D-DE03-47DD-BA7A-29E635CF901F 2-Photoroom 1.png"
+                        src={images.hero}
                         alt="Prabin, UK certified personal trainer"
                         width={400}
                         height={600}

@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { CONTENT } from "@/src/constants/content";
 
+import images from "@/src/constants/images";
+
 const about = CONTENT.about;
 
 export default function About() {
@@ -97,7 +99,7 @@ export default function About() {
                             className="mt-8"
                         >
                             <Image
-                                src="/images/Active_iq.png"
+                                src={images.about}
                                 width={220}
                                 height={220}
                                 alt="Active IQ Personal Trainer Certificate"
