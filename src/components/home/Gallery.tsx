@@ -1,305 +1,428 @@
-    'use client';
+'use client';
 
-    import { useEffect, useRef } from 'react';
-    import Image from 'next/image';
-    import gsap from 'gsap';
-    import { ScrollTrigger } from 'gsap/ScrollTrigger';
-    import { Flip } from 'gsap/all';
+import { useEffect, useRef, useState, useCallback, useLayoutEffect } from 'react';
+import Image, { StaticImageData } from 'next/image';
+import { Volume2, VolumeX, Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
-    import Image1 from "../../../public/images/Active_iq.png";
-    import Image2 from "../../../public/images/gallery/two.png";
-    import Image3 from "../../../public/images/Active_iq.png";
-    import Image4 from "../../../public/images/Active_iq.png";
-    import Image5 from "../../../public/images/gallery/three.png";
-    import Image6 from "../../../public/images/gallery/four.png";
-    import Image7 from "../../../public/images/gallery/six.png";
-    import Image8 from "../../../public/images/gallery/client.jpg";
-    import Image9 from "../../../public/images/gallery/one.png";
-    import Image10 from "../../../public/images/Active_iq.png";
-    
+import Image1 from "../../../public/images/Active_iq.png";
+import Image2 from "../../../public/images/gallery/two.png";
+import Image9 from "../../../public/images/gallery/one.png";
+import Image5 from "../../../public/images/gallery/three.png";
+import Image8 from "../../../public/images/gallery/client.jpg";
+import Image7 from "../../../public/images/gallery/six.png";
+import Image6 from "../../../public/images/gallery/four.png";
 
-    const images = [
-        Image1,
-        Image2,
-        Image9,
-        Image10,
-        Image5,
-        Image8,
-        Image7,
-        Image6,
-    ];
+type MediaItem = {
+    type: 'image' | 'video';
+    src: StaticImageData | string;
+    poster?: StaticImageData | string;
+    title: string;
+    category: string;
+    size: 'lg' | 'md';
+};
 
-    const gridAreas = [
-        '1 / 1 / 3 / 2',
-        '1 / 2 / 2 / 3',
-        '2 / 2 / 4 / 3',
-        '1 / 3 / 3 / 4',
-        '3 / 1 / 4 / 2',
-        '3 / 3 / 5 / 4',
-        '4 / 1 / 5 / 2',
-        '4 / 2 / 5 / 3',
-    ];
+const mediaItems: MediaItem[] = [
+    { type: 'image', src: Image1, title: 'Morning strength block', category: 'STRENGTH', size: 'lg' },
+    { type: 'video', src: '/videos/training-clip-1.mp4', poster: Image2, title: 'Form check — deadlift', category: 'COACHING', size: 'md' },
+    { type: 'image', src: Image9, title: 'Six months in', category: 'CLIENT STORY', size: 'md' },
+    { type: 'video', src: '/videos/training-clip-2.mp4', poster: Image5, title: 'Conditioning circuit', category: 'CONDITIONING', size: 'lg' },
+    { type: 'image', src: Image8, title: 'One-on-one session', category: 'COACHING', size: 'md' },
+    { type: 'video', src: '/videos/training-clip-3.mp4', poster: Image7, title: 'Off-season progress', category: 'CLIENT STORY', size: 'md' },
+    { type: 'image', src: Image6, title: 'Group conditioning', category: 'CONDITIONING', size: 'lg' },
+    { type: 'image', src: Image2, title: 'Recovery day', category: 'STRENGTH', size: 'md' },
+];
 
-    export default function BentoGallery() {
-        const wrapRef = useRef<HTMLDivElement>(null);
-        const galleryRef = useRef<HTMLDivElement>(null);
-        const flipCtxRef = useRef<gsap.Context | null>(null);
+// 🔧 Tile widths still scale per breakpoint, but ALL breakpoints participate
+// in the same pinned horizontal-scroll track now — no separate mobile mode.
+const tileWidthClass = {
+    lg: 'w-[86vw] xs:w-[80vw] sm:w-[68vw] md:w-[58vw] lg:w-[48vw] xl:w-[42vw] 2xl:w-[38vw]',
+    md: 'w-[80vw] xs:w-[72vw] sm:w-[42vw] md:w-[34vw] lg:w-[28vw] xl:w-[24vw] 2xl:w-[21vw]',
+};
 
-        useEffect(() => {
-            gsap.registerPlugin(ScrollTrigger, Flip);
+// ============================================================
+// Video tile
+// ============================================================
+function VideoTile({
+    src,
+    poster,
+    onOpen,
+}: {
+    src: string;
+    poster?: StaticImageData | string;
+    onOpen: () => void;
+}) {
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const [muted, setMuted] = useState(true);
+    const [started, setStarted] = useState(false);
 
-            const createTween = () => {
-                const galleryElement = galleryRef.current;
-                if (!galleryElement) return;
+    useEffect(() => {
+        const videoEl = videoRef.current;
+        if (!videoEl) return;
 
-                const galleryItems = galleryElement.querySelectorAll<HTMLElement>('.gallery__item');
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    videoEl.play().catch(() => {});
+                    setStarted(true);
+                } else {
+                    videoEl.pause();
+                }
+            },
+            { threshold: 0.5 }
+        );
 
-                flipCtxRef.current?.revert();
-                galleryElement.classList.remove('gallery--final');
+        observer.observe(videoEl);
+        return () => observer.disconnect();
+    }, []);
 
-                flipCtxRef.current = gsap.context(() => {
-                    galleryElement.classList.add('gallery--final');
-                    const flipState = Flip.getState(galleryItems);
+    const toggleMute = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        const videoEl = videoRef.current;
+        if (!videoEl) return;
+        videoEl.muted = !videoEl.muted;
+        setMuted(videoEl.muted);
+    };
 
-                    galleryElement.classList.remove('gallery--final');
+    return (
+        <div className="relative w-full h-full">
+            <video
+                ref={videoRef}
+                src={src}
+                poster={typeof poster === 'string' ? poster : poster?.src}
+                muted={muted}
+                loop
+                playsInline
+                preload="metadata"
+                onClick={onOpen}
+                className="object-cover w-full h-full block"
+            />
 
-                    const flip = Flip.to(flipState, {
-                        simple: true,
-                        ease: 'expoScale(1, 5)',
-                    });
+            {!started && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
+                    <Play className="w-8 h-8 sm:w-10 sm:h-10 text-white/80" fill="white" />
+                </div>
+            )}
 
-                    const tl = gsap.timeline({
-                        scrollTrigger: {
-                            trigger: galleryElement,
-                            start: 'center center',
-                            end: '+=100%',
-                            scrub: true,
-                            pin: galleryElement.parentElement ?? undefined,
-                        },
-                    });
+            <div className="absolute top-3 right-3 sm:top-4 sm:right-4 flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-sm">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#E8A428] animate-pulse" />
+                <span className="font-mono text-[9px] sm:text-[10px] tracking-widest text-white/80">CLIP</span>
+            </div>
 
-                    tl.add(flip);
+            <button
+                onClick={toggleMute}
+                className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 z-10 flex items-center justify-center
+                           w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/50 backdrop-blur-sm
+                           opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-200"
+                aria-label={muted ? 'Unmute video' : 'Mute video'}
+            >
+                {muted ? <VolumeX className="w-4 h-4 text-white" /> : <Volume2 className="w-4 h-4 text-white" />}
+            </button>
+        </div>
+    );
+}
 
-                    return () => gsap.set(galleryItems, { clearProps: 'all' });
-                });
-            };
+// ============================================================
+// Tile
+// ============================================================
+function Tile({
+    item,
+    index,
+    onOpen,
+    setRef,
+}: {
+    item: MediaItem;
+    index: number;
+    onOpen: () => void;
+    setRef: (el: HTMLDivElement | null) => void;
+}) {
+    return (
+        <div
+            ref={setRef}
+            data-index={index}
+            className={`gallery-tile group relative flex-none rounded-xl sm:rounded-2xl overflow-hidden
+                        h-[50vh] xs:h-[54vh] sm:h-[58vh] md:h-[64vh] lg:h-[70vh] ${tileWidthClass[item.size]}`}
+        >
+            <span
+                style={{ fontFamily: 'var(--font-oswald)' }}
+                className="absolute -top-2 left-2 sm:-top-3 sm:left-3 text-[64px] xs:text-[76px] sm:text-[96px] md:text-[120px] lg:text-[140px] font-bold leading-none
+                           text-white/[0.06] select-none pointer-events-none z-10"
+            >
+                {String(index + 1).padStart(2, '0')}
+            </span>
 
-            createTween();
+            {item.type === 'video' ? (
+                <VideoTile src={item.src as string} poster={item.poster} onOpen={onOpen} />
+            ) : (
+                <button onClick={onOpen} className="relative w-full h-full block cursor-pointer">
+                    <Image
+                        src={item.src}
+                        alt={item.title}
+                        fill
+                        className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] lg:group-hover:scale-[1.06]"
+                        sizes="(max-width: 640px) 85vw, (max-width: 1024px) 55vw, 40vw"
+                    />
+                </button>
+            )}
 
-            // Use a debounced resize listener to avoid thrashing ScrollTrigger and Flip states
-            // when the window is actively being resized, which breaks the coordinates.
-            let resizeTimer: NodeJS.Timeout;
-            const handleResize = () => {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(() => {
-                    createTween();
-                    // Ensure ScrollTrigger recalculates all start/end positions after Flip restarts
-                    ScrollTrigger.refresh();
-                }, 250);
-            };
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/70 via-black/10 to-transparent pointer-events-none" />
 
-            window.addEventListener('resize', handleResize);
-
-            return () => {
-                window.removeEventListener('resize', handleResize);
-                clearTimeout(resizeTimer);
-                flipCtxRef.current?.revert();
-            };
-        }, []);
-
-        return (
-            <>
-                <style>{`
-            .gallery--bento {
-            display: grid;
-            gap: 1vh;
-            grid-template-columns: repeat(3, 32.5vw);
-            grid-template-rows: repeat(4, 23vh);
-            justify-content: center;
-            align-content: center;
-            }
-
-            .gallery--final.gallery--bento {
-            grid-template-columns: repeat(3, 100vw);
-            grid-template-rows: repeat(4, 49.5vh);
-            gap: 1vh;
-            }
-        `}</style>
-
-                <div
-                    ref={wrapRef}
-                    className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-[#000000]" id="work"
+            <div
+                className="absolute bottom-0 left-0 right-0 p-3.5 sm:p-4 md:p-5 lg:p-6 z-10 pointer-events-none
+                           translate-y-0 opacity-100
+                           lg:translate-y-4 lg:opacity-0
+                           transition-all duration-300 ease-out
+                           lg:group-hover:translate-y-0 lg:group-hover:opacity-100"
+            >
+                <span className="font-mono text-[9px] sm:text-[10px] md:text-[11px] tracking-[0.18em] sm:tracking-[0.2em] text-[#E8A428]">
+                    {item.category}
+                </span>
+                <h3
+                    style={{ fontFamily: 'var(--font-oswald)' }}
+                    className="mt-1 text-sm sm:text-base md:text-lg lg:text-xl uppercase text-[#FFF7DF] leading-tight"
                 >
-                    <div
-                        ref={galleryRef}
-                        id="gallery-8"
-                        className="gallery--bento relative w-full h-full flex-none"
+                    {item.title}
+                </h3>
+            </div>
+        </div>
+    );
+}
+
+// ============================================================
+// Lightbox
+// ============================================================
+function Lightbox({ item, onClose }: { item: MediaItem; onClose: () => void }) {
+    useEffect(() => {
+        const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+        window.addEventListener('keydown', onKey);
+        document.body.style.overflow = 'hidden';
+        return () => {
+            window.removeEventListener('keydown', onKey);
+            document.body.style.overflow = '';
+        };
+    }, [onClose]);
+
+    return (
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/92 backdrop-blur-sm p-3 sm:p-6 md:p-10"
+            onClick={onClose}
+        >
+            <button
+                onClick={onClose}
+                className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 z-10 flex items-center justify-center
+                           w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                aria-label="Close"
+            >
+                <X className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+            </button>
+
+            <div className="relative w-full max-w-6xl max-h-[80vh] sm:max-h-[85vh] aspect-video" onClick={(e) => e.stopPropagation()}>
+                {item.type === 'video' ? (
+                    <video src={item.src as string} controls autoPlay playsInline className="w-full h-full object-contain rounded-lg" />
+                ) : (
+                    <Image src={item.src} alt={item.title} fill className="object-contain rounded-lg" sizes="90vw" />
+                )}
+            </div>
+
+            <div className="absolute bottom-4 sm:bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 text-center px-4" onClick={(e) => e.stopPropagation()}>
+                <span className="font-mono text-[10px] sm:text-[11px] tracking-[0.2em] text-[#E8A428]">{item.category}</span>
+                <h3 style={{ fontFamily: 'var(--font-oswald)' }} className="mt-1 text-lg sm:text-xl uppercase text-[#FFF7DF]">
+                    {item.title}
+                </h3>
+            </div>
+        </div>
+    );
+}
+
+// ============================================================
+// Main gallery — pinned horizontal scroll on EVERY screen size.
+// Driven by page scroll position (works identically for mouse
+// wheel, trackpad, and touch swipe — no mode-switching needed).
+// ============================================================
+export default function BentoGallery() {
+    const pinWrapperRef = useRef<HTMLDivElement>(null);
+    const trackRef = useRef<HTMLDivElement>(null);
+    const tileRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [progress, setProgress] = useState(0);
+    const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+    const maxTranslateRef = useRef(0);
+
+    // ---- Measure track width & size the pin wrapper so scroll distance
+    //      through the wrapper exactly covers the horizontal travel needed ----
+    const recalc = useCallback(() => {
+        const wrapper = pinWrapperRef.current;
+        const track = trackRef.current;
+        if (!wrapper || !track) return;
+
+        const trackWidth = track.scrollWidth;
+        const viewportWidth = window.innerWidth;
+        const maxTranslate = Math.max(0, trackWidth - viewportWidth);
+        maxTranslateRef.current = maxTranslate;
+        wrapper.style.height = `${window.innerHeight + maxTranslate}px`;
+    }, []);
+
+    useLayoutEffect(() => {
+        recalc();
+
+        let resizeTimer: ReturnType<typeof setTimeout>;
+        const debouncedRecalc = () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(recalc, 150);
+        };
+
+        const ro = new ResizeObserver(debouncedRecalc);
+        if (trackRef.current) ro.observe(trackRef.current);
+
+        window.addEventListener('resize', debouncedRecalc);
+        window.addEventListener('orientationchange', debouncedRecalc);
+
+        return () => {
+            clearTimeout(resizeTimer);
+            ro.disconnect();
+            window.removeEventListener('resize', debouncedRecalc);
+            window.removeEventListener('orientationchange', debouncedRecalc);
+        };
+    }, [recalc]);
+
+    // ---- Drive translateX + progress + active tile from page scroll ----
+    useEffect(() => {
+        let ticking = false;
+        const update = () => {
+            ticking = false;
+            const wrapper = pinWrapperRef.current;
+            const track = trackRef.current;
+            if (!wrapper || !track) return;
+
+            const rect = wrapper.getBoundingClientRect();
+            const total = wrapper.offsetHeight - window.innerHeight;
+            if (total <= 0) return;
+
+            const raw = -rect.top / total;
+            const clamped = Math.min(1, Math.max(0, raw));
+
+            const offset = clamped * maxTranslateRef.current;
+            track.style.transform = `translateX(-${offset}px)`;
+            setProgress(clamped);
+
+            const viewportCenter = offset + window.innerWidth / 2;
+            let closest = 0;
+            let closestDist = Infinity;
+            tileRefs.current.forEach((el, i) => {
+                if (!el) return;
+                const tileCenter = el.offsetLeft + el.offsetWidth / 2;
+                const dist = Math.abs(tileCenter - viewportCenter);
+                if (dist < closestDist) {
+                    closestDist = dist;
+                    closest = i;
+                }
+            });
+            setActiveIndex(closest);
+        };
+
+        const onScroll = () => {
+            if (!ticking) {
+                requestAnimationFrame(update);
+                ticking = true;
+            }
+        };
+
+        update();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
+    const scrollByTile = useCallback((dir: 1 | -1) => {
+        window.scrollBy({ top: window.innerWidth * 0.6 * dir, behavior: 'smooth' });
+    }, []);
+
+    return (
+        <section id="work" className="relative bg-[#0B0B0B]">
+            <style>{`
+                .gallery-track { scrollbar-width: none; -ms-overflow-style: none; }
+                .gallery-track::-webkit-scrollbar { display: none; }
+                @media (prefers-reduced-motion: reduce) {
+                    .gallery-tile img, .gallery-tile video { transition: none !important; }
+                }
+            `}</style>
+
+            {/* ===== Heading ===== */}
+            <div className="max-w-[1800px] mx-auto px-4 xs:px-6 md:px-10 lg:px-12 pt-12 xs:pt-16 md:pt-24 lg:pt-32 pb-6 xs:pb-8 lg:pb-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 lg:gap-4">
+                <div className="relative">
+                    <span
+                        style={{ fontFamily: 'var(--font-oswald)' }}
+                        className="block text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase text-[#FFF7DF] font-medium leading-none"
                     >
-                        {images.map((img, i) => (
-                            <div
-                                key={i}
-                                className="gallery__item bg-center bg-cover flex-none relative"
-                                style={{ gridArea: gridAreas[i] }}
-                            >
-                                {typeof img === 'string' ? (
-                                    // External URL
-                                    <img
-                                        src={img}
-                                        alt={`Gallery image ${i + 1}`}
-                                        className="object-cover w-full h-full block"
-                                    />
-                                ) : (
-                                    // Local image
-                                    <Image
-                                        src={img}
-                                        alt={`Gallery image ${i + 1}`}
-                                        className="object-cover"
-                                        fill
-                                        style={{ objectFit: 'cover' }}
-                                    />
-                                )}
-                            </div>
-                        ))}
-                    </div>
+                        Inside the <span className="text-[#E8A428]">floor</span>
+                    </span>
+                    <p style={{ fontFamily: 'var(--font-poppins)' }} className="mt-2 sm:mt-3 text-xs sm:text-sm lg:text-base text-[#A8A8A8] max-w-md">
+                        Real sessions, real clients — keep scrolling to move through the reel.
+                    </p>
                 </div>
 
-                {/* <div className="px-20 py-8">
-                    <h2 className="text-2xl font-semibold mb-4">Here is some content</h2>
-                    {Array.from({ length: 1 }).map((_, i) => (
-                        <p key={i} className="text-xl mb-4 leading-relaxed">
-                            Saman has been enthralled by magic since 2010. He recalls what he was like as a child. He purchased a few tricks and started practicing them with his family and friends. After meeting a couple in Pokhara in 2013, Saman was asked to perform a stand-up act at their wedding. The reactions to his then-amateurish performance as a magician were astounding, and Saman understood he had the ability to develop his newfound pleasure into something considerably more professional. He has performed as a Magician in Kathmandu for a range of events including corporate events, private parties, weddings, formal dinners, celebrity appearances, trade fairs, and festivals. Elevate your next corporate event with a captivating and thought-provoking performance that blends magic and keynote speaking to inspire and encourage creativity with your audience.
-                        </p>
-                    ))}
-                </div> */}
-            </>
-        );
-    }
+                <span className="font-mono text-[11px] lg:text-xs tracking-[0.2em] text-[#A8A8A8]">
+                    {String(activeIndex + 1).padStart(2, '0')} / {String(mediaItems.length).padStart(2, '0')}
+                </span>
+            </div>
 
+            {/* ===== Pinned horizontal-scroll wrapper — active on ALL screen sizes ===== */}
+            <div ref={pinWrapperRef} className="relative">
+                <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
 
+                    <div
+                        ref={trackRef}
+                        className="gallery-track flex gap-3 xs:gap-4 sm:gap-5 px-4 xs:px-6 md:px-10 lg:px-12 will-change-transform"
+                    >
+                        {mediaItems.map((item, i) => (
+                            <Tile
+                                key={i}
+                                item={item}
+                                index={i}
+                                setRef={(el) => (tileRefs.current[i] = el)}
+                                onOpen={() => setLightboxIndex(i)}
+                            />
+                        ))}
+                        <div className="flex-none w-4 xs:w-6 lg:w-12" aria-hidden />
+                    </div>
 
+                    {/* Scrub bar */}
+                    <div className="max-w-[1800px] w-full mx-auto px-4 xs:px-6 md:px-10 lg:px-12 mt-5 xs:mt-6 lg:mt-8 flex items-center gap-3 xs:gap-4 lg:gap-5">
+                        <button
+                            onClick={() => scrollByTile(-1)}
+                            className="w-7 h-7 xs:w-8 xs:h-8 lg:w-9 lg:h-9 flex items-center justify-center rounded-full border border-[#262626]
+                                       text-[#A8A8A8] hover:text-[#E8A428] hover:border-[#E8A428] transition-colors shrink-0"
+                            aria-label="Previous"
+                        >
+                            <ChevronLeft className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                        </button>
 
+                        <div className="relative flex-1 h-[2px] bg-[#262626] rounded-full overflow-hidden">
+                            <div
+                                className="absolute inset-y-0 left-0 bg-[#E8A428] rounded-full transition-[width] duration-150 ease-out"
+                                style={{ width: `${progress * 100}%` }}
+                            />
+                        </div>
 
+                        <span className="font-mono text-[9px] xs:text-[10px] lg:text-[11px] tracking-[0.15em] lg:tracking-[0.2em] text-[#E8A428] w-20 xs:w-24 lg:w-32 text-right truncate shrink-0">
+                            {mediaItems[activeIndex]?.category}
+                        </span>
 
+                        <button
+                            onClick={() => scrollByTile(1)}
+                            className="w-7 h-7 xs:w-8 xs:h-8 lg:w-9 lg:h-9 flex items-center justify-center rounded-full border border-[#262626]
+                                       text-[#A8A8A8] hover:text-[#E8A428] hover:border-[#E8A428] transition-colors shrink-0"
+                            aria-label="Next"
+                        >
+                            <ChevronRight className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-
-
-
-
-    // "use client";
-
-    // import { useEffect, useRef } from "react";
-    // import Image from "next/image";
-    // import gsap from "gsap";
-    // import { Flip } from "gsap/Flip";
-    // import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-    // gsap.registerPlugin(Flip, ScrollTrigger);
-
-    // const images = [
-    //     "/images/Active_iq.png",
-    //     "https://assets.codepen.io/16327/portrait-image-12.jpg",
-    //     "https://assets.codepen.io/16327/portrait-image-8.jpg",
-    //     "https://assets.codepen.io/16327/portrait-pattern-2.jpg",
-    //     "https://assets.codepen.io/16327/portrait-image-4.jpg",
-    //     "https://assets.codepen.io/16327/portrait-image-3.jpg",
-    //     "https://assets.codepen.io/16327/portrait-pattern-3.jpg",
-    //     "https://assets.codepen.io/16327/portrait-image-1.jpg",
-    // ];
-
-    // export default function BentoGallery() {
-    //     const galleryRef = useRef<HTMLDivElement>(null);
-
-    //     useEffect(() => {
-    //         const gallery = galleryRef.current;
-
-    //         if (!gallery) return;
-
-    //         let ctx: gsap.Context;
-
-    //         const createAnimation = () => {
-    //             ctx?.revert();
-
-    //             const items = gallery.querySelectorAll(".gallery-item");
-
-    //             gallery.classList.remove("gallery-final");
-
-    //             ctx = gsap.context(() => {
-    //                 gallery.classList.add("gallery-final");
-
-    //                 const state = Flip.getState(items);
-
-    //                 gallery.classList.remove("gallery-final");
-
-    //                 const flip = Flip.to(state, {
-    //                     duration: 1,
-    //                     ease: "expo.inOut",
-    //                     absolute: true,
-    //                 });
-
-    //                 const tl = gsap.timeline({
-    //                     scrollTrigger: {
-    //                         trigger: gallery,
-    //                         start: "center center",
-    //                         end: "+=100%",
-    //                         scrub: true,
-    //                         pin: gallery.parentElement,
-    //                         invalidateOnRefresh: true,
-    //                     },
-    //                 });
-
-    //                 tl.add(flip);
-    //             }, gallery);
-    //         };
-
-    //         createAnimation();
-
-    //         window.addEventListener("resize", createAnimation);
-
-    //         return () => {
-    //             window.removeEventListener("resize", createAnimation);
-    //             ctx?.revert();
-    //             ScrollTrigger.getAll().forEach((t) => t.kill());
-    //         };
-    //     }, []);
-
-    //     return (
-    //         <>
-    //             <section className="relative h-screen overflow-hidden flex items-center justify-center">
-    //                 <div
-    //                     ref={galleryRef}
-    //                     className="gallery grid h-full w-full justify-center content-center gap-[1vh]"
-    //                 >
-    //                     {images.map((image, index) => (
-    //                         <div
-    //                             key={index}
-    //                             className={`gallery-item relative overflow-hidden rounded-xl`}
-    //                         >
-    //                             <Image
-    //                                 src={image}
-    //                                 alt=""
-    //                                 fill
-    //                                 className="object-cover"
-    //                                 sizes="33vw"
-    //                             />
-    //                         </div>
-    //                     ))}
-    //                 </div>
-    //             </section>
-
-    //             <section className="max-w-6xl mx-auto py-24 px-6">
-    //                 <h2 className="text-5xl font-bold mb-8">
-    //                     Here is some content
-    //                 </h2>
-
-    //                 {Array.from({ length: 8 }).map((_, i) => (
-    //                     <p key={i} className="text-lg leading-8 mb-6">
-    //                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam
-    //                         aspernatur molestiae consequatur modi saepe asperiores facere
-    //                         architecto exercitationem. Consequuntur incidunt dolores molestias
-    //                         fugiat eveniet dignissimos.
-    //                     </p>
-    //                 ))}
-    //             </section>
-    //         </>
-    //     );
-    // }
+            {lightboxIndex !== null && (
+                <Lightbox item={mediaItems[lightboxIndex]} onClose={() => setLightboxIndex(null)} />
+            )}
+        </section>
+    );
+}
