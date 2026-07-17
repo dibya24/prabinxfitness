@@ -4,19 +4,22 @@ import React from "react";
 const Banner = () => {
     return (
         <section className="bg-[#141414]">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10">
 
                 <div
                     className="
                         relative
                         overflow-hidden
-                        rounded-[20px]
 
-                        h-[140px]
-                        sm:h-[220px]
-                        md:h-[280px]
-                        lg:h-[340px]
-                        xl:h-[400px]
+                        rounded-[12px]
+                        sm:rounded-[16px]
+                        lg:rounded-[20px]
+
+                        aspect-[16/9]
+                        sm:aspect-[21/9]
+                        lg:aspect-[3/1]
+
+                        max-h-[400px]
                     "
                 >
                     <Image
@@ -26,7 +29,6 @@ const Banner = () => {
                         priority
                         sizes="
                             (max-width: 640px) 100vw,
-                            (max-width: 768px) 100vw,
                             (max-width: 1024px) 90vw,
                             1280px
                         "

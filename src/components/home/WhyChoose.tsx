@@ -119,7 +119,7 @@ export default function WhyChoose() {
                         <p
                             data-aos="fade-up"
                             data-aos-delay="300"
-                            className="text-sm sm:text-base text-[#C0C0C0] text-right leading-relaxed"
+                            className="text-sm sm:text-base text-[#C0C0C0] text-left lg:text-right leading-relaxed"
                         >
                             {whychoose.description}
                         </p>
@@ -222,7 +222,81 @@ export default function WhyChoose() {
                         </div>
                     </div>
 
-                    {/* ========= TABLET & MOBILE: keep your existing blocks unchanged ========= */}
+                    {/* ========= TABLET & MOBILE: stacked, no scroll-pin ========= */}
+                    <div className="xl:hidden flex flex-col items-center gap-12">
+
+                        {/* IMAGE */}
+                        <div
+                            data-aos="fade-up"
+                            className="relative w-[260px] h-[380px] sm:w-[300px] sm:h-[440px]"
+                        >
+                            <Image
+                                src={images.why}
+                                alt="Trainer"
+                                fill
+                                className="object-cover"
+                            />
+                        </div>
+
+                        {/* LEFT FEATURES — stacked, left-aligned text on small screens */}
+                        <div className="w-full flex flex-col gap-8">
+                            {leftFeatures.map((item, index) => (
+                                <div
+                                    key={`left-${index}`}
+                                    data-aos="fade-right"
+                                    data-aos-delay={index * 100}
+                                    className="flex items-center gap-4 sm:gap-6"
+                                >
+                                    <span className="shrink-0 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#E8A428] border-[4px] sm:border-[6px] border-[#fbdfaa]" />
+
+                                    <div className="flex-1">
+                                        <h4
+                                            style={{ fontFamily: "var(--font-oswald)" }}
+                                            className="uppercase text-lg sm:text-xl text-[#F8F1DE]"
+                                        >
+                                            {item.title}
+                                        </h4>
+                                        <p
+                                            style={{ fontFamily: "var(--font-poppins)" }}
+                                            className="text-[#A8A8A8] mt-1 text-sm"
+                                        >
+                                            {item.desc}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* RIGHT FEATURES — stacked underneath */}
+                        <div className="w-full flex flex-col gap-8">
+                            {rightFeatures.map((item, index) => (
+                                <div
+                                    key={`right-${index}`}
+                                    data-aos="fade-left"
+                                    data-aos-delay={index * 100}
+                                    className="flex items-center gap-4 sm:gap-6"
+                                >
+                                    <span className="shrink-0 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#E8A428] border-[4px] sm:border-[6px] border-[#fbdfaa]" />
+
+                                    <div className="flex-1">
+                                        <h4
+                                            style={{ fontFamily: "var(--font-oswald)" }}
+                                            className="uppercase text-lg sm:text-xl text-[#F8F1DE]"
+                                        >
+                                            {item.title}
+                                        </h4>
+                                        <p
+                                            style={{ fontFamily: "var(--font-poppins)" }}
+                                            className="text-[#A8A8A8] mt-1 text-sm"
+                                        >
+                                            {item.desc}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                    </div>
 
                 </div>
             </div>

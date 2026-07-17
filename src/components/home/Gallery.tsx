@@ -62,7 +62,7 @@ function VideoTile({
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
-                    videoEl.play().catch(() => {});
+                    videoEl.play().catch(() => { });
                     setStarted(true);
                 } else {
                     videoEl.pause();
@@ -121,9 +121,7 @@ function VideoTile({
     );
 }
 
-// ============================================================
-// Tile
-// ============================================================
+// ============================================================ Tile ============================================================ // 
 function Tile({
     item,
     index,
@@ -348,7 +346,7 @@ export default function BentoGallery() {
             `}</style>
 
             {/* ===== Heading ===== */}
-            <div className="max-w-[1800px] mx-auto px-4 xs:px-6 md:px-10 lg:px-12 pt-12 xs:pt-16 md:pt-24 lg:pt-32 pb-6 xs:pb-8 lg:pb-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 lg:gap-4">
+            <div className="max-w-7xl mx-auto py-20 flex flex-col">
                 <div className="relative">
                     <span
                         style={{ fontFamily: 'var(--font-oswald)' }}
@@ -361,14 +359,14 @@ export default function BentoGallery() {
                     </p>
                 </div>
 
-                <span className="font-mono text-[11px] lg:text-xs tracking-[0.2em] text-[#A8A8A8]">
+                {/* <span className="font-mono text-[11px] lg:text-xs tracking-[0.2em] text-[#A8A8A8]">
                     {String(activeIndex + 1).padStart(2, '0')} / {String(mediaItems.length).padStart(2, '0')}
-                </span>
+                </span> */}
             </div>
 
             {/* ===== Pinned horizontal-scroll wrapper — active on ALL screen sizes ===== */}
             <div ref={pinWrapperRef} className="relative">
-                <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+                <div className="mx-auto max-w-8xl sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
 
                     <div
                         ref={trackRef}

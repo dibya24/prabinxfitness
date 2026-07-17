@@ -23,11 +23,7 @@ function MarqueeContent({
             key={`${repeat}-${index}`}
             className="flex items-center gap-3 px-8 shrink-0"
           >
-            <Icon
-              className={`h-5 w-5 ${textColor}`}
-              strokeWidth={1.5}
-            />
-
+            <Icon className={`h-5 w-5 ${textColor}`} strokeWidth={1.5} />
             <span
               style={{ fontFamily: "var(--font-oswald)" }}
               className={`whitespace-nowrap text-lg uppercase sm:text-xl ${textColor}`}
@@ -43,17 +39,24 @@ function MarqueeContent({
 
 export default function MarqueeStrip() {
   return (
-    <div className="relative z-30 -mt-8 mb-[-60px] h-[120px] overflow-x-hidden">
-
+    <div
+      className="relative z-40 overflow-hidden isolate bg-transparent -mt-16 -mb-16 sm:-mt-20 sm:-mb-20"
+      style={{
+        height: "calc(9vw + 70px)",
+      }}
+    >
       {/* Back outlined strip */}
-      <div className="absolute inset-x-0 top-2 rotate-[5deg] overflow-hidden border-y border-[#E8A428]/50 bg-transparent py-3">
+      <div
+        className="absolute z-10 top-1/2 -translate-y-1/2 rotate-[5deg] overflow-hidden border-y border-[#E8A428]/50 bg-transparent py-3"
+        style={{ left: "-20px", right: "-20px" }}
+      >
         <div className="marquee-reverse flex w-max items-center">
           <MarqueeContent textColor="text-[#E8A428]" />
         </div>
       </div>
 
       {/* Main gold strip (STRAIGHT) */}
-      <div className="absolute inset-x-0 top-8 overflow-hidden bg-[#E8A428] py-4 shadow-2xl">
+      <div className="absolute z-20 inset-x-0 top-1/2 -translate-y-1/2 overflow-hidden bg-[#E8A428] py-4 shadow-2xl">
         <div className="marquee-forward flex w-max items-center">
           <MarqueeContent textColor="text-black" />
         </div>
