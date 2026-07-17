@@ -9,6 +9,8 @@ const Footer = () => {
         <section className='bg-[#141414] py-[40px] relative overflow-hidden'>
             <div className='max-w-7xl mx-auto px-5 sm:px-6 lg:px-8'>
                 <h2
+                data-aos="fade-down"
+    data-aos-duration="1000"
                     style={{ fontFamily: "var(--font-oswald)" }}
                     className="
                     text-center
@@ -47,6 +49,9 @@ const Footer = () => {
                     {/* Navigation */}
 
                     <nav
+                    data-aos="fade-up"
+    data-aos-delay="150"
+    data-aos-duration="900"
                         className="
                             flex
                             flex-wrap
@@ -91,7 +96,11 @@ const Footer = () => {
 
                     {/* Social Icons */}
 
-                    <div className="flex items-center gap-3">
+                    <div 
+                    data-aos="fade-left"
+    data-aos-delay="300"
+    data-aos-duration="900"
+                    className="flex items-center gap-3">
 
                         <a
                             href="#"

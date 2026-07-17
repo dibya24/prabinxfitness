@@ -103,7 +103,7 @@ export default function Hero() {
                     style={{
                         fontFamily: "var(--font-poppins)",
                     }}
-                    className="mt-5 max-w-3xl text-base leading-relaxed text-white/70 sm:text-md"
+                    className="mt-5 max-w-3xl text-[14px] leading-relaxed text-white/70 sm:text-[16px]"
                 >
                     {`I'm Prabin — a certified Gym Instructor & Personal Trainer coaching strength, weight loss and muscle building, on the floor in the UAE and by video call everywhere else.`}
                 </p>
