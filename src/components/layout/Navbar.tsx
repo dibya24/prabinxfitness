@@ -85,12 +85,18 @@ export default function Navbar() {
         {/* CTA Button */}
 
         <div className="hidden md:block">
-          <button
-            style={{ fontFamily: "var(--font-roboto-condensed)" }}
-            className="cursor-pointer rounded-full border border-[#E8A428] px-8 py-2 text-[16px] font-semibold text-[#E8A428] transition-all duration-300 hover:bg-[#E8A428] hover:text-black"
+          <a
+            href="https://wa.me/971558663590"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Make a Call
-          </button>
+            <button
+              style={{ fontFamily: "var(--font-roboto-condensed)" }}
+              className="cursor-pointer rounded-full border border-[#E8A428] px-8 py-2 text-[16px] font-semibold text-[#E8A428] transition-all duration-300 hover:bg-[#E8A428] hover:text-black"
+            >
+              Connect on WhatsApp
+            </button>
+          </a>
         </div>
 
         {/* Mobile Toggle */}
@@ -125,11 +131,17 @@ export default function Navbar() {
               </Link>
             ))}
 
-            <button
-              className="cursor-pointer border border-[#E8A428] py-3 text-[#F4E3C1] transition hover:bg-[#E8A428] hover:text-black"
+            <a
+              href="https://wa.me/971558663590"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Make a Call
-            </button>
+              <button
+                className="cursor-pointer border border-[#E8A428] py-3 text-[#F4E3C1] transition hover:bg-[#E8A428] hover:text-black"
+              >
+                Connect on WhatsApp
+              </button>
+            </a>
           </div>
         </div>
       </div>

@@ -22,13 +22,14 @@ type MediaItem = {
 };
 
 const mediaItems: MediaItem[] = [
-    { type: 'image', src: Image1, title: 'Morning strength block', category: 'STRENGTH', size: 'lg' },
-    { type: 'video', src: '/videos/training-clip-1.mp4', poster: Image2, title: 'Form check — deadlift', category: 'COACHING', size: 'md' },
-    { type: 'image', src: Image9, title: 'Six months in', category: 'CLIENT STORY', size: 'md' },
-    { type: 'video', src: '/videos/training-clip-2.mp4', poster: Image5, title: 'Conditioning circuit', category: 'CONDITIONING', size: 'lg' },
-    { type: 'image', src: Image8, title: 'One-on-one session', category: 'COACHING', size: 'md' },
-    { type: 'video', src: '/videos/training-clip-3.mp4', poster: Image7, title: 'Off-season progress', category: 'CLIENT STORY', size: 'md' },
-    { type: 'image', src: Image6, title: 'Group conditioning', category: 'CONDITIONING', size: 'lg' },
+    { type: 'image', src: Image9, title: 'Morning strength block', category: 'STRENGTH', size: 'lg' },
+    { type: 'video', src: 'https://res.cloudinary.com/bz4xcvt7/video/upload/v1784345155/IMG_2908_stmago.mp4', poster: Image2, title: 'Form check — deadlift', category: 'COACHING', size: 'md' },
+    { type: 'image', src: Image8, title: 'Six months in', category: 'CLIENT STORY', size: 'md' },
+    // { type: 'image', src: 'https://res.cloudinary.com/bz4xcvt7/image/upload/f_auto,q_auto/v1784345340/IMG_3764_vsinct.heic', title: 'Six months in', category: 'CLIENT STORY', size: 'md' },
+    { type: 'video', src: 'https://res.cloudinary.com/bz4xcvt7/video/upload/v1784345178/IMG_4390_iyexkw.mov', poster: Image5, title: 'Conditioning circuit', category: 'CONDITIONING', size: 'lg' },
+    // { type: 'image', src: Image8, title: 'One-on-one session', category: 'COACHING', size: 'md' },
+    // { type: 'video', src: '/videos/training-clip-3.mp4', poster: Image7, title: 'Off-season progress', category: 'CLIENT STORY', size: 'md' },
+    { type: 'image', src: 'https://res.cloudinary.com/bz4xcvt7/image/upload/f_auto,q_auto/v1784345340/IMG_3764_vsinct.heic', title: 'Group conditioning', category: 'CONDITIONING', size: 'lg' },
     { type: 'image', src: Image2, title: 'Recovery day', category: 'STRENGTH', size: 'md' },
 ];
 
@@ -346,22 +347,36 @@ export default function BentoGallery() {
             `}</style>
 
             {/* ===== Heading ===== */}
-            <div className="max-w-7xl mx-auto py-20 flex flex-col">
-                <div className="relative">
-                    <span
-                        style={{ fontFamily: 'var(--font-oswald)' }}
-                        className="block text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase text-[#FFF7DF] font-medium leading-none"
-                    >
-                        Inside the <span className="text-[#E8A428]">floor</span>
-                    </span>
-                    <p style={{ fontFamily: 'var(--font-poppins)' }} className="mt-2 sm:mt-3 text-xs sm:text-sm lg:text-base text-[#A8A8A8] max-w-md">
-                        Real sessions, real clients — keep scrolling to move through the reel.
-                    </p>
-                </div>
+            <div className="max-w-7xl mx-auto pt-20 flex flex-col">
+                <div className='flex flex-col gap-2'>
+                    <div className='relative'>
+                        <h2
+                            className="absolute -top-5 left-0 text-3xl sm:text-5xl lg:text-6xl font-extrabold uppercase text-transparent"
+                            style={{
+                                WebkitTextStroke: "1px rgba(255,255,255,.12)",
+                                fontFamily: "var(--font-oswald)",
+                            }}
+                        >
+                            Gallery
+                        </h2>
 
-                {/* <span className="font-mono text-[11px] lg:text-xs tracking-[0.2em] text-[#A8A8A8]">
-                    {String(activeIndex + 1).padStart(2, '0')} / {String(mediaItems.length).padStart(2, '0')}
-                </span> */}
+                        <h3
+                            data-aos="fade-up"
+                            data-aos-delay="200"
+                            style={{ fontFamily: "var(--font-oswald)" }}
+                            className="relative pt-5 text-3xl sm:text-4xl lg:text-5xl leading-tight uppercase text-[#FFF7DF] font-medium"
+                        >
+                            MY
+                            {" "}
+
+                            <span className="text-[#E8A428]">
+                                Collections
+                            </span> {" "}
+
+                            till now
+                        </h3>
+                    </div>
+                </div>
             </div>
 
             {/* ===== Pinned horizontal-scroll wrapper — active on ALL screen sizes ===== */}

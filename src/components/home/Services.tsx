@@ -91,8 +91,12 @@ const Services = () => {
 
                         {service.buttons.map((stat, index) => (
 
-                            <button
+
+                            <a
                                 key={stat.id}
+                                href={stat.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 data-aos="zoom-in"
                                 data-aos-delay={index * 200}
                                 style={{
@@ -106,7 +110,7 @@ const Services = () => {
 
                                 {stat.text}
 
-                            </button>
+                            </a>
 
                         ))}
 
@@ -165,7 +169,7 @@ const Services = () => {
 
 
                                     <p
-                                        style={{ fontFamily: "var(--font-poppins)",}}
+                                        style={{ fontFamily: "var(--font-poppins)", }}
                                         className="text-sm sm:text-[14px] leading-relaxed text-[#C0C0C0]"
                                     >
                                         {card.description}
@@ -179,7 +183,7 @@ const Services = () => {
 
                                             <span
                                                 key={tagIndex}
-                                                style={{fontFamily: "var(--font-poppins)",}}
+                                                style={{ fontFamily: "var(--font-poppins)", }}
                                                 className="px-3 py-1 text-xs sm:text-sm border border-[#C0C0C0] text-[#C0C0C0]"
                                             >
                                                 {tag}

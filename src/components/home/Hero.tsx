@@ -56,7 +56,7 @@ export default function Hero() {
                 style={{
                     fontFamily: "var(--font-oswald)",
                 }}
-                className="pointer-events-none absolute inset-x-0 top-[55%] -translate-y-1/2 select-none whitespace-nowrap text-center text-[5rem] font-black uppercase leading-none tracking-tight text-white/5 sm:text-[7rem] md:text-[10rem] lg:text-[14rem]"
+                className="pointer-events-none absolute inset-x-0 top-[55%] -translate-y-1/2 select-none whitespace-nowrap text-center text-[4rem] font-black uppercase leading-none tracking-tight text-white/5 sm:text-[7rem] md:text-[10rem] lg:text-[14rem]"
             >
                 PRABINXFITNESS
             </div>
@@ -118,23 +118,28 @@ export default function Hero() {
                     data-aos-delay="700"
                     className="mt-8 flex flex-wrap justify-center gap-4"
                 >
-                    <button
-                        style={{
-                            fontFamily: "var(--font-roboto-condensed)",
-                        }}
-                        className="cursor-pointer rounded-full bg-[#E8A428] px-8 py-2 text-[16px] font-semibold text-black transition-all duration-300 hover:scale-105"
+                    <a href="#story"
                     >
-                        About Me
-                    </button>
+                        <button
+                            style={{
+                                fontFamily: "var(--font-roboto-condensed)",
+                            }}
+                            className="cursor-pointer rounded-full bg-[#E8A428] px-8 py-2 text-[16px] font-semibold text-black transition-all duration-300 hover:scale-105"
+                        >
+                            About Me
+                        </button>
+                    </a>
 
-                    <button
-                        style={{
-                            fontFamily: "var(--font-roboto-condensed)",
-                        }}
-                        className="cursor-pointer rounded-full border border-[#E8A428] px-8 py-2 text-[16px] font-semibold text-[#E8A428] transition hover:bg-[#E8A428] transition-all duration-300 hover:text-black"
-                    >
-                        Contact Now
-                    </button>
+                    <a href="#contact">
+                        <button
+                            style={{
+                                fontFamily: "var(--font-roboto-condensed)",
+                            }}
+                            className="cursor-pointer rounded-full border border-[#E8A428] px-8 py-2 text-[16px] font-semibold text-[#E8A428] transition hover:bg-[#E8A428] transition-all duration-300 hover:text-black"
+                        >
+                            Contact Now
+                        </button>
+                    </a>
 
                 </div>
 

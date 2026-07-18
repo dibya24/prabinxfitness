@@ -152,7 +152,7 @@ export default function RootLayout({
       lang="en"
       className={`${oswald.variable} ${poppins.variable} ${bebasNeue.variable} ${robotoCondensed.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-black">
         <AOSProvider>
           <SmoothScroll>
             <Preloader />

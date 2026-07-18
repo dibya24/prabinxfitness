@@ -70,7 +70,8 @@ export const CONTENT = {
         buttons: [
             {
                 id: 1,
-                text: "Make a Quick Call",
+                text: "Connect on WhatsApp",
+                link: "https://wa.me/971558663590",
             },
             // {
             //     id: 2,
