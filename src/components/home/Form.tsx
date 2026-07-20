@@ -138,7 +138,7 @@ const Form = () => {
                                         Location
                                     </p>
                                     <p className="mt-1 text-base text-[#FFF7DF]">
-                                        Kathmandu, Nepal
+                                        Dubai
                                     </p>
                                 </div>
                             </div>
@@ -175,9 +175,13 @@ const Form = () => {
                                     <p className="text-xs uppercase tracking-widest text-[#8A8A8A]">
                                         Email
                                     </p>
-                                    <p className="mt-1 text-base text-[#FFF7DF]">
-                                        trainer@example.com
-                                    </p>
+                                    <a
+                                        href="mailto:maharjanprabin111@gmail.com"
+                                        style={{ fontFamily: "var(--font-poppins)" }}
+                                        className="mt-1 inline-block text-base font-medium text-[#FFF7DF] transition-colors duration-300 hover:text-[#E8A428]"
+                                    >
+                                        maharjanprabin111@gmail.com
+                                    </a>
                                 </div>
                             </div>
 
@@ -208,9 +212,13 @@ const Form = () => {
                                     <p className="text-xs uppercase tracking-widest text-[#8A8A8A]">
                                         Call
                                     </p>
-                                    <p className="mt-1 text-base text-[#FFF7DF]">
-                                        +977 98XXXXXXXX
-                                    </p>
+                                    <a
+                                        href="tel:+971558663590"
+                                        style={{ fontFamily: "var(--font-poppins)" }}
+                                        className="mt-1 inline-block text-base font-medium text-[#FFF7DF] transition-colors duration-300 hover:text-[#E8A428]"
+                                    >
+                                        +971 55 866 3590
+                                    </a>
                                 </div>
                             </div>
                         </div>

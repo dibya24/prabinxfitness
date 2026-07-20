@@ -17,10 +17,10 @@ export const CONTENT = {
 
         description: {
         mainHeading:
-            "RESULTS DRIVEN FITNESS, DEDICATED TO HELPING YOU TRAIN SMARTER, MOVE BETTER, AND LIVE STRONGER. WITH EXPERT AND CERTIFIED COACHING AND A SUPPORTIVE COMMUNITY.",
+            "RESULTS-DRIVEN FITNESS DEDICATED TO HELPING YOU TRAIN SMARTER, MOVE BETTER, AND LIVE STRONGER THROUGH EXPERT, CERTIFIED COACHING.",
 
         paragraph:
-            "We help individuals achieve sustainable results through personalized coaching, progressive training programs, and nutrition strategies tailored to every lifestyle.",
+            "Helping individuals achieve lasting results through personalized coaching, progressive training programs, and practical nutrition guidance tailored to their lifestyle.",
         },
 
         stats: [
@@ -64,7 +64,7 @@ export const CONTENT = {
         },
 
         description:
-            "Personalized programs, expert coaching, and proven methods to help you achieve real results.",
+            "Personalized coaching, expert guidance, and proven strategies to help you achieve lasting results.",
 
 
         buttons: [
@@ -87,7 +87,7 @@ export const CONTENT = {
                 title: "In-Person Training",
 
                 description:
-                    "One-to-one sessions designed around your goals. Whether fat loss, muscle gain, or strength development, every workout is tailored to your fitness level and lifestyle.",
+                    "One-to-one personal training tailored to your goals. Whether your focus is fat loss, muscle building, or strength development, every session is customized to your fitness level and lifestyle",
 
                 icon: "Dumbbell",
 

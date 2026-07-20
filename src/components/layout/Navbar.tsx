@@ -59,9 +59,9 @@ export default function Navbar() {
 
           <p
             style={{ fontFamily: "var(--font-poppins)" }}
-            className="mt-1 text-[10px] uppercase tracking-[3px] text-[#CFA74D]"
+            className="mt-1 text-[10px] uppercase tracking-[2px] italic text-[#CFA74D]"
           >
-            UK Certified Personal Trainer • UAE
+            UK-Certified Personal Trainer | Dubai, UAE
           </p>
         </Link>
 

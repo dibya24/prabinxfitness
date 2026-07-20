@@ -1,202 +1,89 @@
-"use client";
+import Image from "next/image";
+import React from "react";
 
-import { useEffect, useState } from "react";
-import { Dumbbell } from "lucide-react";
-
-export default function Preloader() {
-
-    const [progress, setProgress] = useState(0);
-    const [hide, setHide] = useState(false);
-
-
-    useEffect(() => {
-
-        const interval = setInterval(() => {
-
-            setProgress((prev) => {
-
-                if (prev >= 100) {
-
-                    clearInterval(interval);
-
-                    setTimeout(() => {
-                        setHide(true);
-                    }, 500);
-
-                    return 100;
-                }
-
-                return prev + 5;
-            });
-
-
-        }, 80);
-
-
-        return () => clearInterval(interval);
-
-    }, []);
-
-
-
+const Banner = () => {
     return (
+        <section className="bg-[#141414] px-5">
+            <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[20px] bg-[#171717]">
+                {/* ================= Background ================= */}
+                <div className="absolute inset-0">
+                    {/* Main Golden Glow */}
+                    <div className="absolute left-1/2 top-1/2 h-[760px] w-[760px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#F3AA20]/45 blur-[110px]" />
 
-        <div
-            className={`
-            fixed
-            inset-0
-            z-[99999]
-            flex
-            items-center
-            justify-center
-            bg-[#0b0b0b]
-            transition-all
-            duration-700
+                    {/* Secondary Glow */}
+                    <div className="absolute right-[10%] top-1/2 h-[420px] w-[420px] -translate-y-1/2 rounded-full bg-[#FFD56A]/30 blur-[80px]" />
 
-            ${hide
-                    ? "opacity-0 pointer-events-none scale-110"
-                    : "opacity-100"
-                }
-            `}
-        >
-
-            <div className="flex flex-col items-center gap-8">
-
-
-                {/* Icon */}
-                <div
-                    className="
-                    relative
-                    flex
-                    h-20
-                    w-20
-                    items-center
-                    justify-center
-                    rounded-full
-                    border
-                    border-[#E8A428]
-                    "
-                >
-
-                    <div
-                        className="
-                        absolute
-                        inset-0
-                        rounded-full
-                        bg-[#E8A428]/20
-                        animate-ping
-                        "
-                    />
-
-                    <Dumbbell
-                        className="
-                        relative
-                        z-10
-                        h-9
-                        w-9
-                        text-[#E8A428]
-                        "
-                    />
-
+                    {/* Dark Gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#171717] via-[#2D230F]/35 to-[#171717]/10" />
                 </div>
 
+                <div className="relative z-10 grid items-center gap-8 pl-8 pt-8 md:grid-cols-2 md:pl-16 md:pt-8">
+                    {/* ================= Left Content ================= */}
+                    <div className="flex flex-col gap-7">
+                        <div>
+                            <h2
+                                style={{ fontFamily: "var(--font-oswald)" }}
+                                className="text-3xl font-medium uppercase leading-tight text-[#FFF7DF] sm:text-4xl lg:text-5xl"
+                            >
+                                BEGIN YOUR JOURNEY TO
+                                <br />
+                                <span className="text-[#F3AA20]">WELLNESS</span> TODAY!
+                            </h2>
 
+                            <p
+                                style={{ fontFamily: "var(--font-poppins)" }}
+                                className="mt-5 max-w-[520px] text-sm leading-7 text-[#C9C9C9] sm:text-base"
+                            >
+                                Our experienced trainers will craft a tailored workout plan
+                                just for you, ensuring maximum results and efficiency.
+                            </p>
+                        </div>
 
-                {/* Logo Text */}
-
-                <div className="text-center">
-
-                    <h1
-                        style={{
-                            fontFamily: "var(--font-oswald)"
-                        }}
-                        className="
-                        text-4xl
-                        uppercase
-                        tracking-widest
-                        text-[#FFF7DF]
-                        "
-                    >
-                        PRABIN
-                        <span className="text-[#E8A428]">
-                            MAHARJAN
-                        </span>
-                    </h1>
-
-
-                    <p
-                        style={{
-                            fontFamily: "var(--font-poppins)"
-                        }}
-                        className="
-                        mt-2
-                        text-xs
-                        uppercase
-                        tracking-[0.4em]
-                        text-[#A8A8A8]
-                        "
-                    >
-                        Certified Personal Trainer
-                    </p>
-
-                </div>
-
-
-
-                {/* Progress */}
-
-                <div className="w-[260px]">
-
-
-                    <div
-                        className="
-                        h-[3px]
-                        bg-[#222]
-                        overflow-hidden
-                        "
-                    >
-
-                        <div
-                            className="
-                            h-full
-                            bg-[#E8A428]
-                            transition-all
-                            duration-300
-                            "
-                            style={{
-                                width: `${progress}%`
-                            }}
-                        />
-
+                        <div>
+                            <a
+                                href="https://wa.me/971558663590"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center rounded-full bg-[#E8A428] px-8 py-3 text-[16px] font-semibold text-black transition-all duration-300 hover:bg-[#f0b540]"
+                            >
+                                Make a Call Now
+                            </a>
+                        </div>
                     </div>
 
-
-                    <div className="mt-3 flex justify-between">
-
-                        <span className="text-xs text-[#999]">
-                            LOADING
-                        </span>
-
-
-                        <span
-                            className="
-                            text-sm
-                            text-[#E8A428]
-                            "
+                    {/* ================= Right Image ================= */}
+                    <div className="relative h-[300px] sm:h-[340px] lg:h-[480px] overflow-hidden">
+                        {/* Decorative Ellipse */}
+                        {/* Decorative Ellipse */}
+                        <svg
+                            className="absolute right-[-180px] top-[-0px] h-full w-full"
+                            viewBox="0 0 800 700"
+                            fill="none"
                         >
-                            {progress}%
-                        </span>
+                            <ellipse
+                                cx="500"
+                                cy="330"
+                                rx="500"
+                                ry="300"
+                                transform="rotate(-15 500 330)"
+                                stroke="#F3AA20"
+                                strokeWidth="7"
+                            />
+                        </svg>
 
+                        <Image
+                            src="https://res.cloudinary.com/bz4xcvt7/image/upload/v1784269091/hero_img_uhxccj.png"
+                            alt="Fitness Trainer"
+                            width={480}
+                            height={620}
+                            priority
+                            className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[95%] w-auto object-contain z-10"
+                        />
                     </div>
-
-
                 </div>
-
-
             </div>
-
-
-        </div>
-
+        </section>
     );
-}
+};
+
+export default Banner;

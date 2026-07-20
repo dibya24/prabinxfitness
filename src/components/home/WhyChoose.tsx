@@ -33,14 +33,18 @@ const rightFeatures = [
     },
 ];
 
-function stageProgress(progress, start, end) {
+function stageProgress(
+    progress: number,
+    start: number,
+    end: number
+): number {
     if (progress <= start) return 0;
     if (progress >= end) return 1;
     return (progress - start) / (end - start);
 }
 
 export default function WhyChoose() {
-    const scrollRef = useRef(null);
+    const scrollRef = useRef<HTMLDivElement | null>(null);
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {
@@ -85,7 +89,7 @@ export default function WhyChoose() {
 
     return (
         <section className="bg-[#141414] py-20">
-            <div className="mx-auto max-w-7xl px-6 flex flex-col gap-[40px]">
+            <div className="mx-auto max-w-7xl px-6 flex flex-col gap-2">
 
                 {/* ======== Heading (unchanged) ======== */}
                 <div className="grid lg:grid-cols-2 gap-5 items-center">
@@ -131,7 +135,7 @@ export default function WhyChoose() {
 
                     {/* ========= DESKTOP (scroll-pinned reveal, no libs) ========= */}
                     <div ref={scrollRef} className="hidden xl:block relative h-[300vh]">
-                        <div className="sticky top-10 h-screen flex justify-center items-center overflow-hidden">
+                        <div className="sticky top-0 h-screen flex justify-center items-center overflow-hidden">
 
                             {/* IMAGE — always visible, no scroll animation */}
                             <div className="relative w-[350px] h-[520px]">

@@ -77,14 +77,14 @@ const Footer = () => {
                             <FaInstagram className="h-5 w-5" />
                         </a>
 
-                        <a
+                        {/* <a
                             href="https://www.threads.com/@prabinxfitness"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center border border-[#4A4A4A] text-[#CFA74D] transition-all duration-300 hover:border-[#CFA74D] hover:bg-[#CFA74D]/10"
                         >
                             <SiThreads className="h-5 w-5" />
-                        </a>
+                        </a> */}
                     </div>
 
                 </div>

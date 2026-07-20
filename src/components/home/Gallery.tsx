@@ -22,15 +22,17 @@ type MediaItem = {
 };
 
 const mediaItems: MediaItem[] = [
-    { type: 'image', src: Image9, title: 'Morning strength block', category: 'STRENGTH', size: 'lg' },
-    { type: 'video', src: 'https://res.cloudinary.com/bz4xcvt7/video/upload/v1784345155/IMG_2908_stmago.mp4', poster: Image2, title: 'Form check — deadlift', category: 'COACHING', size: 'md' },
+    // { type: 'image', src: Image9, title: 'Morning strength block', category: 'STRENGTH', size: 'lg' },
+    { type: 'video', src: 'https://res.cloudinary.com/bz4xcvt7/video/upload/v1784446538/6103b752-c0a6-4b60-9804-3dc05bc5fe8e_cpge3c.mov', title: 'Form check — deadlift', category: 'COACHING', size: 'lg' },
     { type: 'image', src: Image8, title: 'Six months in', category: 'CLIENT STORY', size: 'md' },
-    // { type: 'image', src: 'https://res.cloudinary.com/bz4xcvt7/image/upload/f_auto,q_auto/v1784345340/IMG_3764_vsinct.heic', title: 'Six months in', category: 'CLIENT STORY', size: 'md' },
     { type: 'video', src: 'https://res.cloudinary.com/bz4xcvt7/video/upload/v1784345178/IMG_4390_iyexkw.mov', poster: Image5, title: 'Conditioning circuit', category: 'CONDITIONING', size: 'lg' },
+    { type: 'image', src: Image9, title: 'Group conditioning', category: 'CONDITIONING', size: 'lg' },
+    { type: 'video', src: 'https://res.cloudinary.com/bz4xcvt7/video/upload/v1784345155/IMG_2908_stmago.mp4', poster: Image2, title: 'Form check — deadlift', category: 'COACHING', size: 'md' },
+    // { type: 'image', src: 'https://res.cloudinary.com/bz4xcvt7/image/upload/f_auto,q_auto/v1784345340/IMG_3764_vsinct.heic', title: 'Six months in', category: 'CLIENT STORY', size: 'md' },
     // { type: 'image', src: Image8, title: 'One-on-one session', category: 'COACHING', size: 'md' },
     // { type: 'video', src: '/videos/training-clip-3.mp4', poster: Image7, title: 'Off-season progress', category: 'CLIENT STORY', size: 'md' },
-    { type: 'image', src: 'https://res.cloudinary.com/bz4xcvt7/image/upload/f_auto,q_auto/v1784345340/IMG_3764_vsinct.heic', title: 'Group conditioning', category: 'CONDITIONING', size: 'lg' },
-    { type: 'image', src: Image2, title: 'Recovery day', category: 'STRENGTH', size: 'md' },
+    { type: 'image', src: 'https://res.cloudinary.com/bz4xcvt7/image/upload/f_auto,q_auto/v1784345340/IMG_3764_vsinct.heic', title: 'Recovery day', category: 'STRENGTH', size: 'md' },
+    // { type: 'image', src: Image9, title: 'Recovery day', category: 'STRENGTH', size: 'md' },
 ];
 
 // 🔧 Tile widths still scale per breakpoint, but ALL breakpoints participate
@@ -347,7 +349,7 @@ export default function BentoGallery() {
             `}</style>
 
             {/* ===== Heading ===== */}
-            <div className="max-w-7xl mx-auto pt-20 flex flex-col">
+            <div className="max-w-7xl mx-auto pt-20 px-[20px] flex flex-col">
                 <div className='flex flex-col gap-2'>
                     <div className='relative'>
                         <h2

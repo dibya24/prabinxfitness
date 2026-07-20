@@ -65,10 +65,7 @@ const Services = () => {
                         <p
                             data-aos="fade-up"
                             data-aos-delay="400"
-                            style={{
-                                fontFamily:
-                                    "var(--font-poppins)",
-                            }}
+                            style={{fontFamily:"var(--font-poppins)",}}
                             className="
                             mt-5
                             text-sm

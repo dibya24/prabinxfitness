@@ -106,7 +106,7 @@ export default function Hero() {
                     }}
                     className="mt-5 max-w-3xl text-[14px] leading-relaxed text-white/70 sm:text-[16px]"
                 >
-                    {`I'm Prabin — a certified Gym Instructor & Personal Trainer coaching strength, weight loss and muscle building, on the floor in the UAE and by video call everywhere else.`}
+                    {`I'm Prabin, a UK-certified Personal Trainer helping people build strength, lose fat, and gain muscle through one-to-one coaching in the UAE and online worldwide.`}
                 </p>
 
 
