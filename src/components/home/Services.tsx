@@ -1,15 +1,69 @@
-import { Dumbbell, Apple, MonitorSmartphone } from "lucide-react";
+import { 
+    Dumbbell, Apple, MonitorSmartphone, Trophy, Flame, Zap, 
+    Users, Target, Activity, Heart, Award, ShieldCheck, Layers, Video 
+} from "lucide-react";
 import { CONTENT } from "@/src/constants/content";
 
-const service = CONTENT.service;
+type ServiceSectionData = {
+    backgroundTitle: string;
+    title: string;
+    highlightText: string;
+    titleEnd: string;
+    description: string;
+};
 
-const serviceIcons = {
+type ServiceCardData = {
+    id: number;
+    title: string;
+    description: string;
+    icon: string;
+    tags: string;
+};
+
+const serviceIcons: Record<string, React.ElementType> = {
     Dumbbell,
     MonitorSmartphone,
     Apple,
+    Trophy,
+    Flame,
+    Zap,
+    Users,
+    Target,
+    Activity,
+    Heart,
+    Award,
+    ShieldCheck,
+    Layers,
+    Video,
 };
 
-const Services = () => {
+const Services = ({
+    sectionData,
+    cards,
+}: {
+    sectionData?: ServiceSectionData | null;
+    cards?: ServiceCardData[] | null;
+}) => {
+    const service = {
+        heading: {
+            backgroundTitle: sectionData?.backgroundTitle || CONTENT.service.heading.backgroundTitle,
+            title: sectionData?.title || CONTENT.service.heading.title,
+            highlightText: sectionData?.highlightText || CONTENT.service.heading.highlightText,
+            titleEnd: sectionData?.titleEnd || CONTENT.service.heading.titleEnd,
+        },
+        description: sectionData?.description || CONTENT.service.description,
+        buttons: CONTENT.service.buttons,
+        cards: cards && cards.length > 0 
+            ? cards.map(c => ({
+                id: c.id,
+                title: c.title,
+                description: c.description,
+                icon: c.icon,
+                tags: typeof c.tags === "string" ? c.tags.split(",").map(t => t.trim()) : c.tags
+              }))
+            : CONTENT.service.cards,
+    };
+
     return (
         <section
             id="coaching"
@@ -122,10 +176,7 @@ const Services = () => {
 
                     {service.cards.map((card, index) => {
 
-                        const Icon =
-                            serviceIcons[
-                            card.icon as keyof typeof serviceIcons
-                            ];
+                        const Icon = serviceIcons[card.icon] || Dumbbell;
 
 
                         return (

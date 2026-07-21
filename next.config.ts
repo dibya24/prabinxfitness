@@ -1,11 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "export",
-
-  // Subfolder where your app is hosted
-  //   basePath: "/prabinxfitness",
-  // assetPrefix: "/prabinxfitness/",
+  output: "standalone",
 
   images: {
     unoptimized: true,

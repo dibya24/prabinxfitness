@@ -1,21 +1,49 @@
-"use client"
+"use client";
 
-import { useEffect, useRef } from 'react'
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Pagination, Autoplay } from "swiper/modules"
 import { Quote, ChevronLeft, ChevronRight } from "lucide-react"
 import { CONTENT } from '@/src/constants/content'
 
-const testimonial = CONTENT.testimonials
-
 import "aos/dist/aos.css";
-
 import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
 
 
-const Testimonials = () => {
+type TestimonialSectionData = {
+  backgroundTitle: string;
+  title: string;
+  highlightText: string;
+  titleEnd: string;
+  description: string;
+};
+
+type TestimonialData = {
+  id: number;
+  name: string;
+  location: string;
+  text: string;
+};
+
+const Testimonials = ({
+  sectionData,
+  reviews,
+}: {
+  sectionData?: TestimonialSectionData | null;
+  reviews?: TestimonialData[] | null;
+}) => {
+  const testimonial = {
+    heading: {
+      backgroundTitle: sectionData?.backgroundTitle || CONTENT.testimonials.heading.backgroundTitle,
+      title: sectionData?.title || CONTENT.testimonials.heading.title,
+      highlightText: sectionData?.highlightText || CONTENT.testimonials.heading.highlightText,
+      titleEnd: sectionData?.titleEnd || CONTENT.testimonials.heading.titleEnd,
+    },
+    description: sectionData?.description || CONTENT.testimonials.description,
+    reviews: reviews && reviews.length > 0 ? reviews : CONTENT.testimonials.reviews,
+  };
+
   // useEffect(() => {
   //   AOS.init({
   //     duration: 1200,
@@ -149,7 +177,7 @@ const Testimonials = () => {
                       style={{ fontFamily: "var(--font-poppins)" }}
                       className="text-[14px] leading-7 text-[#C0C0C0] mb-6"
                     >
-                      "{item.text}"
+                      &ldquo;{item.text}&rdquo;
                     </p>
 
                     {/* Client Details */}

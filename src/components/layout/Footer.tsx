@@ -1,8 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { FaInstagram, FaTiktok } from "react-icons/fa";
-// import { Instagram } from "lucide-react";
-import { SiThreads } from "react-icons/si";
+import { FaInstagram } from "react-icons/fa";
 
 const Footer = () => {
     return (

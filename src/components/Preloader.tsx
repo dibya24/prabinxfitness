@@ -13,10 +13,12 @@ export default function Preloader() {
 
         if (
             typeof window !== "undefined" &&
-            (window as any).__preloaderFinished
+            window.__preloaderFinished
         ) {
-            setHide(true);
-            setProgress(100);
+            setTimeout(() => {
+                setHide(true);
+                setProgress(100);
+            }, 0);
             return;
         }
 
@@ -35,7 +37,7 @@ export default function Preloader() {
 
                         if (typeof window !== "undefined") {
 
-                            (window as any).__preloaderFinished = true;
+                            window.__preloaderFinished = true;
 
                             window.dispatchEvent(
                                 new Event("preloaderFinished")

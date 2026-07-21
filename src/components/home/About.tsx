@@ -3,9 +3,37 @@ import { CONTENT } from "@/src/constants/content";
 
 import images from "@/src/constants/images";
 
-const about = CONTENT.about;
+type AboutData = {
+    backgroundTitle: string;
+    title: string;
+    highlightText: string;
+    titleEnd: string;
+    mainHeading: string;
+    paragraph: string;
+};
 
-export default function About() {
+type Stat = {
+    id: number;
+    title: string;
+    subtitle: string;
+    dark: boolean;
+};
+
+export default function About({ data, stats }: { data?: AboutData | null; stats?: Stat[] | null }) {
+    const about = {
+        heading: {
+            backgroundTitle: data?.backgroundTitle || CONTENT.about.heading.backgroundTitle,
+            title: data?.title || CONTENT.about.heading.title,
+            highlightText: data?.highlightText || CONTENT.about.heading.highlightText,
+            titleEnd: data?.titleEnd || CONTENT.about.heading.titleEnd,
+        },
+        description: {
+            mainHeading: data?.mainHeading || CONTENT.about.description.mainHeading,
+            paragraph: data?.paragraph || CONTENT.about.description.paragraph,
+        },
+        stats: stats && stats.length > 0 ? stats : CONTENT.about.stats,
+    };
+
     return (
         <section
             id="story"

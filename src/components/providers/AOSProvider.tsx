@@ -20,7 +20,7 @@ export default function AOSProvider({
         };
 
         // If preloader is already finished, initialize AOS immediately
-        if (typeof window !== "undefined" && (window as any).__preloaderFinished) {
+        if (typeof window !== "undefined" && window.__preloaderFinished) {
             initAOS();
             return;
         }

@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String   // Hashed with bcrypt
+  createdAt DateTime @default(now())
+}
+
+model Seo {
+  id          Int      @id @default(1)
+  title       String   @db.Text
+  description String   @db.Text
+  keywords    String   @db.Text
+  updatedAt   DateTime @updatedAt
+}
+
+model Hero {
+  id          Int      @id @default(1)
+  title       String   @db.Text
+  subtitle    String   @db.Text
+  description String   @db.Text
+  image       String   @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model About {
+  id              Int      @id @default(1)
+  backgroundTitle String   @db.Text
+  title           String   @db.Text
+  highlightText   String   @db.Text
+  titleEnd        String   @db.Text
+  mainHeading     String   @db.Text
+  paragraph       String   @db.Text
+  updatedAt       DateTime @updatedAt
+}
+
+model Stat {
+  id        Int     @id @default(autoincrement())
+  title     String
+  subtitle  String
+  dark      Boolean @default(false)
+}
+
+model ServiceSection {
+  id              Int      @id @default(1)
+  backgroundTitle String   @db.Text
+  title           String   @db.Text
+  highlightText   String   @db.Text
+  titleEnd        String   @db.Text
+  description     String   @db.Text
+  updatedAt       DateTime @updatedAt
+}
+
+model ServiceCard {
+  id          Int    @id @default(autoincrement())
+  title       String
+  description String @db.Text
+  icon        String
+  tags        String // Comma-separated tags
+}
+
+model TestimonialSection {
+  id              Int      @id @default(1)
+  backgroundTitle String   @db.Text
+  title           String   @db.Text
+  highlightText   String   @db.Text
+  titleEnd        String   @db.Text
+  description     String   @db.Text
+  updatedAt       DateTime @updatedAt
+}
+
+model Testimonial {
+  id       Int    @id @default(autoincrement())
+  name     String
+  location String
+  text     String @db.Text
+}
+
+model GalleryItem {
+  id       Int     @id @default(autoincrement())
+  type     String  // "image" or "video"
+  src      String  @db.Text
+  poster   String? @db.Text // Optional video poster thumbnail
+  title    String
+  category String  // e.g. STRENGTH, CONDITIONING, COACHING, CLIENT STORY
+  size     String  // "sm", "md", "lg"
+}

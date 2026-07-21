@@ -4,17 +4,23 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import images from "@/src/constants/images";
 
-export default function Hero() {
-    const [isLoaded, setIsLoaded] = useState(false);
+type HeroData = {
+    title: string;
+    subtitle: string;
+    description: string;
+    image: string;
+};
+
+export default function Hero({ data }: { data?: HeroData | null }) {
+    const [isLoaded, setIsLoaded] = useState(() => {
+        if (typeof window !== "undefined") {
+            return !!(window as Window & { __preloaderFinished?: boolean }).__preloaderFinished;
+        }
+        return false;
+    });
 
     useEffect(() => {
-        if (
-            typeof window !== "undefined" &&
-            (window as any).__preloaderFinished
-        ) {
-            setIsLoaded(true);
-            return;
-        }
+        if (isLoaded) return;
 
 
         const handlePreloaderFinished = () => {
@@ -32,7 +38,11 @@ export default function Hero() {
                 handlePreloaderFinished
             );
         };
-    }, []);
+    }, [isLoaded]);
+
+    const title = data?.title || `Strength forged in <span class="text-[#E8A428]">Mountains.</span><br /><span class="text-[#E8A428]">refined in the <span class="text-[#FFF7DF]">desert.</span></span>`;
+    const description = data?.description || `I'm Prabin, a UK-certified Personal Trainer helping people build strength, lose fat, and gain muscle through one-to-one coaching in the UAE and online worldwide.`;
+    const imageSrc = data?.image || images.hero;
 
     return (
         <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black">
@@ -78,21 +88,8 @@ export default function Hero() {
                         fontFamily: "var(--font-oswald)",
                     }}
                     className="max-w-4xl pt-8.75 text-4xl font-medium uppercase leading-[1.2] tracking-tight text-[#FFF7DF] sm:text-5xl md:text-6xl"
-                >
-                    Strength forged in{" "}
-                    <span className="text-[#E8A428]">
-                        Mountains.
-                    </span>
-
-                    <br />
-
-                    <span className="text-[#E8A428]">
-                        refined in the{" "}
-                        <span className="text-[#FFF7DF]">
-                            desert.
-                        </span>
-                    </span>
-                </h1>
+                    dangerouslySetInnerHTML={{ __html: title }}
+                />
 
 
 
@@ -106,7 +103,7 @@ export default function Hero() {
                     }}
                     className="mt-5 max-w-3xl text-[14px] leading-relaxed text-white/70 sm:text-[16px]"
                 >
-                    {`I'm Prabin, a UK-certified Personal Trainer helping people build strength, lose fat, and gain muscle through one-to-one coaching in the UAE and online worldwide.`}
+                    {description}
                 </p>
 
 
@@ -153,7 +150,7 @@ export default function Hero() {
                     className="relative mt-8 w-[75vw] max-w-[400px]"
                 >
                     <Image
-                        src={images.hero}
+                        src={imageSrc}
                         alt="Prabin, UK certified personal trainer"
                         width={400}
                         height={600}

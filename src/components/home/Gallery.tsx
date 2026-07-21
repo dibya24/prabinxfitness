@@ -4,13 +4,10 @@ import { useEffect, useRef, useState, useCallback, useLayoutEffect } from 'react
 import Image, { StaticImageData } from 'next/image';
 import { Volume2, VolumeX, Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
-import Image1 from "../../../public/images/Active_iq.png";
 import Image2 from "../../../public/images/gallery/two.png";
 import Image9 from "../../../public/images/gallery/one.png";
 import Image5 from "../../../public/images/gallery/three.png";
 import Image8 from "../../../public/images/gallery/client.jpg";
-import Image7 from "../../../public/images/gallery/six.png";
-import Image6 from "../../../public/images/gallery/four.png";
 
 type MediaItem = {
     type: 'image' | 'video';
@@ -21,7 +18,7 @@ type MediaItem = {
     size: 'lg' | 'md';
 };
 
-const mediaItems: MediaItem[] = [
+const defaultMediaItems: MediaItem[] = [
     // { type: 'image', src: Image9, title: 'Morning strength block', category: 'STRENGTH', size: 'lg' },
     { type: 'video', src: 'https://res.cloudinary.com/bz4xcvt7/video/upload/v1784446538/6103b752-c0a6-4b60-9804-3dc05bc5fe8e_cpge3c.mov', title: 'Form check — deadlift', category: 'COACHING', size: 'lg' },
     { type: 'image', src: Image8, title: 'Six months in', category: 'CLIENT STORY', size: 'md' },
@@ -239,7 +236,17 @@ function Lightbox({ item, onClose }: { item: MediaItem; onClose: () => void }) {
 // Driven by page scroll position (works identically for mouse
 // wheel, trackpad, and touch swipe — no mode-switching needed).
 // ============================================================
-export default function BentoGallery() {
+type GalleryItemData = {
+    type: 'image' | 'video';
+    src: StaticImageData | string;
+    poster?: StaticImageData | string;
+    title: string;
+    category: string;
+    size: 'lg' | 'md';
+};
+
+export default function BentoGallery({ items }: { items?: GalleryItemData[] | null }) {
+    const mediaItems = items && items.length > 0 ? items : defaultMediaItems;
     const pinWrapperRef = useRef<HTMLDivElement>(null);
     const trackRef = useRef<HTMLDivElement>(null);
     const tileRefs = useRef<(HTMLDivElement | null)[]>([]);
