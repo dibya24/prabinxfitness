@@ -42,10 +42,10 @@ const robotoCondensed = Roboto_Condensed({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://yourdomain.com"),
+  metadataBase: new URL("https://prabinxfitness.com"),
 
   title: {
-    default: "prabinxfitness | UK Certified Personal Trainer in Dubai",
+    default: "PrabinXFitness | UK Certified Personal Trainer in Dubai, UAE",
     template: "%s | PrabinxFitness",
   },
 
@@ -53,46 +53,90 @@ export const metadata: Metadata = {
     "UK-certified Level 2 Gym Instructor and Level 3 Personal Trainer from Kathmandu, now based in Dubai. Helping clients achieve sustainable weight loss, muscle gain, strength, and overall fitness through personalized training and nutrition guidance.",
 
   keywords: [
+    // Main
     "Personal Trainer",
     "Certified Personal Trainer",
     "UK Certified Personal Trainer",
-    "Level 2 Gym Instructor",
-    "Level 3 Personal Trainer",
     "Fitness Coach",
-    "Online Personal Training",
-    "Strength Training",
-    "Weight Loss Coach",
-    "Muscle Building Coach",
-    "Body Transformation",
-    "Fat Loss Training",
-    "Fitness Consultant",
-    "Gym Coach",
-    "Workout Plans",
-    "Nutrition Guidance",
+    "Gym Instructor",
+
+    // Dubai
     "Personal Trainer Dubai",
-    "Fitness Trainer Dubai",
+    "Fitness Coach Dubai",
+    "Gym Trainer Dubai",
+    "Body Transformation Dubai",
+    "Weight Loss Dubai",
+    "Muscle Gain Dubai",
+    "Strength Coach Dubai",
+    "Online Coach Dubai",
+
+    // UAE
     "Personal Trainer UAE",
+    "Fitness Trainer UAE",
+    "Best Personal Trainer UAE",
+    "Gym Coach UAE",
+
+    // Nepal
+    "Personal Trainer Nepal",
+    "Fitness Coach Nepal",
+    "Gym Trainer Nepal",
+    "Kathmandu Personal Trainer",
     "Nepali Personal Trainer",
-    "Personal Trainer Kathmandu",
-    "Fitness Coach Kathmandu",
-    "Dubai Fitness Coach",
-    "Gym Instructor Dubai",
-    "Certified Gym Instructor",
+    "Online Personal Trainer Nepal",
+
+    // Gulf
+    "Personal Trainer Qatar",
+    "Personal Trainer Saudi Arabia",
+    "Personal Trainer Oman",
+    "Personal Trainer Bahrain",
+    "Personal Trainer Kuwait",
+
+    // Worldwide
+    "Online Personal Trainer",
+    "Online Fitness Coach",
+    "Online Nutrition Coach",
+    "Virtual Personal Trainer",
+
+    // Services
+    "Weight Loss Coach",
+    "Fat Loss Coach",
+    "Muscle Building",
+    "Strength Training",
+    "Hypertrophy Training",
+    "Bodybuilding Coach",
+    "Nutrition Coach",
+    "Workout Plans",
+    "Transformation Coach",
+    "Fitness Transformation",
+    "Athletic Performance",
+    "Functional Training",
+    "Personalized Workout",
+    "Customized Diet Plan",
+
+    // Long Tail
+    "Best Personal Trainer Dubai",
+    "Best Fitness Coach Dubai",
+    "Affordable Personal Trainer Dubai",
+    "Certified Gym Trainer Dubai",
+    "Best Nepali Trainer Dubai",
+    "Online Weight Loss Coach",
+    "Muscle Gain Coach UAE",
   ],
 
   authors: [
     {
-      name: "Prabin X Fitness",
+      name: "prabinxfitness",
+      url: "prabinxfitness.com",
     },
   ],
 
-  creator: "Prabin X Fitness",
-  publisher: "Prabin X Fitness",
+  creator: "prabinxfitness",
+  publisher: "prabinxfitness",
 
-  applicationName: "Prabin X Fitness",
+  applicationName: "prabinxfitness",
 
   alternates: {
-    canonical: "/",
+    canonical: "https://prabinxfitness.com",
   },
 
   robots: {
@@ -108,26 +152,34 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: "Prabin X Fitness | UK Certified Personal Trainer Dubai",
+    title: "prabinxfitness | UK Certified Personal Trainer Dubai",
     description:
-      "Transform your body with a UK-certified Level 2 Gym Instructor and Level 3 Personal Trainer based in Dubai.",
-    url: "https://yourdomain.com",
+      "UK Certified Personal Trainer helping clients achieve sustainable weight loss, muscle gain, body transformation, strength, and better health through in-person and online coaching.",
+
+    url: "https://prabinxfitness.com",
+
     siteName: "Prabin X Fitness",
-    locale: "en_US",
+
+    locale: "en_GB",
+    alternateLocale: [
+      "ar_AE",
+      "en_US",
+    ],
+
     type: "website",
     images: [
       {
-        url: "/images/seo/og-image.jpg",
+        url: "https://prabinxfitness.com/images/seo/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Prabin X Fitness",
+        alt: "prabinxfitness",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Prabin X Fitness | Personal Trainer Dubai",
+    title: "prabinxfitness | Personal Trainer Dubai",
     description:
       "UK-certified personal training for strength, fat loss, and body transformation.",
     images: ["/images/seo/og-image.jpg"],
