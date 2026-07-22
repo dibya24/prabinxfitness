@@ -24,16 +24,19 @@ export default async function Home() {
     size: item.size as "lg" | "md",
     poster: item.poster || undefined,
   }));
+  const whyChooseSectionData = await prisma.whyChooseSection.findFirst();
+  const whyChooseFeaturesData = await prisma.whyChooseFeature.findMany({ orderBy: { order: "asc" } });
+  const marqueeItemsData = await prisma.marqueeItem.findMany({ orderBy: { order: "asc" } });
 
   return (
     <div>
       {/* <Navbar /> */}
       <Hero data={heroData} />
-      <MarqueeStrip />
+      <MarqueeStrip items={marqueeItemsData} />
       <About data={aboutData} stats={statsData} /> 
       <Services sectionData={serviceSectionData} cards={servicesData} />
       <Banner />
-      <WhyChoose />
+      <WhyChoose sectionData={whyChooseSectionData} features={whyChooseFeaturesData} />
       <Testimonials sectionData={testimonialSectionData} reviews={testimonialsData} />
       <Gallery items={galleryData} />
       <Form />

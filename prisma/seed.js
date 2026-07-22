@@ -215,6 +215,90 @@ async function main() {
     console.log("✅ Seeded Gallery items");
   }
 
+  // 8. Seed WhyChooseSection & WhyChooseFeatures
+  const whyChooseSectionCount = await prisma.whyChooseSection.count();
+  if (whyChooseSectionCount === 0) {
+    await prisma.whyChooseSection.create({
+      data: {
+        id: 1,
+        backgroundTitle: "WHY CHOOSE ME",
+        title: "FITNESS SHOULD",
+        highlightText: "FEEL",
+        titleEnd: "LIKE IT FITS",
+        description: "Achieve your fitness goals with expert guidance, personalized support, and a results-driven approach.",
+      },
+    });
+    console.log("✅ Seeded Why Choose Me Section Info");
+  }
+
+  const whyChooseFeaturesCount = await prisma.whyChooseFeature.count();
+  if (whyChooseFeaturesCount === 0) {
+    await prisma.whyChooseFeature.createMany({
+      data: [
+        {
+          title: "KNOWLEDGE & EXPERIENCE",
+          desc: "Train with proven methods focused on safe, effective, and sustainable progress.",
+          side: "LEFT",
+          topPos: "60%",
+          order: 1,
+        },
+        {
+          title: "RESULTS THAT LAST",
+          desc: "Build healthy habits that create long-term fitness and confidence, not quick fixes.",
+          side: "LEFT",
+          topPos: "87%",
+          order: 2,
+        },
+        {
+          title: "GOAL-ORIENTED APPROACH",
+          desc: "Every plan is designed to help you achieve real, measurable results.",
+          side: "RIGHT",
+          topPos: "12%",
+          order: 3,
+        },
+        {
+          title: "DEDICATED SUPPORT",
+          desc: "Stay motivated with consistent guidance and accountability throughout your journey.",
+          side: "RIGHT",
+          topPos: "39%",
+          order: 4,
+        },
+      ],
+    });
+    console.log("✅ Seeded Why Choose Me Features");
+  }
+
+  // 9. Seed MarqueeItems
+  const marqueeItemsCount = await prisma.marqueeItem.count();
+  if (marqueeItemsCount === 0) {
+    await prisma.marqueeItem.createMany({
+      data: [
+        { label: "FAT LOSS PLAN", icon: "Star", order: 1 },
+        { label: "HYPERTROPHY", icon: "Dumbbell", order: 2 },
+        { label: "ONE-ON-ONE TRAINING", icon: "Users", order: 3 },
+        { label: "BODY RECOMPOSITION", icon: "Repeat", order: 4 },
+        { label: "NUTRITIONAL GUIDANCE", icon: "Trophy", order: 5 },
+      ],
+    });
+    console.log("✅ Seeded Marquee Items");
+  }
+
+  // 10. Seed FooterSection
+  const footerSectionCount = await prisma.footerSection.count();
+  if (footerSectionCount === 0) {
+    await prisma.footerSection.create({
+      data: {
+        id: 1,
+        backgroundText: "prabinxfitness",
+        instagramUrl: "https://www.instagram.com/prabinxfitness?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+        copyrightText: "© PrabinXFitness. All Rights Reserved.",
+        designerName: "Dibya Maharjan",
+        designerUrl: "https://dibyamaharjan.com",
+      },
+    });
+    console.log("✅ Seeded Footer Section");
+  }
+
   console.log("🚀 Database seeding completed successfully!");
 }
 

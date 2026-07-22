@@ -11,6 +11,7 @@ model AdminUser {
   id        Int      @id @default(autoincrement())
   username  String   @unique
   password  String   // Hashed with bcrypt
+  role      String   @default("ADMIN") // "ADMIN" or "CLIENT"
   createdAt DateTime @default(now())
 }
 
@@ -40,6 +41,7 @@ model About {
   titleEnd        String   @db.Text
   mainHeading     String   @db.Text
   paragraph       String   @db.Text
+  certificate     String?  @db.Text
   updatedAt       DateTime @updatedAt
 }
 
@@ -93,4 +95,40 @@ model GalleryItem {
   title    String
   category String  // e.g. STRENGTH, CONDITIONING, COACHING, CLIENT STORY
   size     String  // "sm", "md", "lg"
+}
+
+model WhyChooseSection {
+  id              Int      @id @default(1)
+  backgroundTitle String   @db.Text
+  title           String   @db.Text
+  highlightText   String   @db.Text
+  titleEnd        String   @db.Text
+  description     String   @db.Text
+  updatedAt       DateTime @updatedAt
+}
+
+model WhyChooseFeature {
+  id     Int    @id @default(autoincrement())
+  title  String
+  desc   String @db.Text
+  side   String // "LEFT" or "RIGHT"
+  topPos String // e.g. "12%", "39%", "60%", "87%"
+  order  Int    @default(0)
+}
+
+model MarqueeItem {
+  id    Int    @id @default(autoincrement())
+  label String
+  icon  String // e.g. "Star", "Dumbbell", "Users", "Repeat", "Trophy"
+  order Int    @default(0)
+}
+
+model FooterSection {
+  id             Int      @id @default(1)
+  backgroundText String   @db.Text
+  instagramUrl   String   @db.Text
+  copyrightText  String   @db.Text
+  designerName   String   @db.Text
+  designerUrl    String   @db.Text
+  updatedAt      DateTime @updatedAt
 }

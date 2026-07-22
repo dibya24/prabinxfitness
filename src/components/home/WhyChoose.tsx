@@ -5,33 +5,22 @@ import Image from "next/image";
 import { CONTENT } from "@/src/constants/content";
 import images from "@/src/constants/images";
 
-const whychoose = CONTENT.whyChoose;
+type WhyChooseSectionData = {
+    backgroundTitle: string;
+    title: string;
+    highlightText: string;
+    titleEnd: string;
+    description: string;
+};
 
-const leftFeatures = [
-    {
-        title: "KNOWLEDGE & EXPERIENCE",
-        desc: "Train with proven methods focused on safe, effective, and sustainable progress.",
-        top: "60%",
-    },
-    {
-        title: "RESULTS THAT LAST",
-        desc: "Build healthy habits that create long-term fitness and confidence, not quick fixes.",
-        top: "87%",
-    },
-];
-
-const rightFeatures = [
-    {
-        title: "GOAL-ORIENTED APPROACH",
-        desc: "Every plan is designed to help you achieve real, measurable results.",
-        top: "12%",
-    },
-    {
-        title: "DEDICATED SUPPORT",
-        desc: "Stay motivated with consistent guidance and accountability throughout your journey.",
-        top: "39%",
-    },
-];
+type WhyChooseFeatureData = {
+    id: number;
+    title: string;
+    desc: string;
+    side: string; // "LEFT" or "RIGHT"
+    topPos: string;
+    order: number;
+};
 
 function stageProgress(
     progress: number,
@@ -43,7 +32,31 @@ function stageProgress(
     return (progress - start) / (end - start);
 }
 
-export default function WhyChoose() {
+export default function WhyChoose({
+    sectionData,
+    features,
+}: {
+    sectionData?: WhyChooseSectionData | null;
+    features?: WhyChooseFeatureData[] | null;
+}) {
+    const whychoose = {
+        heading: {
+            backgroundTitle: sectionData?.backgroundTitle || CONTENT.whyChoose.heading.backgroundTitle,
+            title: sectionData?.title || CONTENT.whyChoose.heading.title,
+            highlightText: sectionData?.highlightText || CONTENT.whyChoose.heading.highlightText,
+            titleEnd: sectionData?.titleEnd || CONTENT.whyChoose.heading.titleEnd,
+        },
+        description: sectionData?.description || CONTENT.whyChoose.description,
+    };
+
+    const leftFeatures = features && features.length > 0
+        ? features.filter(f => f.side === "LEFT")
+        : CONTENT.whyChoose.leftFeatures.map(f => ({ id: f.id, title: f.title, desc: f.desc, topPos: f.top }));
+
+    const rightFeatures = features && features.length > 0
+        ? features.filter(f => f.side === "RIGHT")
+        : CONTENT.whyChoose.rightFeatures.map(f => ({ id: f.id, title: f.title, desc: f.desc, topPos: f.top }));
+
     const scrollRef = useRef<HTMLDivElement | null>(null);
     const [progress, setProgress] = useState(0);
 
@@ -159,7 +172,7 @@ export default function WhyChoose() {
                                     <div
                                         key={index}
                                         className="absolute w-full"
-                                        style={{ top: item.top }}
+                                        style={{ top: item.topPos }}
                                     >
                                         <div className="flex items-center">
                                             <div className="text-right w-[300px]">
@@ -197,7 +210,7 @@ export default function WhyChoose() {
                                     <div
                                         key={index}
                                         className="absolute w-full"
-                                        style={{ top: item.top }}
+                                        style={{ top: item.topPos }}
                                     >
                                         <div className="flex items-center">
                                             <div className="flex-1 h-[1px] bg-[#E8A428] relative mr-6">

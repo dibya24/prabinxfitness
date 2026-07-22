@@ -1,12 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Dumbbell } from "lucide-react";
 
 export default function Preloader() {
-
+    const pathname = usePathname();
     const [progress, setProgress] = useState(0);
     const [hide, setHide] = useState(false);
+
+    if (pathname?.startsWith("/admin") || pathname?.startsWith("/login")) {
+        return null;
+    }
 
 
     useEffect(() => {

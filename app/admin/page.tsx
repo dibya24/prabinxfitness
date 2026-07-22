@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import NextImage from "next/image";
-import { 
+import {
   Save, Plus, Trash2, Upload, Video, CheckCircle, AlertCircle, RefreshCw, Pencil, X,
   Dumbbell, Apple, MonitorSmartphone, Trophy, Flame, Zap, Users, Target, Activity, Heart, Award, ShieldCheck, Layers
 } from "lucide-react";
@@ -21,7 +21,7 @@ const SERVICE_ICONS = [
   { label: "Heart (Health & Wellness)", value: "Heart" },
   { label: "Award (Certification)", value: "Award" },
   { label: "Shield Check (Safety & Form)", value: "ShieldCheck" },
-  { label: "Layers (Custom Programming)", value: "Layers" },
+  { label: "Layers (Custom Programming)", value: "Layers" },  
   { label: "Video Clip", value: "Video" },
 ];
 
@@ -71,6 +71,12 @@ export default function AdminPage() {
   const [editingTestimonial, setEditingTestimonial] = useState<Testimonial | null>(null);
   const [editingGalleryItem, setEditingGalleryItem] = useState<GalleryItem | null>(null);
 
+  // User Management State
+  const [currentUser, setCurrentUser] = useState<{ id?: number; username: string; role: string } | null>(null);
+  const [users, setUsers] = useState<{ id: number; username: string; role: string; createdAt: string }[]>([]);
+  const [loadingUsers, setLoadingUsers] = useState(false);
+  const [newUserForm, setNewUserForm] = useState({ username: "", password: "", role: "CLIENT" });
+
   const showFeedback = useCallback((type: "success" | "error", text: string) => {
     setMessage({ type, text });
     setTimeout(() => setMessage(null), 5000);
@@ -92,6 +98,7 @@ export default function AdminPage() {
         setTestimonialSection(data.testimonialSection);
         setTestimonials(data.testimonials);
         setGalleryItems(data.galleryItems);
+        setCurrentUser(data.currentUser);
       } else {
         showFeedback("error", data.error || "Failed to load content data");
       }
@@ -109,6 +116,93 @@ export default function AdminPage() {
     }, 0);
     return () => clearTimeout(timer);
   }, [fetchContent]);
+
+  const fetchUsers = useCallback(async () => {
+    setLoadingUsers(true);
+    try {
+      const res = await fetch("/api/admin/users");
+      const data = await res.json();
+      if (res.ok) {
+        setUsers(data.users || []);
+      } else {
+        showFeedback("error", data.error || "Failed to load users list");
+      }
+    } catch (err) {
+      console.error(err);
+      showFeedback("error", "Error connecting to user API");
+    } finally {
+      setLoadingUsers(false);
+    }
+  }, [showFeedback]);
+
+  useEffect(() => {
+    if (activeTab === "users" && currentUser?.role === "ADMIN") {
+      fetchUsers();
+    }
+  }, [activeTab, currentUser, fetchUsers]);
+
+  const handleCreateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newUserForm.username || !newUserForm.password) {
+      showFeedback("error", "Username and password are required");
+      return;
+    }
+    if (newUserForm.password.length < 6) {
+      showFeedback("error", "Password must be at least 6 characters");
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const res = await fetch("/api/admin/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newUserForm),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showFeedback("success", "User created successfully!");
+        setNewUserForm({ username: "", password: "", role: "CLIENT" });
+        fetchUsers();
+      } else {
+        showFeedback("error", data.error || "Failed to create user");
+      }
+    } catch (err) {
+      console.error(err);
+      showFeedback("error", "Failed to contact API");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDeleteUser = async (id: number, username: string) => {
+    if (id === currentUser?.id) {
+      showFeedback("error", "You cannot delete your own account");
+      return;
+    }
+    if (!window.confirm(`Are you sure you want to delete the user account "${username}"?`)) {
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/admin/users?id=${id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showFeedback("success", "User deleted successfully!");
+        fetchUsers();
+      } else {
+        showFeedback("error", data.error || "Failed to delete user");
+      }
+    } catch (err) {
+      console.error(err);
+      showFeedback("error", "Failed to contact API");
+    } finally {
+      setSaving(false);
+    }
+  };
 
   // Generic Save Handler
   const handleSave = async (section: string, payload: unknown, customMessage?: string) => {
@@ -249,8 +343,8 @@ export default function AdminPage() {
       showFeedback("error", "Please provide a media source file URL and title label.");
       return;
     }
-    const categoryName = newGalleryItem.category === "CUSTOM" && newGalleryItem.customCategory.trim() 
-      ? newGalleryItem.customCategory.trim().toUpperCase() 
+    const categoryName = newGalleryItem.category === "CUSTOM" && newGalleryItem.customCategory.trim()
+      ? newGalleryItem.customCategory.trim().toUpperCase()
       : newGalleryItem.category;
 
     const updatedGallery = [
@@ -300,6 +394,7 @@ export default function AdminPage() {
     { id: "testimonials", label: "Testimonials" },
     { id: "gallery", label: "Gallery" },
     { id: "seo", label: "SEO Settings" },
+    ...(currentUser?.role === "ADMIN" ? [{ id: "users", label: "Manage Users" }] : []),
   ];
 
   if (loading && !saving) {
@@ -317,11 +412,10 @@ export default function AdminPage() {
     <div className="mx-auto max-w-7xl px-6 lg:px-8 pb-16">
       {/* Feedback Banner */}
       {message && (
-        <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-lg px-4 py-3 shadow-lg border text-sm font-medium transition-all ${
-          message.type === "success" 
-            ? "bg-emerald-50 border-emerald-200 text-emerald-800" 
+        <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-lg px-4 py-3 shadow-lg border text-sm font-medium transition-all ${message.type === "success"
+            ? "bg-emerald-50 border-emerald-200 text-emerald-800"
             : "bg-red-50 border-red-200 text-red-800"
-        }`}>
+          }`}>
           {message.type === "success" ? <CheckCircle size={18} /> : <AlertCircle size={18} />}
           <span>{message.text}</span>
         </div>
@@ -343,11 +437,10 @@ export default function AdminPage() {
                 setActiveTab(tab.id);
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className={`pb-4 text-sm font-semibold uppercase tracking-wider transition-all border-b-2 cursor-pointer ${
-                activeTab === tab.id
+              className={`pb-4 text-sm font-semibold uppercase tracking-wider transition-all border-b-2 cursor-pointer ${activeTab === tab.id
                   ? "border-red-600 text-red-600"
                   : "border-transparent text-slate-400 hover:text-slate-600 hover:border-slate-300"
-              }`}
+                }`}
             >
               {tab.label}
             </button>
@@ -358,7 +451,7 @@ export default function AdminPage() {
       {/* Overview View */}
       {activeTab === "overview" && (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <div 
+          <div
             onClick={() => setActiveTab("hero")}
             className="group cursor-pointer rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300"
           >
@@ -369,7 +462,7 @@ export default function AdminPage() {
             </p>
           </div>
 
-          <div 
+          <div
             onClick={() => setActiveTab("about")}
             className="group cursor-pointer rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300"
           >
@@ -380,7 +473,7 @@ export default function AdminPage() {
             </p>
           </div>
 
-          <div 
+          <div
             onClick={() => setActiveTab("services")}
             className="group cursor-pointer rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300"
           >
@@ -391,7 +484,7 @@ export default function AdminPage() {
             </p>
           </div>
 
-          <div 
+          <div
             onClick={() => setActiveTab("testimonials")}
             className="group cursor-pointer rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300"
           >
@@ -402,7 +495,7 @@ export default function AdminPage() {
             </p>
           </div>
 
-          <div 
+          <div
             onClick={() => setActiveTab("gallery")}
             className="group cursor-pointer rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300"
           >
@@ -413,7 +506,7 @@ export default function AdminPage() {
             </p>
           </div>
 
-          <div 
+          <div
             onClick={() => setActiveTab("seo")}
             className="group cursor-pointer rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300"
           >
@@ -430,7 +523,7 @@ export default function AdminPage() {
       {activeTab === "hero" && (
         <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
           <h3 className="text-lg font-bold text-slate-900 uppercase mb-6 pb-2 border-b border-slate-100">Edit Hero Banner</h3>
-          
+
           <div className="space-y-6">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Heading Title</label>
@@ -516,7 +609,7 @@ export default function AdminPage() {
         <div className="space-y-6">
           <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
             <h3 className="text-lg font-bold text-slate-900 uppercase mb-6 pb-2 border-b border-slate-100">Edit Story Page Texts</h3>
-            
+
             <div className="space-y-6">
               <div className="grid gap-6 sm:grid-cols-2">
                 <div>
@@ -599,7 +692,7 @@ export default function AdminPage() {
             <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 mb-6">
               {stats.map((s, index) => (
                 <div key={index} className="relative rounded-lg border border-gray-200 bg-slate-50 p-4">
-                  <button 
+                  <button
                     onClick={() => {
                       const updated = stats.filter((_, idx) => idx !== index);
                       setStats(updated);
@@ -651,7 +744,7 @@ export default function AdminPage() {
                     />
                     <span>Dark Colored Card</span>
                   </label>
-                  
+
                   <button
                     onClick={() => {
                       if (!newStat.title || !newStat.subtitle) return;
@@ -686,7 +779,7 @@ export default function AdminPage() {
         <div className="space-y-6">
           <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
             <h3 className="text-lg font-bold text-slate-900 uppercase mb-6 pb-2 border-b border-slate-100">Edit Services Section Header</h3>
-            
+
             <div className="space-y-6">
               <div className="grid gap-6 sm:grid-cols-2">
                 <div>
@@ -764,14 +857,14 @@ export default function AdminPage() {
                 <div key={c.id} className="relative rounded-xl border border-gray-200 bg-slate-50 p-5 flex flex-col justify-between shadow-sm hover:shadow transition">
                   <div>
                     <div className="absolute top-3 right-3 flex items-center gap-1.5">
-                      <button 
+                      <button
                         onClick={() => setEditingService(c)}
                         title="Edit Service"
                         className="rounded p-1.5 text-slate-500 hover:bg-white hover:text-blue-600 border border-transparent hover:border-slate-200 transition cursor-pointer"
                       >
                         <Pencil size={14} />
                       </button>
-                      <button 
+                      <button
                         onClick={() => handleDeleteService(c.id)}
                         title="Delete Service"
                         className="rounded p-1.5 text-slate-500 hover:bg-white hover:text-red-600 border border-transparent hover:border-slate-200 transition cursor-pointer"
@@ -786,7 +879,7 @@ export default function AdminPage() {
                     <p className="text-base font-bold text-slate-900 uppercase pr-14">{c.title}</p>
                     <p className="text-xs text-slate-600 mt-2 leading-relaxed">{c.description}</p>
                   </div>
-                  
+
                   <div className="mt-4 flex flex-wrap gap-1 border-t border-slate-200 pt-3">
                     {c.tags.split(",").map((tag: string, tid: number) => (
                       <span key={tid} className="bg-slate-200/80 rounded px-2 py-0.5 text-[10px] uppercase font-bold text-slate-700">
@@ -804,7 +897,7 @@ export default function AdminPage() {
                 <Plus size={14} className="text-red-600" />
                 <span>Add New Service Offering</span>
               </h4>
-              
+
               <div className="space-y-4">
                 <div className="grid gap-4 sm:grid-cols-3">
                   <div className="sm:col-span-2">
@@ -852,7 +945,7 @@ export default function AdminPage() {
                       className="flex-grow rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-slate-800 focus:outline-none"
                       placeholder="e.g. Strength, HIIT, Nutrition"
                     />
-                    
+
                     <button
                       onClick={handleAddService}
                       disabled={saving}
@@ -874,7 +967,7 @@ export default function AdminPage() {
         <div className="space-y-6">
           <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
             <h3 className="text-lg font-bold text-slate-900 uppercase mb-6 pb-2 border-b border-slate-100">Edit Testimonials Section Header</h3>
-            
+
             <div className="space-y-6">
               <div className="grid gap-6 sm:grid-cols-2">
                 <div>
@@ -949,14 +1042,14 @@ export default function AdminPage() {
               {testimonials.map((r) => (
                 <div key={r.id} className="relative rounded-xl border border-gray-200 bg-slate-50 p-5 shadow-sm hover:shadow transition">
                   <div className="absolute top-4 right-4 flex items-center gap-1.5">
-                    <button 
+                    <button
                       onClick={() => setEditingTestimonial(r)}
                       title="Edit Review"
                       className="rounded p-1.5 text-slate-500 hover:bg-white hover:text-blue-600 border border-transparent hover:border-slate-200 transition cursor-pointer"
                     >
                       <Pencil size={15} />
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleDeleteTestimonial(r.id)}
                       title="Delete Review"
                       className="rounded p-1.5 text-slate-500 hover:bg-white hover:text-red-600 border border-transparent hover:border-slate-200 transition cursor-pointer"
@@ -964,7 +1057,7 @@ export default function AdminPage() {
                       <Trash2 size={15} />
                     </button>
                   </div>
-                  
+
                   <p className="text-sm italic text-slate-700 pr-16">&quot;{r.text}&quot;</p>
                   <div className="mt-3 flex items-center gap-2">
                     <p className="text-xs font-bold text-slate-900 uppercase">{r.name}</p>
@@ -980,7 +1073,7 @@ export default function AdminPage() {
                 <Plus size={14} className="text-red-600" />
                 <span>Create New Testimonial Card</span>
               </h4>
-              
+
               <div className="space-y-4">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
@@ -1014,7 +1107,7 @@ export default function AdminPage() {
                     className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-slate-800 focus:outline-none mb-3"
                     placeholder="Enter what the client said about their transformation..."
                   />
-                  
+
                   <div className="flex justify-end">
                     <button
                       onClick={handleAddTestimonial}
@@ -1043,14 +1136,14 @@ export default function AdminPage() {
               {galleryItems.map((g) => (
                 <div key={g.id} className="relative rounded-xl border border-gray-200 bg-slate-50 p-4 flex flex-col justify-between shadow-sm hover:shadow transition">
                   <div className="absolute top-2 right-2 z-10 flex items-center gap-1">
-                    <button 
+                    <button
                       onClick={() => setEditingGalleryItem(g)}
                       title="Edit Media"
                       className="text-slate-600 bg-white border border-slate-200 hover:text-blue-600 rounded p-1.5 shadow-sm cursor-pointer"
                     >
                       <Pencil size={13} />
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleDeleteGalleryItem(g.id)}
                       title="Delete Media"
                       className="text-slate-600 bg-white border border-slate-200 hover:text-red-600 rounded p-1.5 shadow-sm cursor-pointer"
@@ -1092,7 +1185,7 @@ export default function AdminPage() {
                 <Plus size={14} className="text-red-600" />
                 <span>Add New Media to Gallery</span>
               </h4>
-              
+
               <div className="grid gap-4 sm:grid-cols-3">
                 <div>
                   <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Media Type</label>
@@ -1226,7 +1319,7 @@ export default function AdminPage() {
       {activeTab === "seo" && (
         <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
           <h3 className="text-lg font-bold text-slate-900 uppercase mb-6 pb-2 border-b border-slate-100">Edit Search Engine Optimization (SEO)</h3>
-          
+
           <div className="space-y-6">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Meta Page Title</label>
@@ -1273,6 +1366,121 @@ export default function AdminPage() {
                 <span>Save SEO Tags</span>
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= USER MANAGEMENT EDITOR ================= */}
+      {activeTab === "users" && currentUser?.role === "ADMIN" && (
+        <div className="space-y-6">
+          <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
+            <h3 className="text-lg font-bold text-slate-900 uppercase mb-6 pb-2 border-b border-slate-100">Create User Account</h3>
+            <form onSubmit={handleCreateUser} className="space-y-6">
+              <div className="grid gap-6 sm:grid-cols-3">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Username</label>
+                  <input
+                    type="text"
+                    required
+                    value={newUserForm.username}
+                    onChange={(e) => setNewUserForm({ ...newUserForm, username: e.target.value })}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                    placeholder="e.g. client1"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Password</label>
+                  <input
+                    type="password"
+                    required
+                    value={newUserForm.password}
+                    onChange={(e) => setNewUserForm({ ...newUserForm, password: e.target.value })}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                    placeholder="Minimum 6 characters"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Role</label>
+                  <select
+                    value={newUserForm.role}
+                    onChange={(e) => setNewUserForm({ ...newUserForm, role: e.target.value })}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                  >
+                    <option value="CLIENT">Client Editor</option>
+                    <option value="ADMIN">System Admin</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-slate-100 flex justify-end">
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="flex items-center gap-2 cursor-pointer rounded-lg bg-red-600 px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-red-700 transition disabled:opacity-50"
+                >
+                  <Plus size={14} />
+                  <span>Create User</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
+            <h3 className="text-lg font-bold text-slate-900 uppercase mb-6 pb-2 border-b border-slate-100">Manage User Accounts ({users.length})</h3>
+            
+            {loadingUsers ? (
+              <div className="flex h-32 items-center justify-center">
+                <RefreshCw className="h-6 w-6 animate-spin text-red-600 mx-auto" />
+                <p className="ml-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Loading user list...</p>
+              </div>
+            ) : users.length === 0 ? (
+              <p className="text-sm text-slate-500 italic">No user accounts found.</p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200 text-left text-sm text-slate-700">
+                  <thead className="bg-slate-50 text-xs font-bold uppercase tracking-wider text-slate-500">
+                    <tr>
+                      <th className="px-6 py-3">Username</th>
+                      <th className="px-6 py-3">Role</th>
+                      <th className="px-6 py-3">Created At</th>
+                      <th className="px-6 py-3 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 bg-white">
+                    {users.map((u) => (
+                      <tr key={u.id} className="hover:bg-slate-50/50 transition">
+                        <td className="px-6 py-4 font-bold text-slate-900">{u.username}</td>
+                        <td className="px-6 py-4">
+                          <span className={`inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider ${
+                            u.role === "ADMIN" 
+                              ? "bg-red-50 text-red-700 border border-red-100" 
+                              : "bg-slate-100 text-slate-700 border border-slate-200"
+                          }`}>
+                            {u.role === "ADMIN" ? "Admin" : "Client"}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-xs text-slate-400">
+                          {new Date(u.createdAt).toLocaleDateString()} {new Date(u.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          {u.username === currentUser?.username ? (
+                            <span className="text-xs text-slate-400 italic">Current User</span>
+                          ) : (
+                            <button
+                              onClick={() => handleDeleteUser(u.id, u.username)}
+                              title="Delete User"
+                              className="rounded p-1.5 text-slate-500 hover:bg-red-50 hover:text-red-600 border border-transparent hover:border-red-100 transition cursor-pointer"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
       )}

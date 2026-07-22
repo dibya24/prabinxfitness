@@ -59,7 +59,9 @@ const Services = ({
                 title: c.title,
                 description: c.description,
                 icon: c.icon,
-                tags: typeof c.tags === "string" ? c.tags.split(",").map(t => t.trim()) : c.tags
+                tags: typeof c.tags === "string" 
+                    ? c.tags.split(",").map(t => t.trim()).filter(Boolean) 
+                    : (Array.isArray(c.tags) ? c.tags : [])
               }))
             : CONTENT.service.cards,
     };
@@ -186,7 +188,7 @@ const Services = ({
                                 data-aos="fade-up"
                                 data-aos-duration="1000"
                                 data-aos-delay={index * 180}
-                                className="group bg-[#1a1a1a] border border-[#D6DCE5]/20 p-5 sm:p-6 lg:p-8 flex flex-col gap-5 transition-all duration-500 hover:border-[#E8A428]/50 hover:-translate-y-2"
+                                className="group bg-[#1a1a1a] border border-[#D6DCE5]/20 p-5 sm:p-6 lg:p-8 flex flex-col gap-5 transition-all duration-500 hover:border-[#E8A428]/50 hover:-translate-y-2 h-full w-full"
                             >
 
 
@@ -201,7 +203,7 @@ const Services = ({
 
 
 
-                                <div className="flex flex-col gap-3">
+                                <div className="flex flex-col gap-3 flex-grow">
 
 
                                     <h2
@@ -218,28 +220,27 @@ const Services = ({
 
                                     <p
                                         style={{ fontFamily: "var(--font-poppins)", }}
-                                        className="text-sm sm:text-[14px] leading-relaxed text-[#C0C0C0]"
+                                        className="text-sm sm:text-[14px] leading-relaxed text-[#C0C0C0] line-clamp-5 mb-4"
                                     >
                                         {card.description}
                                     </p>
 
 
 
-                                    <div className="flex flex-wrap gap-2">
+                                    {card.tags && card.tags.length > 0 && (
+                                        <div className="flex flex-wrap gap-2 mt-auto pt-2">
+                                            {card.tags.map((tag, tagIndex) => (
+                                                <span
+                                                    key={tagIndex}
+                                                    style={{ fontFamily: "var(--font-poppins)", }}
+                                                    className="px-3 py-1 text-xs sm:text-sm border border-[#C0C0C0] text-[#C0C0C0]"
+                                                >
+                                                    {tag}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
 
-                                        {card.tags.map((tag, tagIndex) => (
-
-                                            <span
-                                                key={tagIndex}
-                                                style={{ fontFamily: "var(--font-poppins)", }}
-                                                className="px-3 py-1 text-xs sm:text-sm border border-[#C0C0C0] text-[#C0C0C0]"
-                                            >
-                                                {tag}
-                                            </span>
-
-                                        ))}
-
-                                    </div>
 
 
                                 </div>

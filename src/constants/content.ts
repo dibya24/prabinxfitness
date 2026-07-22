@@ -2,52 +2,52 @@ export const CONTENT = {
     // ================= ABOUT SECTION ================= //
     about: {
         heading: {
-        backgroundTitle: "ABOUT ME",
+            backgroundTitle: "ABOUT ME",
 
-        title: "Dedicated To Igniting Your",
+            title: "Dedicated To Igniting Your",
 
-        highlightText: "Passion",
+            highlightText: "Passion",
 
-        titleEnd: "For Health",
+            titleEnd: "For Health",
         },
 
         certificate: {
-        alt: "Active IQ Certificate",
+            alt: "Active IQ Certificate",
         },
 
         description: {
-        mainHeading:
-            "RESULTS-DRIVEN FITNESS DEDICATED TO HELPING YOU TRAIN SMARTER, MOVE BETTER, AND LIVE STRONGER THROUGH EXPERT, CERTIFIED COACHING.",
+            mainHeading:
+                "RESULTS-DRIVEN FITNESS DEDICATED TO HELPING YOU TRAIN SMARTER, MOVE BETTER, AND LIVE STRONGER THROUGH EXPERT, CERTIFIED COACHING.",
 
-        paragraph:
-            "Helping individuals achieve lasting results through personalized coaching, progressive training programs, and practical nutrition guidance tailored to their lifestyle.",
+            paragraph:
+                "Helping individuals achieve lasting results through personalized coaching, progressive training programs, and practical nutrition guidance tailored to their lifestyle.",
         },
 
         stats: [
-        {
-            id: 1,
-            title: "ACTIVE IQ",
-            subtitle: "Certified",
-            dark: true,
-        },
-        {
-            id: 2,
-            title: "LEVEL 2",
-            subtitle: "Gym Instructor",
-            dark: false,
-        },
-        {
-            id: 3,
-            title: "LEVEL 3",
-            subtitle: "Personal Trainer",
-            dark: false,
-        },
-        {
-            id: 4,
-            title: "50+",
-            subtitle: "Clients",
-            dark: true,
-        },
+            {
+                id: 1,
+                title: "ACTIVE IQ",
+                subtitle: "Certified",
+                dark: true,
+            },
+            {
+                id: 2,
+                title: "LEVEL 2",
+                subtitle: "Gym Instructor",
+                dark: false,
+            },
+            {
+                id: 3,
+                title: "LEVEL 3",
+                subtitle: "Personal Trainer",
+                dark: false,
+            },
+            {
+                id: 4,
+                title: "50+",
+                subtitle: "Clients",
+                dark: true,
+            },
         ],
     },
 

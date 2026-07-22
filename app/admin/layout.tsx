@@ -14,6 +14,7 @@ export default function AdminLayout({
   const pathname = usePathname();
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     async function checkAuth() {
@@ -24,6 +25,7 @@ export default function AdminLayout({
           router.push("/login");
         } else {
           setUsername(data.user.username);
+          setRole(data.user.role || "ADMIN");
           setLoading(false);
         }
       } catch (err) {
@@ -99,7 +101,7 @@ export default function AdminLayout({
             <div className="flex items-center gap-3">
               <div className="text-right hidden sm:block">
                 <p className="text-xs font-bold text-slate-900 uppercase">{username}</p>
-                <p className="text-[10px] text-slate-400">System Admin</p>
+                <p className="text-[10px] text-slate-400">{role === "ADMIN" ? "System Admin" : "Client Editor"}</p>
               </div>
 
               <button

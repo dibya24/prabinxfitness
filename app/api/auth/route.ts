@@ -21,11 +21,16 @@ export async function GET() {
     }
 
     try {
-      const decoded = jwt.verify(token, JWT_SECRET) as { userId: number; username: string };
+      const decoded = jwt.verify(token, JWT_SECRET) as { userId: number; username: string; role?: string };
+      let role = decoded.role;
+      if (!role) {
+        const dbUser = await prisma.adminUser.findUnique({ where: { id: decoded.userId } });
+        role = dbUser?.role || "ADMIN";
+      }
       return NextResponse.json({
         authenticated: true,
         firstTimeSetup,
-        user: { id: decoded.userId, username: decoded.username }
+        user: { id: decoded.userId, username: decoded.username, role }
       });
     } catch {
       // Token is invalid or expired
@@ -72,7 +77,7 @@ export async function POST(req: Request) {
 
       // Automatically log them in after registration
       const token = jwt.sign(
-        { userId: newUser.id, username: newUser.username },
+        { userId: newUser.id, username: newUser.username, role: newUser.role },
         JWT_SECRET,
         { expiresIn: "1d" }
       );
@@ -88,7 +93,7 @@ export async function POST(req: Request) {
       return NextResponse.json({
         success: true,
         message: "Admin registered and logged in successfully",
-        user: { id: newUser.id, username: newUser.username }
+        user: { id: newUser.id, username: newUser.username, role: newUser.role }
       });
     }
 
@@ -111,7 +116,7 @@ export async function POST(req: Request) {
       }
 
       const token = jwt.sign(
-        { userId: user.id, username: user.username },
+        { userId: user.id, username: user.username, role: user.role },
         JWT_SECRET,
         { expiresIn: "1d" }
       );
@@ -127,7 +132,7 @@ export async function POST(req: Request) {
       return NextResponse.json({
         success: true,
         message: "Logged in successfully",
-        user: { id: user.id, username: user.username }
+        user: { id: user.id, username: user.username, role: user.role }
       });
     }
 

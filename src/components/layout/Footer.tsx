@@ -1,8 +1,33 @@
+"use client";
+
 import React from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { FaInstagram } from "react-icons/fa";
 
-const Footer = () => {
+type FooterSectionData = {
+    backgroundText: string;
+    instagramUrl: string;
+    copyrightText: string;
+    designerName: string;
+    designerUrl: string;
+};
+
+const Footer = ({ data }: { data?: FooterSectionData | null }) => {
+    const pathname = usePathname();
+    
+    if (pathname?.startsWith("/admin") || pathname?.startsWith("/login")) {
+        return null;
+    }
+
+    const footer = {
+        backgroundText: data?.backgroundText || "prabinxfitness",
+        instagramUrl: data?.instagramUrl || "https://www.instagram.com/prabinxfitness?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+        copyrightText: data?.copyrightText || "© PrabinXFitness. All Rights Reserved.",
+        designerName: data?.designerName || "Dibya Maharjan",
+        designerUrl: data?.designerUrl || "https://dibyamaharjan.com",
+    };
+
     return (
         <section className='bg-[#141414] py-[40px] relative overflow-hidden'>
             <div className='max-w-7xl mx-auto px-5 sm:px-6 lg:px-8'>
@@ -12,7 +37,7 @@ const Footer = () => {
                     style={{ fontFamily: "var(--font-oswald)" }}
                     className="text-center uppercase font-medium leading-none text-[48px] sm:text-[70px] md:text-[100px] lg:text-[140px] xl:text-[180px] bg-gradient-to-b from-[#E8A428] to-[#141414] bg-clip-text text-transparent"
                 >
-                    prabinxfitness
+                    {footer.backgroundText}
                 </h2>
 
                 <div className="mt-8 flex flex-col lg:flex-row items-center justify-between gap-8">
@@ -67,7 +92,7 @@ const Footer = () => {
                         className="flex items-center gap-3">
 
                         <a
-                            href="https://www.instagram.com/prabinxfitness?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                            href={footer.instagramUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center border border-[#4A4A4A] text-[#CFA74D] transition-all duration-300 hover:border-[#CFA74D] hover:bg-[#CFA74D]/10"
@@ -98,7 +123,7 @@ const Footer = () => {
                         style={{ fontFamily: "var(--font-oswald)" }}
                         className="text-sm sm:text-base lg:text-lg text-[#FFF9E7]"
                     >
-                        © PrabinXFitness. All Rights Reserved.
+                        {footer.copyrightText}
                     </p>
 
                     <p
@@ -107,12 +132,12 @@ const Footer = () => {
                     >
                         Designed & Developed By{" "}
                         <a
-                            href="https://dibyamaharjan.com"
+                            href={footer.designerUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-[#CFA74D]"
                         >
-                            Dibya Maharjan
+                            {footer.designerName}
                         </a>
                     </p>
 

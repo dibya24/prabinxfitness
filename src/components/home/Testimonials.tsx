@@ -164,10 +164,10 @@ const Testimonials = ({
               },
             }}
           >
-            {CONTENT.testimonials.reviews.map((item) => (
+            {testimonial.reviews.map((item) => (
               <SwiperSlide key={item.id}>
                 <div className="rounded-2xl bg-gradient-to-b from-[#E8A428] to-[#0F0F0F] p-[2px] h-full">
-                  <div className="rounded-2xl p-6 h-full bg-[#0F0F0F] backdrop-blur-md transition hover:bg-[#141414]">
+                  <div className="rounded-2xl p-6 h-full bg-[#0F0F0F] backdrop-blur-md transition hover:bg-[#141414] flex flex-col">
 
                     {/* Quote Icon */}
                     <Quote className="w-8 h-8 text-[#F0EBE6] mb-4 opacity-70" />
@@ -175,13 +175,13 @@ const Testimonials = ({
                     {/* Testimonial */}
                     <p
                       style={{ fontFamily: "var(--font-poppins)" }}
-                      className="text-[14px] leading-7 text-[#C0C0C0] mb-6"
+                      className="text-[14px] leading-7 text-[#C0C0C0] mb-6 line-clamp-6 flex-grow"
                     >
                       &ldquo;{item.text}&rdquo;
                     </p>
 
                     {/* Client Details */}
-                    <div className="mt-auto">
+                    <div className="mt-auto pt-4">
                       <h3
                         style={{ fontFamily: "var(--font-oswald)" }}
                         className="text-[21px] text-[#FFF7DF] uppercase"

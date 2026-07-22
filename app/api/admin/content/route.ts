@@ -8,22 +8,36 @@ import images from "@/src/constants/images";
 const JWT_SECRET = process.env.JWT_SECRET || "prabinxfitness_jwt_secret_key_123456";
 const COOKIE_NAME = "admin_token";
 
-// Middleware helper to check authentication
-async function isAuthenticated() {
+// Helper to get session user
+async function getSessionUser() {
   const cookieStore = await cookies();
   const token = cookieStore.get(COOKIE_NAME)?.value;
-  if (!token) return false;
+  if (!token) return null;
   try {
-    jwt.verify(token, JWT_SECRET);
-    return true;
+    const decoded = jwt.verify(token, JWT_SECRET) as { userId: number; username: string; role?: string };
+    let role = decoded.role;
+    if (!role) {
+      const user = await prisma.adminUser.findUnique({
+        where: { id: decoded.userId }
+      });
+      role = user?.role || "ADMIN";
+    }
+    return { userId: decoded.userId, username: decoded.username, role };
   } catch {
-    return false;
+    return null;
   }
+}
+
+// Middleware helper to check authentication
+async function isAuthenticated() {
+  const user = await getSessionUser();
+  return !!user;
 }
 
 // GET /api/admin/content - Retrieve all dynamic content (with hardcoded fallbacks)
 export async function GET() {
   try {
+    const currentUser = await getSessionUser();
     // 1. Fetch from DB
     const seo = await prisma.seo.findFirst();
     const hero = await prisma.hero.findFirst();
@@ -34,6 +48,10 @@ export async function GET() {
     const testimonialSection = await prisma.testimonialSection.findFirst();
     const testimonials = await prisma.testimonial.findMany();
     const galleryItems = await prisma.galleryItem.findMany();
+    const whyChooseSection = await prisma.whyChooseSection.findFirst();
+    const whyChooseFeatures = await prisma.whyChooseFeature.findMany({ orderBy: { order: "asc" } });
+    const marqueeItems = await prisma.marqueeItem.findMany({ orderBy: { order: "asc" } });
+    const footerSection = await prisma.footerSection.findFirst();
 
     // 2. Map default values if DB is empty
     const defaultSeo = {
@@ -153,6 +171,65 @@ export async function GET() {
       },
     ];
 
+    const defaultWhyChooseSection = {
+      backgroundTitle: "WHY CHOOSE ME",
+      title: "FITNESS SHOULD",
+      highlightText: "FEEL",
+      titleEnd: "LIKE IT FITS",
+      description: "Achieve your fitness goals with expert guidance, personalized support, and a results-driven approach.",
+    };
+
+    const defaultWhyChooseFeatures = [
+      {
+        id: 1,
+        title: "KNOWLEDGE & EXPERIENCE",
+        desc: "Train with proven methods focused on safe, effective, and sustainable progress.",
+        side: "LEFT",
+        topPos: "60%",
+        order: 1,
+      },
+      {
+        id: 2,
+        title: "RESULTS THAT LAST",
+        desc: "Build healthy habits that create long-term fitness and confidence, not quick fixes.",
+        side: "LEFT",
+        topPos: "87%",
+        order: 2,
+      },
+      {
+        id: 3,
+        title: "GOAL-ORIENTED APPROACH",
+        desc: "Every plan is designed to help you achieve real, measurable results.",
+        side: "RIGHT",
+        topPos: "12%",
+        order: 3,
+      },
+      {
+        id: 4,
+        title: "DEDICATED SUPPORT",
+        desc: "Stay motivated with consistent guidance and accountability throughout your journey.",
+        side: "RIGHT",
+        topPos: "39%",
+        order: 4,
+      },
+    ];
+
+    const defaultMarquee = [
+      { id: 1, label: "FAT LOSS PLAN", icon: "Star", order: 1 },
+      { id: 2, label: "HYPERTROPHY", icon: "Dumbbell", order: 2 },
+      { id: 3, label: "ONE-ON-ONE TRAINING", icon: "Users", order: 3 },
+      { id: 4, label: "BODY RECOMPOSITION", icon: "Repeat", order: 4 },
+      { id: 5, label: "NUTRITIONAL GUIDANCE", icon: "Trophy", order: 5 },
+    ];
+
+    const defaultFooter = {
+      backgroundText: "prabinxfitness",
+      instagramUrl: "https://www.instagram.com/prabinxfitness?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+      copyrightText: "© PrabinXFitness. All Rights Reserved.",
+      designerName: "Dibya Maharjan",
+      designerUrl: "https://dibyamaharjan.com",
+    };
+
     return NextResponse.json({
       seo: seo || defaultSeo,
       hero: hero || defaultHero,
@@ -163,6 +240,11 @@ export async function GET() {
       testimonialSection: testimonialSection || defaultTestimonialSection,
       testimonials: testimonials.length ? testimonials : defaultTestimonials,
       galleryItems: galleryItems.length ? galleryItems : defaultGallery,
+      whyChooseSection: whyChooseSection || defaultWhyChooseSection,
+      whyChooseFeatures: whyChooseFeatures.length ? whyChooseFeatures : defaultWhyChooseFeatures,
+      marqueeItems: marqueeItems.length ? marqueeItems : defaultMarquee,
+      footerSection: footerSection || defaultFooter,
+      currentUser,
     });
   } catch (error: unknown) {
     console.error("Fetch content error:", error);
@@ -349,6 +431,79 @@ export async function POST(req: Request) {
             }),
           ]);
         }
+        break;
+
+      case "whychoose":
+        const { sectionInfo: whyChooseInfo, features: whyChooseFeatures } = data;
+        await prisma.whyChooseSection.upsert({
+          where: { id: 1 },
+          update: {
+            backgroundTitle: whyChooseInfo.backgroundTitle,
+            title: whyChooseInfo.title,
+            highlightText: whyChooseInfo.highlightText,
+            titleEnd: whyChooseInfo.titleEnd,
+            description: whyChooseInfo.description,
+          },
+          create: {
+            id: 1,
+            backgroundTitle: whyChooseInfo.backgroundTitle,
+            title: whyChooseInfo.title,
+            highlightText: whyChooseInfo.highlightText,
+            titleEnd: whyChooseInfo.titleEnd,
+            description: whyChooseInfo.description,
+          },
+        });
+
+        if (whyChooseFeatures && Array.isArray(whyChooseFeatures)) {
+          await prisma.$transaction([
+            prisma.whyChooseFeature.deleteMany(),
+            prisma.whyChooseFeature.createMany({
+              data: whyChooseFeatures.map((f: { title: string; desc: string; side: string; topPos: string; order?: number }) => ({
+                title: f.title,
+                desc: f.desc,
+                side: f.side,
+                topPos: f.topPos,
+                order: f.order || 0,
+              })),
+            }),
+          ]);
+        }
+        break;
+
+      case "marquee":
+        if (Array.isArray(data)) {
+          await prisma.$transaction([
+            prisma.marqueeItem.deleteMany(),
+            prisma.marqueeItem.createMany({
+              data: data.map((m: { label: string; icon: string; order?: number }) => ({
+                label: m.label,
+                icon: m.icon,
+                order: m.order || 0,
+              })),
+            }),
+          ]);
+        }
+        break;
+
+      case "footer":
+        await prisma.footerSection.upsert({
+          where: { id: 1 },
+          update: {
+            backgroundText: data.backgroundText,
+            instagramUrl: data.instagramUrl,
+            copyrightText: data.copyrightText,
+            designerName: data.designerName,
+            designerUrl: data.designerUrl,
+          },
+          create: {
+            id: 1,
+            backgroundText: data.backgroundText,
+            instagramUrl: data.instagramUrl,
+            copyrightText: data.copyrightText,
+            designerName: data.designerName,
+            designerUrl: data.designerUrl,
+          },
+        });
         break;
 
       default:

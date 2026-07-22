@@ -134,11 +134,13 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const footerData = await prisma.footerSection.findFirst();
+
   return (
     <html
       lang="en"
@@ -152,7 +154,7 @@ export default function RootLayout({
 
             {children}
 
-            <Footer />
+            <Footer data={footerData} />
           </SmoothScroll>
         </AOSProvider>
       </body>
