@@ -9,6 +9,8 @@ import Testimonials from "@/src/components/home/Testimonials";
 import Form from "@/src/components/home/Form";
 import { prisma } from "@/src/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 
 export default async function Home() {
   const heroData = await prisma.hero.findFirst();

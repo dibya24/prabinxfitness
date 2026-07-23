@@ -4,9 +4,10 @@ import { useEffect, useState, useCallback } from "react";
 import NextImage from "next/image";
 import {
   Save, Plus, Trash2, Upload, Video, CheckCircle, AlertCircle, RefreshCw, Pencil, X,
-  Dumbbell, Apple, MonitorSmartphone, Trophy, Flame, Zap, Users, Target, Activity, Heart, Award, ShieldCheck, Layers
+  Dumbbell, Apple, MonitorSmartphone, Trophy, Flame, Zap, Users, Target, Activity, Heart, Award, ShieldCheck, Layers,
+  Star, Repeat
 } from "lucide-react";
-import { Stat, ServiceCard, Testimonial, GalleryItem } from "@prisma/client";
+import { Stat, ServiceCard, Testimonial, GalleryItem, WhyChooseSection, WhyChooseFeature, MarqueeItem, Consultation } from "@prisma/client";
 
 const SERVICE_ICONS = [
   { label: "Dumbbell (Fitness / Gym)", value: "Dumbbell" },
@@ -57,6 +58,11 @@ export default function AdminPage() {
   });
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  const [whyChooseSection, setWhyChooseSection] = useState({
+    backgroundTitle: "", title: "", highlightText: "", titleEnd: "", description: ""
+  });
+  const [whyChooseFeatures, setWhyChooseFeatures] = useState<WhyChooseFeature[]>([]);
+  const [marqueeItems, setMarqueeItems] = useState<MarqueeItem[]>([]);
 
   // Temp State for Adding Items
   const [newStat, setNewStat] = useState({ title: "", subtitle: "", dark: false });
@@ -65,11 +71,18 @@ export default function AdminPage() {
   const [newGalleryItem, setNewGalleryItem] = useState({
     type: "image", src: "", poster: "", title: "", category: "COACHING", customCategory: "", size: "md"
   });
+  const [newWhyChooseFeature, setNewWhyChooseFeature] = useState({ title: "", desc: "", side: "LEFT", topPos: "50%", order: 1 });
+  const [newMarqueeItem, setNewMarqueeItem] = useState({ label: "", icon: "Star", customIcon: "", order: 1 });
 
   // Edit Modal States
   const [editingService, setEditingService] = useState<ServiceCard | null>(null);
   const [editingTestimonial, setEditingTestimonial] = useState<Testimonial | null>(null);
   const [editingGalleryItem, setEditingGalleryItem] = useState<GalleryItem | null>(null);
+  const [editingWhyChooseFeature, setEditingWhyChooseFeature] = useState<WhyChooseFeature | null>(null);
+  const [editingMarqueeItem, setEditingMarqueeItem] = useState<MarqueeItem | null>(null);
+  const [editingMarqueeIsCustom, setEditingMarqueeIsCustom] = useState(false);
+  const [editingMarqueeCustomIcon, setEditingMarqueeCustomIcon] = useState("");
+  const [consultations, setConsultations] = useState<Consultation[]>([]);
 
   // User Management State
   const [currentUser, setCurrentUser] = useState<{ id?: number; username: string; role: string } | null>(null);
@@ -98,6 +111,9 @@ export default function AdminPage() {
         setTestimonialSection(data.testimonialSection);
         setTestimonials(data.testimonials);
         setGalleryItems(data.galleryItems);
+        setWhyChooseSection(data.whyChooseSection);
+        setWhyChooseFeatures(data.whyChooseFeatures);
+        setMarqueeItems(data.marqueeItems);
         setCurrentUser(data.currentUser);
       } else {
         showFeedback("error", data.error || "Failed to load content data");
@@ -140,6 +156,27 @@ export default function AdminPage() {
       fetchUsers();
     }
   }, [activeTab, currentUser, fetchUsers]);
+
+  const fetchConsultations = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/consultations");
+      const data = await res.json();
+      if (res.ok) {
+        setConsultations(data.consultations || []);
+      } else {
+        showFeedback("error", data.error || "Failed to load consultations");
+      }
+    } catch (err) {
+      console.error(err);
+      showFeedback("error", "Error connecting to consultations API");
+    }
+  }, [showFeedback]);
+
+  useEffect(() => {
+    if (activeTab === "consultations") {
+      fetchConsultations();
+    }
+  }, [activeTab, fetchConsultations]);
 
   const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -385,15 +422,152 @@ export default function AdminPage() {
     await handleSave("gallery", updatedGallery, "Gallery item deleted successfully!");
   };
 
+  // Why Choose Actions
+  const handleAddWhyChooseFeature = async () => {
+    if (!newWhyChooseFeature.title.trim() || !newWhyChooseFeature.desc.trim()) {
+      showFeedback("error", "Please provide a title and description for the feature.");
+      return;
+    }
+    const updatedFeatures = [
+      ...whyChooseFeatures,
+      {
+        id: Date.now(),
+        title: newWhyChooseFeature.title.trim(),
+        desc: newWhyChooseFeature.desc.trim(),
+        side: newWhyChooseFeature.side,
+        topPos: newWhyChooseFeature.topPos.trim(),
+        order: Number(newWhyChooseFeature.order) || 0,
+      } as WhyChooseFeature,
+    ];
+    const success = await handleSave("whychoose", { sectionInfo: whyChooseSection, features: updatedFeatures }, "Feature added successfully!");
+    if (success) {
+      setNewWhyChooseFeature({ title: "", desc: "", side: "LEFT", topPos: "50%", order: whyChooseFeatures.length + 2 });
+    }
+  };
+
+  const handleUpdateWhyChooseFeature = async () => {
+    if (!editingWhyChooseFeature || !editingWhyChooseFeature.title.trim() || !editingWhyChooseFeature.desc.trim()) {
+      showFeedback("error", "Title and description are required.");
+      return;
+    }
+    const updatedFeatures = whyChooseFeatures.map((f) => (f.id === editingWhyChooseFeature.id ? editingWhyChooseFeature : f));
+    const success = await handleSave("whychoose", { sectionInfo: whyChooseSection, features: updatedFeatures }, "Feature updated successfully!");
+    if (success) {
+      setEditingWhyChooseFeature(null);
+    }
+  };
+
+  const handleDeleteWhyChooseFeature = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this feature?")) return;
+    const updatedFeatures = whyChooseFeatures.filter((f) => f.id !== id);
+    await handleSave("whychoose", { sectionInfo: whyChooseSection, features: updatedFeatures }, "Feature deleted successfully!");
+  };
+
+  // Marquee Actions
+  const handleAddMarqueeItem = async () => {
+    if (!newMarqueeItem.label.trim()) {
+      showFeedback("error", "Please provide a label for the marquee item.");
+      return;
+    }
+    const iconName = newMarqueeItem.icon === "CUSTOM" && newMarqueeItem.customIcon.trim()
+      ? newMarqueeItem.customIcon.trim()
+      : newMarqueeItem.icon;
+
+    const updatedItems = [
+      ...marqueeItems,
+      {
+        id: Date.now(),
+        label: newMarqueeItem.label.trim(),
+        icon: iconName,
+        order: Number(newMarqueeItem.order) || 0,
+      } as MarqueeItem,
+    ];
+    const success = await handleSave("marquee", updatedItems, "Marquee item added successfully!");
+    if (success) {
+      setNewMarqueeItem({ label: "", icon: "Star", customIcon: "", order: marqueeItems.length + 2 });
+    }
+  };
+
+  const handleUpdateMarqueeItem = async () => {
+    if (!editingMarqueeItem || !editingMarqueeItem.label.trim()) {
+      showFeedback("error", "Label is required.");
+      return;
+    }
+    const iconName = editingMarqueeIsCustom && editingMarqueeCustomIcon.trim()
+      ? editingMarqueeCustomIcon.trim()
+      : editingMarqueeItem.icon;
+
+    const updatedItems = marqueeItems.map((m) => (m.id === editingMarqueeItem.id ? { ...editingMarqueeItem, icon: iconName } : m));
+    const success = await handleSave("marquee", updatedItems, "Marquee item updated successfully!");
+    if (success) {
+      setEditingMarqueeItem(null);
+    }
+  };
+
+  const handleDeleteMarqueeItem = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this marquee item?")) return;
+    const updatedItems = marqueeItems.filter((m) => m.id !== id);
+    await handleSave("marquee", updatedItems, "Marquee item deleted successfully!");
+  };
+
+  // Consultation Actions
+  const handleUpdateConsultationStatus = async (id: number, status: string) => {
+    setSaving(true);
+    try {
+      const res = await fetch("/api/admin/consultations", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showFeedback("success", `Booking marked as ${status.toLowerCase()}!`);
+        fetchConsultations();
+      } else {
+        showFeedback("error", data.error || "Failed to update status");
+      }
+    } catch (err) {
+      console.error(err);
+      showFeedback("error", "Error updating consultation status");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDeleteConsultation = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this consultation record?")) return;
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/admin/consultations?id=${id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showFeedback("success", "Consultation record deleted successfully!");
+        fetchConsultations();
+      } else {
+        showFeedback("error", data.error || "Failed to delete consultation");
+      }
+    } catch (err) {
+      console.error(err);
+      showFeedback("error", "Error deleting consultation");
+    } finally {
+      setSaving(false);
+    }
+  };
+
   // Tabs Definition
   const tabs = [
     { id: "overview", label: "Overview" },
     { id: "hero", label: "Hero" },
     { id: "about", label: "About & Stats" },
     { id: "services", label: "Services" },
+    { id: "whychoose", label: "Why Choose Me" },
+    { id: "marquee", label: "Marquee Strip" },
     { id: "testimonials", label: "Testimonials" },
     { id: "gallery", label: "Gallery" },
     { id: "seo", label: "SEO Settings" },
+    { id: "consultations", label: "Bookings" },
     ...(currentUser?.role === "ADMIN" ? [{ id: "users", label: "Manage Users" }] : []),
   ];
 
@@ -993,6 +1167,338 @@ export default function AdminPage() {
         </div>
       )}
 
+      {/* ================= WHY CHOOSE ME EDITOR ================= */}
+      {activeTab === "whychoose" && (
+        <div className="space-y-6">
+          <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
+            <h3 className="text-lg font-bold text-slate-900 uppercase mb-6 pb-2 border-b border-slate-100">Edit Why Choose Me Section Header</h3>
+
+            <div className="space-y-6">
+              <div className="grid gap-6 sm:grid-cols-2">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Background Title (Watermark)</label>
+                  <input
+                    type="text"
+                    value={whyChooseSection.backgroundTitle}
+                    onChange={(e) => setWhyChooseSection({ ...whyChooseSection, backgroundTitle: e.target.value })}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Main Heading Line 1</label>
+                  <input
+                    type="text"
+                    value={whyChooseSection.title}
+                    onChange={(e) => setWhyChooseSection({ ...whyChooseSection, title: e.target.value })}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="grid gap-6 sm:grid-cols-2">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Highlight Accent Text</label>
+                  <input
+                    type="text"
+                    value={whyChooseSection.highlightText}
+                    onChange={(e) => setWhyChooseSection({ ...whyChooseSection, highlightText: e.target.value })}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Main Heading Line 1 End</label>
+                  <input
+                    type="text"
+                    value={whyChooseSection.titleEnd}
+                    onChange={(e) => setWhyChooseSection({ ...whyChooseSection, titleEnd: e.target.value })}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Section Subtext description</label>
+                <textarea
+                  value={whyChooseSection.description}
+                  onChange={(e) => setWhyChooseSection({ ...whyChooseSection, description: e.target.value })}
+                  rows={2}
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
+                />
+              </div>
+
+              <div className="pt-4 border-t border-slate-100 flex justify-end">
+                <button
+                  onClick={() => handleSave("whychoose", { sectionInfo: whyChooseSection, features: whyChooseFeatures }, "Why Choose Me Section header updated!")}
+                  disabled={saving}
+                  className="flex items-center gap-2 cursor-pointer rounded-lg bg-[#E8A428] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-red-700 transition disabled:opacity-50"
+                >
+                  <Save size={14} />
+                  <span>Save Section Header</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
+            <div className="flex items-center justify-between mb-6 pb-2 border-b border-slate-100">
+              <h3 className="text-lg font-bold text-slate-900 uppercase">Manage Why Choose Me Features ({whyChooseFeatures.length})</h3>
+            </div>
+
+            {/* List of features with Edit & Delete */}
+            <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 mb-8">
+              {whyChooseFeatures.map((f) => (
+                <div key={f.id} className="relative rounded-xl border border-gray-200 bg-slate-50 p-5 flex flex-col justify-between shadow-sm hover:shadow transition">
+                  <div>
+                    <div className="absolute top-3 right-3 flex items-center gap-1.5">
+                      <button
+                        onClick={() => setEditingWhyChooseFeature(f)}
+                        title="Edit Feature"
+                        className="rounded p-1.5 text-slate-500 hover:bg-white hover:text-blue-600 border border-transparent hover:border-slate-200 transition cursor-pointer"
+                      >
+                        <Pencil size={14} />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteWhyChooseFeature(f.id)}
+                        title="Delete Feature"
+                        className="rounded p-1.5 text-slate-500 hover:bg-white hover:text-red-600 border border-transparent hover:border-slate-200 transition cursor-pointer"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+
+                    <div className="mb-2 flex items-center gap-2">
+                      <span className={`inline-block rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                        f.side === "LEFT" ? "bg-blue-100 text-blue-800" : "bg-purple-100 text-purple-800"
+                      }`}>
+                        {f.side} Side
+                      </span>
+                      <span className="text-[10px] font-semibold text-slate-400">Position: {f.topPos}</span>
+                      <span className="text-[10px] font-semibold text-slate-400">Order: {f.order}</span>
+                    </div>
+
+                    <h4 style={{ fontFamily: "var(--font-oswald)" }} className="text-base font-extrabold uppercase text-slate-800 pr-12 line-clamp-1">
+                      {f.title}
+                    </h4>
+                    <p className="mt-2 text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                      {f.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Add New Feature Form */}
+            <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50/50 p-6">
+              <h4 className="text-sm font-extrabold uppercase text-slate-900 mb-4 flex items-center gap-2">
+                <Plus size={16} className="text-[#E8A428]" />
+                <span>Add New Feature Details</span>
+              </h4>
+
+              <div className="space-y-4">
+                <div className="grid gap-4 sm:grid-cols-3">
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Feature Title</label>
+                    <input
+                      type="text"
+                      value={newWhyChooseFeature.title}
+                      onChange={(e) => setNewWhyChooseFeature({ ...newWhyChooseFeature, title: e.target.value })}
+                      className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                      placeholder="e.g. DEDICATED SUPPORT"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Side Position</label>
+                    <select
+                      value={newWhyChooseFeature.side}
+                      onChange={(e) => setNewWhyChooseFeature({ ...newWhyChooseFeature, side: e.target.value })}
+                      className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                    >
+                      <option value="LEFT">LEFT (Left side column)</option>
+                      <option value="RIGHT">RIGHT (Right side column)</option>
+                    </select>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1 flex items-center gap-1">
+                        <span>Top Offset</span>
+                        <span className="text-[9px] text-slate-400 font-normal">(e.g. 12%)</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={newWhyChooseFeature.topPos}
+                        onChange={(e) => setNewWhyChooseFeature({ ...newWhyChooseFeature, topPos: e.target.value })}
+                        className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                        placeholder="e.g. 12%"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Display Order</label>
+                      <input
+                        type="number"
+                        value={newWhyChooseFeature.order}
+                        onChange={(e) => setNewWhyChooseFeature({ ...newWhyChooseFeature, order: parseInt(e.target.value) || 0 })}
+                        className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                        min="1"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Feature Description</label>
+                  <div className="flex gap-3">
+                    <textarea
+                      value={newWhyChooseFeature.desc}
+                      onChange={(e) => setNewWhyChooseFeature({ ...newWhyChooseFeature, desc: e.target.value })}
+                      rows={2}
+                      className="flex-grow rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                      placeholder="Brief details about this feature..."
+                    />
+
+                    <button
+                      onClick={handleAddWhyChooseFeature}
+                      disabled={saving}
+                      className="flex items-center gap-1.5 cursor-pointer rounded-lg bg-slate-900 px-5 py-2 text-xs font-bold uppercase tracking-wider text-white hover:bg-slate-800 transition disabled:opacity-50 shrink-0 self-end"
+                    >
+                      <Plus size={14} />
+                      <span>{saving ? "Saving..." : "Add Feature"}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MARQUEE STRIP EDITOR ================= */}
+      {activeTab === "marquee" && (
+        <div className="space-y-6">
+          <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
+            <div className="flex items-center justify-between mb-6 pb-2 border-b border-slate-100">
+              <h3 className="text-lg font-bold text-slate-900 uppercase">Manage Marquee Items ({marqueeItems.length})</h3>
+            </div>
+
+            {/* List of marquee items with Edit & Delete */}
+            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-8">
+              {marqueeItems.map((m) => {
+                const Icon = m.icon === "Star" ? Star : m.icon === "Dumbbell" ? Dumbbell : m.icon === "Users" ? Users : m.icon === "Repeat" ? Repeat : m.icon === "Trophy" ? Trophy : Star;
+                return (
+                  <div key={m.id} className="relative rounded-xl border border-gray-200 bg-slate-50 p-4 flex items-center justify-between shadow-sm hover:shadow transition">
+                    <div className="flex items-center gap-3 pr-10">
+                      <div className="rounded-lg bg-[#E8A428]/10 p-2 text-[#E8A428]">
+                        <Icon size={18} />
+                      </div>
+                      <div>
+                        <h4 style={{ fontFamily: "var(--font-oswald)" }} className="text-sm font-extrabold uppercase text-slate-800 line-clamp-1">
+                          {m.label}
+                        </h4>
+                        <p className="text-[10px] text-slate-400">Order: {m.order} | Icon: {m.icon}</p>
+                      </div>
+                    </div>
+
+                    <div className="absolute right-3 flex items-center gap-1">
+                      <button
+                        onClick={() => {
+                          setEditingMarqueeItem(m);
+                          const isPredefined = ["Star", "Dumbbell", "Users", "Repeat", "Trophy"].includes(m.icon);
+                          setEditingMarqueeIsCustom(!isPredefined);
+                          setEditingMarqueeCustomIcon(isPredefined ? "" : m.icon);
+                        }}
+                        title="Edit Item"
+                        className="rounded p-1 text-slate-500 hover:bg-white hover:text-blue-600 border border-transparent hover:border-slate-200 transition cursor-pointer"
+                      >
+                        <Pencil size={12} />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteMarqueeItem(m.id)}
+                        title="Delete Item"
+                        className="rounded p-1 text-slate-500 hover:bg-white hover:text-red-600 border border-transparent hover:border-slate-200 transition cursor-pointer"
+                      >
+                        <Trash2 size={12} />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Add New Marquee Item Form */}
+            <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50/50 p-6">
+              <h4 className="text-sm font-extrabold uppercase text-slate-900 mb-4 flex items-center gap-2">
+                <Plus size={16} className="text-[#E8A428]" />
+                <span>Add New Marquee Tag</span>
+              </h4>
+
+              <div className="space-y-4">
+                <div className="grid gap-4 sm:grid-cols-3">
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tag Label Text</label>
+                    <input
+                      type="text"
+                      value={newMarqueeItem.label}
+                      onChange={(e) => setNewMarqueeItem({ ...newMarqueeItem, label: e.target.value })}
+                      className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                      placeholder="e.g. STRENGTH & POWER"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Icon Style</label>
+                    <select
+                      value={newMarqueeItem.icon}
+                      onChange={(e) => setNewMarqueeItem({ ...newMarqueeItem, icon: e.target.value })}
+                      className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                    >
+                      <option value="Star">Star (★)</option>
+                      <option value="Dumbbell">Dumbbell (🏋)</option>
+                      <option value="Users">Users (👥)</option>
+                      <option value="Repeat">Repeat (🔁)</option>
+                      <option value="Trophy">Trophy (🏆)</option>
+                      <option value="CUSTOM">Custom Lucide Icon...</option>
+                    </select>
+
+                    {newMarqueeItem.icon === "CUSTOM" && (
+                      <input
+                        type="text"
+                        value={newMarqueeItem.customIcon}
+                        onChange={(e) => setNewMarqueeItem({ ...newMarqueeItem, customIcon: e.target.value })}
+                        className="mt-2 w-full rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs text-slate-800 focus:outline-none"
+                        placeholder="Lucide Icon name (e.g. Flame, Zap, Heart)"
+                      />
+                    )}
+                  </div>
+
+                  <div className="flex gap-3 items-end">
+                    <div className="flex-1">
+                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Display Order</label>
+                      <input
+                        type="number"
+                        value={newMarqueeItem.order}
+                        onChange={(e) => setNewMarqueeItem({ ...newMarqueeItem, order: parseInt(e.target.value) || 0 })}
+                        className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                        min="1"
+                      />
+                    </div>
+
+                    <button
+                      onClick={handleAddMarqueeItem}
+                      disabled={saving}
+                      className="flex items-center gap-1.5 cursor-pointer rounded-lg bg-slate-900 px-5 py-2 text-xs font-bold uppercase tracking-wider text-white hover:bg-slate-800 transition disabled:opacity-50 shrink-0"
+                    >
+                      <Plus size={14} />
+                      <span>{saving ? "Saving..." : "Add Tag"}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ================= TESTIMONIALS EDITOR ================= */}
       {activeTab === "testimonials" && (
         <div className="space-y-6">
@@ -1401,6 +1907,128 @@ export default function AdminPage() {
         </div>
       )}
 
+      {/* ================= CONSULTATION BOOKINGS ================= */}
+      {activeTab === "consultations" && (
+        <div className="space-y-6">
+          <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 pb-2 border-b border-slate-100 gap-4">
+              <div>
+                <h3 className="text-lg font-bold text-slate-900 uppercase">Consultation Bookings ({consultations.length})</h3>
+                <p className="text-xs text-slate-500 mt-1">Review and manage booking requests submitted via the contact form.</p>
+              </div>
+              <button
+                onClick={fetchConsultations}
+                disabled={saving}
+                className="flex items-center gap-1.5 cursor-pointer rounded-lg bg-slate-900 px-4 py-2 text-xs font-bold uppercase tracking-wider text-white hover:bg-slate-800 transition disabled:opacity-50 self-start"
+              >
+                <RefreshCw size={12} className={saving ? "animate-spin" : ""} />
+                <span>Refresh Bookings</span>
+              </button>
+            </div>
+
+            {consultations.length === 0 ? (
+              <div className="text-center py-16 border border-dashed border-slate-200 rounded-xl bg-slate-50/50">
+                <Users className="h-10 w-10 text-slate-300 mx-auto mb-3" />
+                <p className="text-sm font-bold text-slate-500 uppercase">No Bookings Found</p>
+                <p className="text-xs text-slate-400 mt-1">Free consultation booking requests will appear here once submitted.</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto rounded-xl border border-slate-200">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider">
+                      <th className="px-6 py-4">Client Detail</th>
+                      <th className="px-6 py-4">Primary Goal</th>
+                      <th className="px-6 py-4">Message / Goal details</th>
+                      <th className="px-6 py-4">Booking Date</th>
+                      <th className="px-6 py-4">Status</th>
+                      <th className="px-6 py-4 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 bg-white">
+                    {consultations.map((c) => (
+                      <tr key={c.id} className="hover:bg-slate-50/50 transition">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="font-bold text-slate-900 uppercase text-sm">{c.name}</div>
+                          <div className="text-slate-500 mt-0.5">{c.email}</div>
+                          <div className="text-slate-500 mt-0.5 font-mono">{c.phone}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className="inline-block rounded-full bg-slate-100 text-slate-800 font-semibold px-3 py-1 border border-slate-200">
+                            {c.goal}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 max-w-xs sm:max-w-sm whitespace-pre-wrap leading-relaxed text-slate-700 font-medium">
+                          {c.message}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-slate-500">
+                          {new Date(c.createdAt).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`inline-block rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${
+                            c.status === "PENDING"
+                              ? "bg-amber-50 border border-amber-200 text-amber-800"
+                              : c.status === "CONTACTED"
+                              ? "bg-emerald-50 border border-emerald-200 text-emerald-800"
+                              : "bg-slate-100 border border-slate-200 text-slate-500"
+                          }`}>
+                            {c.status}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-right">
+                          <div className="flex items-center justify-end gap-1.5 animate-fade-in">
+                            {c.status !== "CONTACTED" && (
+                              <button
+                                onClick={() => handleUpdateConsultationStatus(c.id, "CONTACTED")}
+                                className="rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1.5 border border-emerald-200 uppercase tracking-wider text-[10px] transition cursor-pointer"
+                                title="Mark as Contacted"
+                              >
+                                Mark Contacted
+                              </button>
+                            )}
+                            {c.status !== "ARCHIVED" && (
+                              <button
+                                onClick={() => handleUpdateConsultationStatus(c.id, "ARCHIVED")}
+                                className="rounded bg-slate-50 hover:bg-slate-100 text-slate-600 font-bold px-2.5 py-1.5 border border-slate-200 uppercase tracking-wider text-[10px] transition cursor-pointer"
+                                title="Archive Request"
+                              >
+                                Archive
+                              </button>
+                            )}
+                            {c.status !== "PENDING" && (
+                              <button
+                                onClick={() => handleUpdateConsultationStatus(c.id, "PENDING")}
+                                className="rounded bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold px-2.5 py-1.5 border border-amber-200 uppercase tracking-wider text-[10px] transition cursor-pointer"
+                                title="Mark as Pending"
+                              >
+                                Reset Pending
+                              </button>
+                            )}
+                            <button
+                              onClick={() => handleDeleteConsultation(c.id)}
+                              className="rounded p-1.5 border border-transparent text-slate-400 hover:border-slate-200 hover:bg-slate-50 hover:text-red-600 transition cursor-pointer"
+                              title="Delete Record"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* ================= USER MANAGEMENT EDITOR ================= */}
       {activeTab === "users" && currentUser?.role === "ADMIN" && (
         <div className="space-y-6">
@@ -1761,6 +2389,179 @@ export default function AdminPage() {
               </button>
               <button
                 onClick={handleUpdateGalleryItem}
+                disabled={saving}
+                className="rounded-lg bg-[#E8A428] px-5 py-2 text-xs font-bold uppercase text-white hover:bg-red-700 disabled:opacity-50"
+              >
+                {saving ? "Saving..." : "Save Changes"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= EDIT MODAL: WHY CHOOSE FEATURE ================= */}
+      {editingWhyChooseFeature && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b pb-3">
+              <h3 className="text-base font-extrabold uppercase text-slate-900">Edit Why Choose Feature</h3>
+              <button onClick={() => setEditingWhyChooseFeature(null)} className="text-slate-400 hover:text-slate-600">
+                <X size={18} />
+              </button>
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Feature Title</label>
+              <input
+                type="text"
+                value={editingWhyChooseFeature.title}
+                onChange={(e) => setEditingWhyChooseFeature({ ...editingWhyChooseFeature, title: e.target.value })}
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-xs text-slate-800 focus:outline-none"
+              />
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div>
+                <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Side Position</label>
+                <select
+                  value={editingWhyChooseFeature.side}
+                  onChange={(e) => setEditingWhyChooseFeature({ ...editingWhyChooseFeature, side: e.target.value })}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                >
+                  <option value="LEFT">LEFT</option>
+                  <option value="RIGHT">RIGHT</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Top Offset (e.g. 12%)</label>
+                <input
+                  type="text"
+                  value={editingWhyChooseFeature.topPos}
+                  onChange={(e) => setEditingWhyChooseFeature({ ...editingWhyChooseFeature, topPos: e.target.value })}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Display Order</label>
+                <input
+                  type="number"
+                  value={editingWhyChooseFeature.order}
+                  onChange={(e) => setEditingWhyChooseFeature({ ...editingWhyChooseFeature, order: parseInt(e.target.value) || 0 })}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Feature Description</label>
+              <textarea
+                value={editingWhyChooseFeature.desc}
+                onChange={(e) => setEditingWhyChooseFeature({ ...editingWhyChooseFeature, desc: e.target.value })}
+                rows={3}
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-xs text-slate-800 focus:outline-none"
+              />
+            </div>
+
+            <div className="flex justify-end gap-3 pt-3 border-t">
+              <button
+                onClick={() => setEditingWhyChooseFeature(null)}
+                className="rounded-lg border border-slate-300 px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleUpdateWhyChooseFeature}
+                disabled={saving}
+                className="rounded-lg bg-[#E8A428] px-5 py-2 text-xs font-bold uppercase text-white hover:bg-red-700 disabled:opacity-50"
+              >
+                {saving ? "Saving..." : "Save Changes"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= EDIT MODAL: MARQUEE ITEM ================= */}
+      {editingMarqueeItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b pb-3">
+              <h3 className="text-base font-extrabold uppercase text-slate-900">Edit Marquee Tag</h3>
+              <button onClick={() => setEditingMarqueeItem(null)} className="text-slate-400 hover:text-slate-600">
+                <X size={18} />
+              </button>
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tag Label Text</label>
+              <input
+                type="text"
+                value={editingMarqueeItem.label}
+                onChange={(e) => setEditingMarqueeItem({ ...editingMarqueeItem, label: e.target.value })}
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-xs text-slate-800 focus:outline-none"
+              />
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Icon Style</label>
+                <select
+                  value={editingMarqueeIsCustom ? "CUSTOM" : editingMarqueeItem.icon}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val === "CUSTOM") {
+                      setEditingMarqueeIsCustom(true);
+                      if (!editingMarqueeCustomIcon) {
+                        setEditingMarqueeCustomIcon(editingMarqueeItem.icon);
+                      }
+                    } else {
+                      setEditingMarqueeIsCustom(false);
+                      setEditingMarqueeItem({ ...editingMarqueeItem, icon: val });
+                    }
+                  }}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                >
+                  <option value="Star">Star (★)</option>
+                  <option value="Dumbbell">Dumbbell (🏋)</option>
+                  <option value="Users">Users (👥)</option>
+                  <option value="Repeat">Repeat (🔁)</option>
+                  <option value="Trophy">Trophy (🏆)</option>
+                  <option value="CUSTOM">Custom Lucide Icon...</option>
+                </select>
+
+                {editingMarqueeIsCustom && (
+                  <input
+                    type="text"
+                    value={editingMarqueeCustomIcon}
+                    onChange={(e) => setEditingMarqueeCustomIcon(e.target.value)}
+                    className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-1.5 text-xs text-slate-800 focus:outline-none"
+                    placeholder="Lucide Icon name (e.g. Flame, Zap, Heart)"
+                  />
+                )}
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Display Order</label>
+                <input
+                  type="number"
+                  value={editingMarqueeItem.order}
+                  onChange={(e) => setEditingMarqueeItem({ ...editingMarqueeItem, order: parseInt(e.target.value) || 0 })}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 pt-3 border-t">
+              <button
+                onClick={() => setEditingMarqueeItem(null)}
+                className="rounded-lg border border-slate-300 px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleUpdateMarqueeItem}
                 disabled={saving}
                 className="rounded-lg bg-[#E8A428] px-5 py-2 text-xs font-bold uppercase text-white hover:bg-red-700 disabled:opacity-50"
               >

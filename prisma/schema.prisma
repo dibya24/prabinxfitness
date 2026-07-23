@@ -10,9 +10,9 @@ datasource db {
 model AdminUser {
   id        Int      @id @default(autoincrement())
   username  String   @unique
-  password  String   // Hashed with bcrypt
-  role      String   @default("ADMIN") // "ADMIN" or "CLIENT"
+  password  String
   createdAt DateTime @default(now())
+  role      String   @default("ADMIN")
 }
 
 model Seo {
@@ -41,15 +41,15 @@ model About {
   titleEnd        String   @db.Text
   mainHeading     String   @db.Text
   paragraph       String   @db.Text
-  certificate     String?  @db.Text
   updatedAt       DateTime @updatedAt
+  certificate     String?  @db.Text
 }
 
 model Stat {
-  id        Int     @id @default(autoincrement())
-  title     String
-  subtitle  String
-  dark      Boolean @default(false)
+  id       Int     @id @default(autoincrement())
+  title    String
+  subtitle String
+  dark     Boolean @default(false)
 }
 
 model ServiceSection {
@@ -67,7 +67,7 @@ model ServiceCard {
   title       String
   description String @db.Text
   icon        String
-  tags        String // Comma-separated tags
+  tags        String
 }
 
 model TestimonialSection {
@@ -89,12 +89,12 @@ model Testimonial {
 
 model GalleryItem {
   id       Int     @id @default(autoincrement())
-  type     String  // "image" or "video"
+  type     String
   src      String  @db.Text
-  poster   String? @db.Text // Optional video poster thumbnail
+  poster   String? @db.Text
   title    String
-  category String  // e.g. STRENGTH, CONDITIONING, COACHING, CLIENT STORY
-  size     String  // "sm", "md", "lg"
+  category String
+  size     String
 }
 
 model WhyChooseSection {
@@ -111,15 +111,15 @@ model WhyChooseFeature {
   id     Int    @id @default(autoincrement())
   title  String
   desc   String @db.Text
-  side   String // "LEFT" or "RIGHT"
-  topPos String // e.g. "12%", "39%", "60%", "87%"
+  side   String
+  topPos String
   order  Int    @default(0)
 }
 
 model MarqueeItem {
   id    Int    @id @default(autoincrement())
   label String
-  icon  String // e.g. "Star", "Dumbbell", "Users", "Repeat", "Trophy"
+  icon  String
   order Int    @default(0)
 }
 
@@ -131,4 +131,15 @@ model FooterSection {
   designerName   String   @db.Text
   designerUrl    String   @db.Text
   updatedAt      DateTime @updatedAt
+}
+
+model Consultation {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  phone     String
+  goal      String
+  message   String   @db.Text
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
 }

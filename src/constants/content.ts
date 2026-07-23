@@ -73,10 +73,6 @@ export const CONTENT = {
                 text: "Connect on WhatsApp",
                 link: "https://wa.me/971558663590",
             },
-            // {
-            //     id: 2,
-            //     text: "Make a Quick Call",
-            // },
         ],
 
 

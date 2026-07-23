@@ -35,20 +35,43 @@ const Form = () => {
         setLoading(true);
 
         try {
-            await emailjs.send(
-                process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-                process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-                {
-                    name: formData.name,
-                    email: formData.email,
-                    phone: formData.phone,
-                    goal: formData.goal,
-                    message: formData.message,
-                },
-                process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
-            );
+            // 1. Save consultation booking to database backend
+            const apiRes = await fetch("/api/consultation", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData),
+            });
 
-            alert("Message sent successfully!");
+            if (!apiRes.ok) {
+                const errData = await apiRes.json();
+                throw new Error(errData.error || "Failed to book consultation on server.");
+            }
+
+            // 2. Send email notification via EmailJS (if credentials exist)
+            const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+            const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+            const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+            if (serviceId && templateId && publicKey) {
+                try {
+                    await emailjs.send(
+                        serviceId,
+                        templateId,
+                        {
+                            name: formData.name,
+                            email: formData.email,
+                            phone: formData.phone,
+                            goal: formData.goal,
+                            message: formData.message,
+                        },
+                        publicKey
+                    );
+                } catch (emailErr) {
+                    console.error("EmailJS sending error:", emailErr);
+                }
+            }
+
+            alert("Your free consultation request has been booked successfully!");
 
             setFormData({
                 name: "",
@@ -57,9 +80,9 @@ const Form = () => {
                 goal: "",
                 message: "",
             });
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
-            alert("Failed to send message.");
+            alert(error.message || "Failed to book consultation.");
         } finally {
             setLoading(false);
         }

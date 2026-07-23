@@ -1,21 +1,13 @@
 "use client";
 
 import Marquee from "react-fast-marquee";
-import { Star, Dumbbell, Users, Repeat, Trophy } from "lucide-react";
+import * as Lucide from "lucide-react";
 
 type MarqueeItemData = {
   id: number;
   label: string;
   icon: string;
   order: number;
-};
-
-const marqueeIcons: Record<string, React.ElementType> = {
-  Star,
-  Dumbbell,
-  Users,
-  Repeat,
-  Trophy,
 };
 
 function MarqueeItems({
@@ -28,7 +20,8 @@ function MarqueeItems({
   return (
     <div className="flex items-center">
       {items.map((item, index) => {
-        const Icon = marqueeIcons[item.icon] || Star;
+        const IconComponent = (Lucide as any)[item.icon];
+        const Icon = IconComponent && typeof IconComponent === "function" ? IconComponent : Lucide.Star;
         return (
           <div key={index} className="flex items-center gap-3 px-8 shrink-0">
             <Icon className={`h-5 w-5 ${textColor}`} strokeWidth={1.5} />
