@@ -4,6 +4,36 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { LogOut, Home, Shield } from "lucide-react";
+import { Oswald, Poppins, Bebas_Neue, Roboto_Condensed } from "next/font/google";
+import "../globals.css";
+
+const oswald = Oswald({
+  subsets: ["latin"],
+  variable: "--font-oswald",
+  weight: ["200", "300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  variable: "--font-poppins",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
+});
+
+const bebasNeue = Bebas_Neue({
+  subsets: ["latin"],
+  variable: "--font-bebas",
+  weight: "400",
+  display: "swap",
+});
+
+const robotoCondensed = Roboto_Condensed({
+  subsets: ["latin"],
+  variable: "--font-roboto-condensed",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
+});
 
 export default function AdminLayout({
   children,
@@ -61,7 +91,14 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-slate-800">
+    <div className={`
+      ${oswald.variable}
+      ${poppins.variable}
+      ${bebasNeue.variable}
+      ${robotoCondensed.variable}
+      min-h-screen flex flex-col bg-[#FAF9F6] text-slate-800
+    `}
+    >
       {/* Admin Navbar */}
       <header className="sticky top-0 z-40 w-full border-b border-gray-200 bg-white shadow-sm">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">

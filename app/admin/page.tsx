@@ -21,7 +21,7 @@ const SERVICE_ICONS = [
   { label: "Heart (Health & Wellness)", value: "Heart" },
   { label: "Award (Certification)", value: "Award" },
   { label: "Shield Check (Safety & Form)", value: "ShieldCheck" },
-  { label: "Layers (Custom Programming)", value: "Layers" },  
+  { label: "Layers (Custom Programming)", value: "Layers" },
   { label: "Video Clip", value: "Video" },
 ];
 
@@ -412,10 +412,12 @@ export default function AdminPage() {
     <div className="mx-auto max-w-7xl px-6 lg:px-8 pb-16">
       {/* Feedback Banner */}
       {message && (
-        <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-lg px-4 py-3 shadow-lg border text-sm font-medium transition-all ${message.type === "success"
+        <div
+          style={{ fontFamily: "var(--font-oswald)" }}
+          className={`fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-lg px-4 py-3 shadow-lg border text-sm font-medium transition-all ${message.type === "success"
             ? "bg-emerald-50 border-emerald-200 text-emerald-800"
             : "bg-red-50 border-red-200 text-red-800"
-          }`}>
+            }`}>
           {message.type === "success" ? <CheckCircle size={18} /> : <AlertCircle size={18} />}
           <span>{message.text}</span>
         </div>
@@ -423,8 +425,12 @@ export default function AdminPage() {
 
       {/* Header section */}
       <div className="mb-8">
-        <p className="text-[11px] font-bold uppercase tracking-[3px] text-red-600">Command Center</p>
-        <h2 className="text-4xl font-extrabold tracking-tight text-slate-900 uppercase mt-1">Admin Dashboard</h2>
+        <p
+          style={{ fontFamily: "var(--font-poppins)" }}
+          className="text-[11px] font-bold uppercase tracking-[3px] text-[#E8A428]">Command Center</p>
+        <h2
+          style={{ fontFamily: "var(--font-oswald)" }}
+          className="text-4xl font-extrabold tracking-tight text-slate-900 uppercase mt-1">Admin Dashboard</h2>
       </div>
 
       {/* Navigation tabs */}
@@ -437,9 +443,10 @@ export default function AdminPage() {
                 setActiveTab(tab.id);
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
+              style={{ fontFamily: "var(--font-poppins)" }}
               className={`pb-4 text-sm font-semibold uppercase tracking-wider transition-all border-b-2 cursor-pointer ${activeTab === tab.id
-                  ? "border-red-600 text-red-600"
-                  : "border-transparent text-slate-400 hover:text-slate-600 hover:border-slate-300"
+                ? "border-[#E8A428] text-[#E8A428]"
+                : "border-transparent text-slate-400 hover:text-slate-600 hover:border-slate-300"
                 }`}
             >
               {tab.label}
@@ -455,8 +462,12 @@ export default function AdminPage() {
             onClick={() => setActiveTab("hero")}
             className="group cursor-pointer rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300"
           >
-            <p className="text-[10px] font-bold uppercase tracking-[2px] text-red-600 mb-1">Manage</p>
-            <h3 className="text-xl font-extrabold text-slate-900 uppercase">Hero Section</h3>
+            <p className="text-[10px] font-bold uppercase tracking-[2px] text-[#E8A428] mb-1">Manage</p>
+            <h3
+              style={{ fontFamily: "var(--font-oswald)" }}
+              className="text-xl font-extrabold text-slate-900 uppercase">
+              Hero Section
+            </h3>
             <p className="mt-2 text-xs leading-relaxed text-slate-500">
               Update the main headline, subtitle, description, and hero banner image of Prabin.
             </p>
@@ -466,8 +477,12 @@ export default function AdminPage() {
             onClick={() => setActiveTab("about")}
             className="group cursor-pointer rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300"
           >
-            <p className="text-[10px] font-bold uppercase tracking-[2px] text-red-600 mb-1">Manage</p>
-            <h3 className="text-xl font-extrabold text-slate-900 uppercase">About & Stats</h3>
+            <p className="text-[10px] font-bold uppercase tracking-[2px] text-[#E8A428] mb-1">Manage</p>
+            <h3
+              style={{ fontFamily: "var(--font-oswald)" }}
+              className="text-xl font-extrabold text-slate-900 uppercase">
+              About & Stats
+            </h3>
             <p className="mt-2 text-xs leading-relaxed text-slate-500">
               Modify the story heading, biography description, and gym instructor certification stats.
             </p>
@@ -477,7 +492,7 @@ export default function AdminPage() {
             onClick={() => setActiveTab("services")}
             className="group cursor-pointer rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300"
           >
-            <p className="text-[10px] font-bold uppercase tracking-[2px] text-red-600 mb-1">Manage</p>
+            <p className="text-[10px] font-bold uppercase tracking-[2px] text-[#E8A428] mb-1">Manage</p>
             <h3 className="text-xl font-extrabold text-slate-900 uppercase">Services ({services.length})</h3>
             <p className="mt-2 text-xs leading-relaxed text-slate-500">
               Add, edit, or remove personal training and remote coaching packages, titles, features, and icons.
@@ -488,8 +503,12 @@ export default function AdminPage() {
             onClick={() => setActiveTab("testimonials")}
             className="group cursor-pointer rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300"
           >
-            <p className="text-[10px] font-bold uppercase tracking-[2px] text-red-600 mb-1">Manage</p>
-            <h3 className="text-xl font-extrabold text-slate-900 uppercase">Testimonials ({testimonials.length})</h3>
+            <p className="text-[10px] font-bold uppercase tracking-[2px] text-[#E8A428] mb-1">Manage</p>
+            <h3
+              style={{ fontFamily: "var(--font-oswald)" }}
+              className="text-xl font-extrabold text-slate-900 uppercase">
+              Testimonials ({testimonials.length})
+            </h3>
             <p className="mt-2 text-xs leading-relaxed text-slate-500">
               Add, edit, or remove client feedback reviews, transformations, and location stories.
             </p>
@@ -499,8 +518,12 @@ export default function AdminPage() {
             onClick={() => setActiveTab("gallery")}
             className="group cursor-pointer rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300"
           >
-            <p className="text-[10px] font-bold uppercase tracking-[2px] text-red-600 mb-1">Manage</p>
-            <h3 className="text-xl font-extrabold text-slate-900 uppercase">Gallery ({galleryItems.length})</h3>
+            <p className="text-[10px] font-bold uppercase tracking-[2px] text-[#E8A428] mb-1">Manage</p>
+            <h3
+              style={{ fontFamily: "var(--font-oswald)" }}
+              className="text-xl font-extrabold text-slate-900 uppercase">
+              Gallery ({galleryItems.length})
+            </h3>
             <p className="mt-2 text-xs leading-relaxed text-slate-500">
               Add, edit, or remove workout videos and transformation photos displayed in the slider.
             </p>
@@ -510,8 +533,12 @@ export default function AdminPage() {
             onClick={() => setActiveTab("seo")}
             className="group cursor-pointer rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300"
           >
-            <p className="text-[10px] font-bold uppercase tracking-[2px] text-red-600 mb-1">Manage</p>
-            <h3 className="text-xl font-extrabold text-slate-900 uppercase">SEO Settings</h3>
+            <p className="text-[10px] font-bold uppercase tracking-[2px] text-[#E8A428] mb-1">Manage</p>
+            <h3
+              style={{ fontFamily: "var(--font-oswald)" }}
+              className="text-xl font-extrabold text-slate-900 uppercase">
+              SEO Settings
+            </h3>
             <p className="mt-2 text-xs leading-relaxed text-slate-500">
               Optimize search indexability. Edit metadata title, page descriptions, and keywords.
             </p>
@@ -1427,7 +1454,7 @@ export default function AdminPage() {
 
           <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
             <h3 className="text-lg font-bold text-slate-900 uppercase mb-6 pb-2 border-b border-slate-100">Manage User Accounts ({users.length})</h3>
-            
+
             {loadingUsers ? (
               <div className="flex h-32 items-center justify-center">
                 <RefreshCw className="h-6 w-6 animate-spin text-red-600 mx-auto" />
@@ -1451,11 +1478,10 @@ export default function AdminPage() {
                       <tr key={u.id} className="hover:bg-slate-50/50 transition">
                         <td className="px-6 py-4 font-bold text-slate-900">{u.username}</td>
                         <td className="px-6 py-4">
-                          <span className={`inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider ${
-                            u.role === "ADMIN" 
-                              ? "bg-red-50 text-red-700 border border-red-100" 
-                              : "bg-slate-100 text-slate-700 border border-slate-200"
-                          }`}>
+                          <span className={`inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider ${u.role === "ADMIN"
+                            ? "bg-red-50 text-red-700 border border-red-100"
+                            : "bg-slate-100 text-slate-700 border border-slate-200"
+                            }`}>
                             {u.role === "ADMIN" ? "Admin" : "Client"}
                           </span>
                         </td>
