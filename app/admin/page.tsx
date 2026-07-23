@@ -416,7 +416,7 @@ export default function AdminPage() {
           style={{ fontFamily: "var(--font-oswald)" }}
           className={`fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-lg px-4 py-3 shadow-lg border text-sm font-medium transition-all ${message.type === "success"
             ? "bg-emerald-50 border-emerald-200 text-emerald-800"
-            : "bg-red-50 border-red-200 text-red-800"
+            : "bg-red-50 border-red-200 text-[#E8A428]"
             }`}>
           {message.type === "success" ? <CheckCircle size={18} /> : <AlertCircle size={18} />}
           <span>{message.text}</span>
@@ -493,7 +493,11 @@ export default function AdminPage() {
             className="group cursor-pointer rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300"
           >
             <p className="text-[10px] font-bold uppercase tracking-[2px] text-[#E8A428] mb-1">Manage</p>
-            <h3 className="text-xl font-extrabold text-slate-900 uppercase">Services ({services.length})</h3>
+            <h3
+              style={{ fontFamily: "var(--font-oswald)" }}
+              className="text-xl font-extrabold text-slate-900 uppercase">
+              Services ({services.length})
+            </h3>
             <p className="mt-2 text-xs leading-relaxed text-slate-500">
               Add, edit, or remove personal training and remote coaching packages, titles, features, and icons.
             </p>
@@ -558,7 +562,7 @@ export default function AdminPage() {
                 value={hero.title}
                 onChange={(e) => setHero({ ...hero, title: e.target.value })}
                 rows={2}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                 placeholder="e.g. Strength forged in Mountains. refined in the desert."
               />
             </div>
@@ -588,7 +592,7 @@ export default function AdminPage() {
                       value={hero.image}
                       onChange={(e) => setHero({ ...hero, image: e.target.value })}
                       placeholder="Or enter image URL"
-                      className="flex-grow rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs text-slate-600 focus:border-red-500 focus:outline-none"
+                      className="flex-grow rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs text-slate-600 focus:border-[#E8A428] focus:outline-none"
                     />
                   </div>
                 </div>
@@ -600,7 +604,7 @@ export default function AdminPage() {
                   type="text"
                   value={hero.subtitle}
                   onChange={(e) => setHero({ ...hero, subtitle: e.target.value })}
-                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                   placeholder="UK-Certified Personal Trainer | Dubai, UAE"
                 />
               </div>
@@ -612,7 +616,7 @@ export default function AdminPage() {
                 value={hero.description}
                 onChange={(e) => setHero({ ...hero, description: e.target.value })}
                 rows={4}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                 placeholder="I'm Prabin, a UK-certified Personal Trainer helping people build..."
               />
             </div>
@@ -621,7 +625,7 @@ export default function AdminPage() {
               <button
                 onClick={() => handleSave("hero", hero)}
                 disabled={saving}
-                className="flex items-center gap-2 cursor-pointer rounded-lg bg-red-600 px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-red-700 transition disabled:opacity-50"
+                className="flex items-center gap-2 cursor-pointer rounded-lg bg-[#E8A428] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#bf9e61] transition disabled:opacity-50"
               >
                 <Save size={14} />
                 <span>{saving ? "Saving Changes..." : "Save Changes"}</span>
@@ -645,7 +649,7 @@ export default function AdminPage() {
                     type="text"
                     value={about.backgroundTitle}
                     onChange={(e) => setAbout({ ...about, backgroundTitle: e.target.value })}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                   />
                 </div>
                 <div>
@@ -654,7 +658,7 @@ export default function AdminPage() {
                     type="text"
                     value={about.title}
                     onChange={(e) => setAbout({ ...about, title: e.target.value })}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                   />
                 </div>
               </div>
@@ -666,7 +670,7 @@ export default function AdminPage() {
                     type="text"
                     value={about.highlightText}
                     onChange={(e) => setAbout({ ...about, highlightText: e.target.value })}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                   />
                 </div>
                 <div>
@@ -675,7 +679,7 @@ export default function AdminPage() {
                     type="text"
                     value={about.titleEnd}
                     onChange={(e) => setAbout({ ...about, titleEnd: e.target.value })}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                   />
                 </div>
               </div>
@@ -686,7 +690,7 @@ export default function AdminPage() {
                   value={about.mainHeading}
                   onChange={(e) => setAbout({ ...about, mainHeading: e.target.value })}
                   rows={2}
-                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                 />
               </div>
 
@@ -696,7 +700,7 @@ export default function AdminPage() {
                   value={about.paragraph}
                   onChange={(e) => setAbout({ ...about, paragraph: e.target.value })}
                   rows={4}
-                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                 />
               </div>
 
@@ -704,7 +708,7 @@ export default function AdminPage() {
                 <button
                   onClick={() => handleSave("about", about)}
                   disabled={saving}
-                  className="flex items-center gap-2 cursor-pointer rounded-lg bg-red-600 px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-red-700 transition disabled:opacity-50"
+                  className="flex items-center gap-2 cursor-pointer rounded-lg bg-[#E8A428] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-red-700 transition disabled:opacity-50"
                 >
                   <Save size={14} />
                   <span>Save Page Texts</span>
@@ -724,7 +728,7 @@ export default function AdminPage() {
                       const updated = stats.filter((_, idx) => idx !== index);
                       setStats(updated);
                     }}
-                    className="absolute top-2 right-2 text-slate-400 hover:text-red-500 transition cursor-pointer"
+                    className="absolute top-2 right-2 text-slate-400 hover:text-[#E8A428] transition cursor-pointer"
                   >
                     <Trash2 size={14} />
                   </button>
@@ -767,7 +771,7 @@ export default function AdminPage() {
                       type="checkbox"
                       checked={newStat.dark}
                       onChange={(e) => setNewStat({ ...newStat, dark: e.target.checked })}
-                      className="rounded text-red-600"
+                      className="rounded text-[#E8A428]"
                     />
                     <span>Dark Colored Card</span>
                   </label>
@@ -791,7 +795,7 @@ export default function AdminPage() {
               <button
                 onClick={() => handleSave("stats", stats)}
                 disabled={saving}
-                className="flex items-center gap-2 cursor-pointer rounded-lg bg-red-600 px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-red-700 transition disabled:opacity-50"
+                className="flex items-center gap-2 cursor-pointer rounded-lg bg-[#E8A428] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-red-700 transition disabled:opacity-50"
               >
                 <Save size={14} />
                 <span>Save Stats List</span>
@@ -815,7 +819,7 @@ export default function AdminPage() {
                     type="text"
                     value={serviceSection.backgroundTitle}
                     onChange={(e) => setServiceSection({ ...serviceSection, backgroundTitle: e.target.value })}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                   />
                 </div>
                 <div>
@@ -824,7 +828,7 @@ export default function AdminPage() {
                     type="text"
                     value={serviceSection.title}
                     onChange={(e) => setServiceSection({ ...serviceSection, title: e.target.value })}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                   />
                 </div>
               </div>
@@ -836,7 +840,7 @@ export default function AdminPage() {
                     type="text"
                     value={serviceSection.highlightText}
                     onChange={(e) => setServiceSection({ ...serviceSection, highlightText: e.target.value })}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                   />
                 </div>
                 <div>
@@ -845,7 +849,7 @@ export default function AdminPage() {
                     type="text"
                     value={serviceSection.titleEnd}
                     onChange={(e) => setServiceSection({ ...serviceSection, titleEnd: e.target.value })}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                   />
                 </div>
               </div>
@@ -856,7 +860,7 @@ export default function AdminPage() {
                   value={serviceSection.description}
                   onChange={(e) => setServiceSection({ ...serviceSection, description: e.target.value })}
                   rows={2}
-                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                 />
               </div>
 
@@ -864,7 +868,7 @@ export default function AdminPage() {
                 <button
                   onClick={() => handleSave("services", { sectionInfo: serviceSection, cards: services }, "Services Section header updated!")}
                   disabled={saving}
-                  className="flex items-center gap-2 cursor-pointer rounded-lg bg-red-600 px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-red-700 transition disabled:opacity-50"
+                  className="flex items-center gap-2 cursor-pointer rounded-lg bg-[#E8A428] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-red-700 transition disabled:opacity-50"
                 >
                   <Save size={14} />
                   <span>Save Section Header</span>
@@ -894,13 +898,13 @@ export default function AdminPage() {
                       <button
                         onClick={() => handleDeleteService(c.id)}
                         title="Delete Service"
-                        className="rounded p-1.5 text-slate-500 hover:bg-white hover:text-red-600 border border-transparent hover:border-slate-200 transition cursor-pointer"
+                        className="rounded p-1.5 text-slate-500 hover:bg-white hover:text-[#E8A428] border border-transparent hover:border-slate-200 transition cursor-pointer"
                       >
                         <Trash2 size={14} />
                       </button>
                     </div>
 
-                    <div className="bg-red-50 border border-red-100 rounded-lg p-2 text-red-600 w-10 h-10 flex items-center justify-center font-bold text-xs uppercase mb-3">
+                    <div className="bg-red-50 border border-red-100 rounded-lg p-2 text-[#E8A428] w-10 h-10 flex items-center justify-center font-bold text-xs uppercase mb-3">
                       {c.icon.slice(0, 3)}
                     </div>
                     <p className="text-base font-bold text-slate-900 uppercase pr-14">{c.title}</p>
@@ -921,7 +925,7 @@ export default function AdminPage() {
             {/* Add service form */}
             <div className="rounded-xl border border-dashed border-gray-300 p-6 bg-slate-50/50">
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-4 flex items-center gap-1.5">
-                <Plus size={14} className="text-red-600" />
+                <Plus size={14} className="text-[#E8A428]" />
                 <span>Add New Service Offering</span>
               </h4>
 
@@ -1003,7 +1007,7 @@ export default function AdminPage() {
                     type="text"
                     value={testimonialSection.backgroundTitle}
                     onChange={(e) => setTestimonialSection({ ...testimonialSection, backgroundTitle: e.target.value })}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                   />
                 </div>
                 <div>
@@ -1012,7 +1016,7 @@ export default function AdminPage() {
                     type="text"
                     value={testimonialSection.title}
                     onChange={(e) => setTestimonialSection({ ...testimonialSection, title: e.target.value })}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                   />
                 </div>
               </div>
@@ -1024,7 +1028,7 @@ export default function AdminPage() {
                     type="text"
                     value={testimonialSection.highlightText}
                     onChange={(e) => setTestimonialSection({ ...testimonialSection, highlightText: e.target.value })}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                   />
                 </div>
                 <div>
@@ -1033,7 +1037,7 @@ export default function AdminPage() {
                     type="text"
                     value={testimonialSection.titleEnd}
                     onChange={(e) => setTestimonialSection({ ...testimonialSection, titleEnd: e.target.value })}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                   />
                 </div>
               </div>
@@ -1044,7 +1048,7 @@ export default function AdminPage() {
                   value={testimonialSection.description}
                   onChange={(e) => setTestimonialSection({ ...testimonialSection, description: e.target.value })}
                   rows={2}
-                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                 />
               </div>
 
@@ -1052,7 +1056,7 @@ export default function AdminPage() {
                 <button
                   onClick={() => handleSave("testimonials", { testInfo: testimonialSection, reviews: testimonials }, "Testimonials Section header updated!")}
                   disabled={saving}
-                  className="flex items-center gap-2 cursor-pointer rounded-lg bg-red-600 px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-red-700 transition disabled:opacity-50"
+                  className="flex items-center gap-2 cursor-pointer rounded-lg bg-[#E8A428] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-red-700 transition disabled:opacity-50"
                 >
                   <Save size={14} />
                   <span>Save Section Header</span>
@@ -1079,7 +1083,7 @@ export default function AdminPage() {
                     <button
                       onClick={() => handleDeleteTestimonial(r.id)}
                       title="Delete Review"
-                      className="rounded p-1.5 text-slate-500 hover:bg-white hover:text-red-600 border border-transparent hover:border-slate-200 transition cursor-pointer"
+                      className="rounded p-1.5 text-slate-500 hover:bg-white hover:text-[#E8A428] border border-transparent hover:border-slate-200 transition cursor-pointer"
                     >
                       <Trash2 size={15} />
                     </button>
@@ -1097,7 +1101,7 @@ export default function AdminPage() {
             {/* Add testimonial form */}
             <div className="rounded-xl border border-dashed border-gray-300 p-6 bg-slate-50/50">
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-4 flex items-center gap-1.5">
-                <Plus size={14} className="text-red-600" />
+                <Plus size={14} className="text-[#E8A428]" />
                 <span>Create New Testimonial Card</span>
               </h4>
 
@@ -1173,7 +1177,7 @@ export default function AdminPage() {
                     <button
                       onClick={() => handleDeleteGalleryItem(g.id)}
                       title="Delete Media"
-                      className="text-slate-600 bg-white border border-slate-200 hover:text-red-600 rounded p-1.5 shadow-sm cursor-pointer"
+                      className="text-slate-600 bg-white border border-slate-200 hover:text-[#E8A428] rounded p-1.5 shadow-sm cursor-pointer"
                     >
                       <Trash2 size={13} />
                     </button>
@@ -1194,7 +1198,7 @@ export default function AdminPage() {
                   <div className="mt-3">
                     <p className="text-xs font-bold text-slate-900 truncate uppercase pr-12">{g.title}</p>
                     <div className="mt-2 flex items-center justify-between">
-                      <span className="bg-red-50 rounded px-2 py-0.5 text-[9px] uppercase font-bold text-red-600 border border-red-100">
+                      <span className="bg-red-50 rounded px-2 py-0.5 text-[9px] uppercase font-bold text-[#E8A428] border border-red-100">
                         {g.category}
                       </span>
                       <span className="text-[9px] uppercase font-bold text-slate-500">
@@ -1209,7 +1213,7 @@ export default function AdminPage() {
             {/* Add gallery item form */}
             <div className="rounded-xl border border-dashed border-gray-300 p-6 bg-slate-50/50">
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-4 flex items-center gap-1.5">
-                <Plus size={14} className="text-red-600" />
+                <Plus size={14} className="text-[#E8A428]" />
                 <span>Add New Media to Gallery</span>
               </h4>
 
@@ -1354,7 +1358,7 @@ export default function AdminPage() {
                 type="text"
                 value={seo.title}
                 onChange={(e) => setSeo({ ...seo, title: e.target.value })}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:[#E8A428] focus:outline-none"
                 placeholder="PrabinXFitness | UK Certified Personal Trainer in Dubai"
               />
               <p className="text-[10px] text-slate-400 mt-1">Recommended length: 50-60 characters. Shows up in browser tabs and search results.</p>
@@ -1366,7 +1370,7 @@ export default function AdminPage() {
                 value={seo.description}
                 onChange={(e) => setSeo({ ...seo, description: e.target.value })}
                 rows={3}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                 placeholder="UK-certified Level 2 Gym Instructor and Level 3 Personal Trainer helping clients..."
               />
               <p className="text-[10px] text-slate-400 mt-1">Recommended length: 150-160 characters. Summarizes page content in Google search listings.</p>
@@ -1378,7 +1382,7 @@ export default function AdminPage() {
                 value={seo.keywords}
                 onChange={(e) => setSeo({ ...seo, keywords: e.target.value })}
                 rows={3}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                 placeholder="Personal Trainer Dubai, Weight Loss Coach Dubai, Gym Transformation"
               />
             </div>
@@ -1387,7 +1391,7 @@ export default function AdminPage() {
               <button
                 onClick={() => handleSave("seo", seo)}
                 disabled={saving}
-                className="flex items-center gap-2 cursor-pointer rounded-lg bg-red-600 px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-red-700 transition disabled:opacity-50"
+                className="flex items-center gap-2 cursor-pointer rounded-lg bg-[#E8A428] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-red-700 transition disabled:opacity-50"
               >
                 <Save size={14} />
                 <span>Save SEO Tags</span>
@@ -1411,7 +1415,7 @@ export default function AdminPage() {
                     required
                     value={newUserForm.username}
                     onChange={(e) => setNewUserForm({ ...newUserForm, username: e.target.value })}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                     placeholder="e.g. client1"
                   />
                 </div>
@@ -1422,7 +1426,7 @@ export default function AdminPage() {
                     required
                     value={newUserForm.password}
                     onChange={(e) => setNewUserForm({ ...newUserForm, password: e.target.value })}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                     placeholder="Minimum 6 characters"
                   />
                 </div>
@@ -1431,7 +1435,7 @@ export default function AdminPage() {
                   <select
                     value={newUserForm.role}
                     onChange={(e) => setNewUserForm({ ...newUserForm, role: e.target.value })}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-red-500 focus:outline-none"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
                   >
                     <option value="CLIENT">Client Editor</option>
                     <option value="ADMIN">System Admin</option>
@@ -1443,7 +1447,7 @@ export default function AdminPage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="flex items-center gap-2 cursor-pointer rounded-lg bg-red-600 px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-red-700 transition disabled:opacity-50"
+                  className="flex items-center gap-2 cursor-pointer rounded-lg bg-[#E8A428] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-red-700 transition disabled:opacity-50"
                 >
                   <Plus size={14} />
                   <span>Create User</span>
@@ -1457,7 +1461,7 @@ export default function AdminPage() {
 
             {loadingUsers ? (
               <div className="flex h-32 items-center justify-center">
-                <RefreshCw className="h-6 w-6 animate-spin text-red-600 mx-auto" />
+                <RefreshCw className="h-6 w-6 animate-spin text-[#E8A428] mx-auto" />
                 <p className="ml-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Loading user list...</p>
               </div>
             ) : users.length === 0 ? (
@@ -1479,7 +1483,7 @@ export default function AdminPage() {
                         <td className="px-6 py-4 font-bold text-slate-900">{u.username}</td>
                         <td className="px-6 py-4">
                           <span className={`inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider ${u.role === "ADMIN"
-                            ? "bg-red-50 text-red-700 border border-red-100"
+                            ? "bg-red-50 text-[#E8A428] border border-red-100"
                             : "bg-slate-100 text-slate-700 border border-slate-200"
                             }`}>
                             {u.role === "ADMIN" ? "Admin" : "Client"}
@@ -1495,7 +1499,7 @@ export default function AdminPage() {
                             <button
                               onClick={() => handleDeleteUser(u.id, u.username)}
                               title="Delete User"
-                              className="rounded p-1.5 text-slate-500 hover:bg-red-50 hover:text-red-600 border border-transparent hover:border-red-100 transition cursor-pointer"
+                              className="rounded p-1.5 text-slate-500 hover:bg-red-50 hover:text-[#E8A428] border border-transparent hover:border-red-100 transition cursor-pointer"
                             >
                               <Trash2 size={16} />
                             </button>
@@ -1575,7 +1579,7 @@ export default function AdminPage() {
               <button
                 onClick={handleUpdateService}
                 disabled={saving}
-                className="rounded-lg bg-red-600 px-5 py-2 text-xs font-bold uppercase text-white hover:bg-red-700 disabled:opacity-50"
+                className="rounded-lg bg-[#E8A428] px-5 py-2 text-xs font-bold uppercase text-white hover:bg-red-700 disabled:opacity-50"
               >
                 {saving ? "Saving..." : "Save Changes"}
               </button>
@@ -1636,7 +1640,7 @@ export default function AdminPage() {
               <button
                 onClick={handleUpdateTestimonial}
                 disabled={saving}
-                className="rounded-lg bg-red-600 px-5 py-2 text-xs font-bold uppercase text-white hover:bg-red-700 disabled:opacity-50"
+                className="rounded-lg bg-[#E8A428] px-5 py-2 text-xs font-bold uppercase text-white hover:bg-red-700 disabled:opacity-50"
               >
                 {saving ? "Saving..." : "Save Changes"}
               </button>
@@ -1758,7 +1762,7 @@ export default function AdminPage() {
               <button
                 onClick={handleUpdateGalleryItem}
                 disabled={saving}
-                className="rounded-lg bg-red-600 px-5 py-2 text-xs font-bold uppercase text-white hover:bg-red-700 disabled:opacity-50"
+                className="rounded-lg bg-[#E8A428] px-5 py-2 text-xs font-bold uppercase text-white hover:bg-red-700 disabled:opacity-50"
               >
                 {saving ? "Saving..." : "Save Changes"}
               </button>

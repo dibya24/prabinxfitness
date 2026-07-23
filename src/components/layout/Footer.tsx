@@ -15,7 +15,7 @@ type FooterSectionData = {
 
 const Footer = ({ data }: { data?: FooterSectionData | null }) => {
     const pathname = usePathname();
-    
+
     if (pathname?.startsWith("/admin") || pathname?.startsWith("/login")) {
         return null;
     }
