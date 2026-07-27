@@ -139,12 +139,18 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const footerData = await prisma.footerSection.findFirst();
+  let footerData = null;
+  try {
+    footerData = await prisma.footerSection.findFirst();
+  } catch (error) {
+    console.error("Failed to fetch footer section:", error);
+  }
 
   return (
     <html
       lang="en"
       className={`${oswald.variable} ${poppins.variable} ${bebasNeue.variable} ${robotoCondensed.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-black">
         <AOSProvider>

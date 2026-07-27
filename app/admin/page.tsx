@@ -1267,9 +1267,8 @@ export default function AdminPage() {
                     </div>
 
                     <div className="mb-2 flex items-center gap-2">
-                      <span className={`inline-block rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
-                        f.side === "LEFT" ? "bg-blue-100 text-blue-800" : "bg-purple-100 text-purple-800"
-                      }`}>
+                      <span className={`inline-block rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${f.side === "LEFT" ? "bg-blue-100 text-blue-800" : "bg-purple-100 text-purple-800"
+                        }`}>
                         {f.side} Side
                       </span>
                       <span className="text-[10px] font-semibold text-slate-400">Position: {f.topPos}</span>
@@ -1971,13 +1970,12 @@ export default function AdminPage() {
                           })}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`inline-block rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${
-                            c.status === "PENDING"
-                              ? "bg-amber-50 border border-amber-200 text-amber-800"
-                              : c.status === "CONTACTED"
+                          <span className={`inline-block rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${c.status === "PENDING"
+                            ? "bg-amber-50 border border-amber-200 text-amber-800"
+                            : c.status === "CONTACTED"
                               ? "bg-emerald-50 border border-emerald-200 text-emerald-800"
                               : "bg-slate-100 border border-slate-200 text-slate-500"
-                          }`}>
+                            }`}>
                             {c.status}
                           </span>
                         </td>
