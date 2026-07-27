@@ -34,7 +34,7 @@ const Footer = ({ data }: { data?: FooterSectionData | null }) => {
                 <h2
                     data-aos="fade-down"
                     data-aos-duration="1000"
-                    style={{ fontFamily: "var(--font-oswald)" }}
+                    style={{ fontFamily: "var(--font-oswald)" }} //
                     className="text-center uppercase font-medium leading-none text-[48px] sm:text-[70px] md:text-[100px] lg:text-[140px] xl:text-[180px] bg-gradient-to-b from-[#E8A428] to-[#141414] bg-clip-text text-transparent"
                 >
                     {footer.backgroundText}
