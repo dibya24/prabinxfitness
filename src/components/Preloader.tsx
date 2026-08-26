@@ -8,13 +8,14 @@ export default function Preloader() {
     const pathname = usePathname();
     const [progress, setProgress] = useState(0);
     const [hide, setHide] = useState(false);
-
-    if (pathname?.startsWith("/admin") || pathname?.startsWith("/login")) {
-        return null;
-    }
-
+    const shouldSkipPreloader = pathname?.startsWith("/admin") || pathname?.startsWith("/login");
 
     useEffect(() => {
+        if (shouldSkipPreloader) {
+            setHide(false);
+            setProgress(0);
+            return;
+        }
 
         if (
             typeof window !== "undefined" &&
@@ -79,9 +80,11 @@ export default function Preloader() {
         return () => clearInterval(interval);
 
 
-    }, []);
+    }, [shouldSkipPreloader]);
 
-
+    if (shouldSkipPreloader) {
+        return null;
+    }
 
     return (
 

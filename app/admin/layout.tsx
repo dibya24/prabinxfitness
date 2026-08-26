@@ -110,13 +110,13 @@ export default function AdminLayout({
 
           {/* Right Area: Admin user details and Logout */}
           <div className="flex items-center gap-4">
-            <Link
+            <a
               href="/"
               className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-slate-500 hover:text-black transition duration-300"
             >
               <Home size={15} />
               <span className="hidden sm:inline">View Site</span>
-            </Link>
+            </a>
 
             <span className="h-4 w-px bg-gray-200"></span>
 
