@@ -9,6 +9,8 @@ import {
 } from "lucide-react";
 import { Stat, ServiceCard, Testimonial, GalleryItem, WhyChooseSection, WhyChooseFeature, MarqueeItem, Consultation } from "@prisma/client";
 
+// this is test
+
 const SERVICE_ICONS = [
   { label: "Dumbbell (Fitness / Gym)", value: "Dumbbell" },
   { label: "Laptop / Mobile (Remote Coaching)", value: "MonitorSmartphone" },
