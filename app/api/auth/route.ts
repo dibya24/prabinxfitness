@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/src/lib/prisma";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET || "prabinxfitness_jwt_secret_key_123456";
@@ -38,7 +38,11 @@ export async function GET() {
     }
   } catch (error) {
     console.error("Auth status error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error",
+      details: error instanceof Error ? error.message : String(error),
+     }, 
+     { status: 500 });
   }
 }
 
@@ -110,7 +114,41 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "Invalid username or password" }, { status: 401 });
       }
 
-      const isPasswordValid = await bcrypt.compare(password, user.password);
+      let isPasswordValid = false;
+      const storedPassword = user.password || "";
+
+      // Check if the stored password is a valid bcrypt hash (starts with $2a$, $2b$, or $2y$)
+      const isBcryptHash = storedPassword.startsWith("$2a$") || 
+                           storedPassword.startsWith("$2b$") || 
+                           storedPassword.startsWith("$2y$");
+
+      if (isBcryptHash) {
+        try {
+          isPasswordValid = await bcrypt.compare(password, storedPassword);
+        } catch (bcryptError) {
+          console.error("Bcrypt comparison failed, trying plaintext fallback:", bcryptError);
+          isPasswordValid = (password === storedPassword);
+        }
+      } else {
+        // Fallback for plaintext passwords (e.g. manually entered into the database)
+        isPasswordValid = (password === storedPassword);
+
+        // Automatically upgrade the plaintext password to a secure bcrypt hash on successful login
+        if (isPasswordValid && password) {
+          try {
+            const saltRounds = 10;
+            const newHash = await bcrypt.hash(password, saltRounds);
+            await prisma.adminUser.update({
+              where: { id: user.id },
+              data: { password: newHash },
+            });
+            console.log(`Successfully upgraded password hash for user: ${user.username}`);
+          } catch (upgradeError) {
+            console.error("Failed to upgrade plaintext password to bcrypt hash:", upgradeError);
+          }
+        }
+      }
+
       if (!isPasswordValid) {
         return NextResponse.json({ error: "Invalid username or password" }, { status: 401 });
       }
