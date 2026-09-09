@@ -120,6 +120,7 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Menu */}
+      {/* Mobile Menu */}
 
       <div
         className={`overflow-hidden transition-all duration-300 md:hidden ${open ? "max-h-[400px]" : "max-h-0"
