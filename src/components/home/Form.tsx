@@ -47,28 +47,27 @@ const Form = () => {
                 throw new Error(errData.error || "Failed to book consultation on server.");
             }
 
-            // 2. Send email notification via EmailJS (if credentials exist)
-            const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-            const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-            const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+            // 2. Send email notification via EmailJS (with fallback to ensure live builds never have undefined keys)
+            const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "service_zehioh9";
+            const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "template_nqodn7o";
+            const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "gnIcAx8fn5ltlzPJg";
 
-            if (serviceId && templateId && publicKey) {
-                try {
-                    await emailjs.send(
-                        serviceId,
-                        templateId,
-                        {
-                            name: formData.name,
-                            email: formData.email,
-                            phone: formData.phone,
-                            goal: formData.goal,
-                            message: formData.message,
-                        },
-                        publicKey
-                    );
-                } catch (emailErr: any) {
-                    console.error("EmailJS sending error:", emailErr?.text || emailErr?.message || emailErr);
-                }
+            try {
+                await emailjs.send(
+                    serviceId,
+                    templateId,
+                    {
+                        name: formData.name,
+                        email: formData.email,
+                        phone: formData.phone,
+                        goal: formData.goal,
+                        message: formData.message,
+                    },
+                    publicKey
+                );
+            } catch (emailErr: unknown) {
+                const err = emailErr as { text?: string; message?: string };
+                console.error("EmailJS sending error:", err?.text || err?.message || emailErr);
             }
 
             alert("Your free consultation request has been booked successfully!");
@@ -80,9 +79,10 @@ const Form = () => {
                 goal: "",
                 message: "",
             });
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const err = error as { message?: string };
             console.error(error);
-            alert(error.message || "Failed to book consultation.");
+            alert(err?.message || "Failed to book consultation.");
         } finally {
             setLoading(false);
         }

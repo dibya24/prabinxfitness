@@ -62,9 +62,9 @@ DATABASE_URL="mysql://yourusername_dbuser:your_password@localhost:3306/yourusern
 JWT_SECRET="prabinxfitness_jwt_secret_key_987654321_secure"
 
 # 3. EmailJS Credentials (For client consultation form submissions)
-NEXT_PUBLIC_EMAILJS_SERVICE_ID="service_1cd7ljo"
-NEXT_PUBLIC_EMAILJS_TEMPLATE_ID="template_43bdkre"
-NEXT_PUBLIC_EMAILJS_PUBLIC_KEY="PyVv1K7qfo0aKcLo5"
+NEXT_PUBLIC_EMAILJS_SERVICE_ID="service_zehioh9"
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID="template_nqodn7o"
+NEXT_PUBLIC_EMAILJS_PUBLIC_KEY="gnIcAx8fn5ltlzPJg"
 
 # 4. Optional Cloudinary Configuration (Uncomment & fill if using Cloudinary for media uploads)
 # If left blank, the app will fall back to local disk storage in /public/uploads/
