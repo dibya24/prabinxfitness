@@ -266,4 +266,90 @@ export const CONTENT = {
             },
         ],
     },
+
+    // ================= BEGINNER MISTAKES & SOLUTIONS SECTION ================= //
+    mistakes: {
+        heading: {
+            backgroundTitle: "COMMON ERRORS",
+            title: "MISTAKES TO",
+            highlightText: "AVOID",
+            titleEnd: "AS A BEGINNER",
+        },
+
+        description:
+            "Starting your fitness journey is exciting, but common pitfalls can stall your progress or lead to injury. Here are the most frequent beginner mistakes—and the exact, science-backed solutions to fix them.",
+
+        ctaText: "Stop guessing your workouts. Train with a proven, personalized plan built for your body.",
+        ctaButtonText: "Get Personalized Coaching",
+        ctaButtonLink: "https://wa.me/971558663590?text=Hi%20Prabin%2C%20I%20want%20to%20fix%20my%20workout%20routine%20and%20start%20personal%20training.",
+
+        items: [
+            {
+                id: "1",
+                tag: "FORM & TECHNIQUE",
+                title: "Ego Lifting & Sacrificing Form",
+                description:
+                    "Loading up heavy weights before mastering proper movement mechanics. Using momentum, swinging the torso, or hyperextending the lower back dramatically increases injury risk and robs tension from the target muscles.",
+                solution:
+                    "Drop the working weight by 30–40%. Focus on full range of motion, controlled 2-3 second eccentrics (lowering phase), and mind-muscle connection. Only add weight when you can execute every single repetition with flawless technique.",
+                coachTip: "Tension builds muscle; momentum only strains joints.",
+                order: 1,
+            },
+            {
+                id: "2",
+                tag: "PROGRAMMING",
+                title: "Program Hopping & Inconsistent Workouts",
+                description:
+                    "Changing routines every week based on viral social media videos. Without consistent exercise selection, your neuromuscular system cannot adapt, making true progressive overload and measurable strength gains impossible.",
+                solution:
+                    "Commit to a structured 8–12 week program designed around key compound lifts. Track every session's exercises, sets, reps, and weights in a logbook. Only progress the load or volume once you cleanly achieve your rep target.",
+                coachTip: "Repetition and progressive overload drive long-term transformation.",
+                order: 2,
+            },
+            {
+                id: "3",
+                tag: "NUTRITION",
+                title: "Extreme Starvation Diets or 'Dirty Bulking'",
+                description:
+                    "Slashing daily calories to extreme deficit levels to rush fat loss (sacrificing lean muscle and crashing hormones), or consuming unchecked junk food under the excuse of bulking (gaining mostly stubborn body fat).",
+                solution:
+                    "Calculate your baseline maintenance calories. Aim for a sensible 300–500 kcal deficit for fat loss, or a controlled 200–300 kcal surplus for muscle gain. Consume 1.6–2.2g of protein per kg of bodyweight and prioritize whole foods.",
+                coachTip: "Fuel your body for athletic performance, not punishment.",
+                order: 3,
+            },
+            {
+                id: "4",
+                tag: "RECOVERY",
+                title: "Skipping Warm-Ups & Neglecting Sleep",
+                description:
+                    "Jumping straight into heavy working sets with cold joints and tight tissues, or training 7 days a week on 5 hours of sleep under the misguided belief that 'more is always better'.",
+                solution:
+                    "Dedicate 5–8 minutes to dynamic mobility drills and progressive warm-up sets before heavy compound lifts. Schedule 1–2 full rest days weekly and prioritize 7–9 hours of deep sleep—muscle tissue repairs and grows during recovery, not in the gym.",
+                coachTip: "You don't grow in the gym; you grow while recovering.",
+                order: 4,
+            },
+            {
+                id: "5",
+                tag: "MINDSET",
+                title: "Chasing Quick-Fix Supplements Over Basics",
+                description:
+                    "Spending substantial money on fat burners, detox teas, and exotic stimulants expecting miracles, while ignoring consistency, meal preparation, proper hydration, and sleep hygiene.",
+                solution:
+                    "Treat supplements as the final 5% optimization. Lock in your training consistency, daily step goals, whole-food nutrition, and 8 hours of sleep first. If supplementing, rely strictly on proven staples: Whey Protein and Creatine Monohydrate.",
+                coachTip: "No supplement can outwork a poor diet and erratic training.",
+                order: 5,
+            },
+            {
+                id: "6",
+                tag: "EXERCISE BALANCE",
+                title: "Excessive Cardio While Avoiding Strength Training",
+                description:
+                    "Spending endless hours on the treadmill or elliptical to burn calories while avoiding weight training out of fear of becoming 'too bulky' or muscular.",
+                solution:
+                    "Resistance training is the primary driver of body recomposition, metabolic health, and bone density. Train with weights 3–4 days weekly to preserve and sculpt lean muscle, and use moderate cardio or 8k–10k daily steps as an aerobic tool.",
+                coachTip: "Lifting weights sculpts the physique; cardio merely assists energy balance.",
+                order: 6,
+            },
+        ],
+    },
 };

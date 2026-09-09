@@ -1,6 +1,6 @@
-import { 
-    Dumbbell, Apple, MonitorSmartphone, Trophy, Flame, Zap, 
-    Users, Target, Activity, Heart, Award, ShieldCheck, Layers, Video 
+import {
+    Dumbbell, Apple, MonitorSmartphone, Trophy, Flame, Zap,
+    Users, Target, Activity, Heart, Award, ShieldCheck, Layers, Video
 } from "lucide-react";
 import { CONTENT } from "@/src/constants/content";
 
@@ -53,16 +53,16 @@ const Services = ({
         },
         description: sectionData?.description || CONTENT.service.description,
         buttons: CONTENT.service.buttons,
-        cards: cards && cards.length > 0 
+        cards: cards && cards.length > 0
             ? cards.map(c => ({
                 id: c.id,
                 title: c.title,
                 description: c.description,
                 icon: c.icon,
-                tags: typeof c.tags === "string" 
-                    ? c.tags.split(",").map(t => t.trim()).filter(Boolean) 
+                tags: typeof c.tags === "string"
+                    ? c.tags.split(",").map(t => t.trim()).filter(Boolean)
                     : (Array.isArray(c.tags) ? c.tags : [])
-              }))
+            }))
             : CONTENT.service.cards,
     };
 
@@ -121,7 +121,7 @@ const Services = ({
                         <p
                             data-aos="fade-up"
                             data-aos-delay="400"
-                            style={{fontFamily:"var(--font-poppins)",}}
+                            style={{ fontFamily: "var(--font-poppins)", }}
                             className="
                             mt-5
                             text-sm
@@ -183,11 +183,8 @@ const Services = ({
 
                         return (
 
-                            <div
-                                key={card.id}
-                                data-aos="fade-up"
-                                data-aos-duration="1000"
-                                data-aos-delay={index * 180}
+                            <div key={card.id}
+                                data-aos="fade-up" data-aos-duration="1000" data-aos-delay={index * 180}
                                 className="group bg-[#1a1a1a] border border-[#D6DCE5]/20 p-5 sm:p-6 lg:p-8 flex flex-col gap-5 transition-all duration-500 hover:border-[#E8A428]/50 hover:-translate-y-2 h-full w-full"
                             >
 
@@ -250,8 +247,6 @@ const Services = ({
 
                         );
                     })}
-
-
                 </div>
 
 

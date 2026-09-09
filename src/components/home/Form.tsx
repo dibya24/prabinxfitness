@@ -106,9 +106,7 @@ const Form = () => {
                                     Get In Touch
                                 </h2>
 
-                                <h3
-                                    data-aos="fade-up"
-                                    data-aos-delay="200"
+                                <h3 data-aos="fade-up" data-aos-delay="200"
                                     style={{ fontFamily: "var(--font-oswald)" }}
                                     className="relative pt-4 text-3xl sm:text-4xl lg:text-5xl leading-tight uppercase text-[#FFF7DF] font-medium">
                                     READY TO
@@ -121,9 +119,7 @@ const Form = () => {
                                 </h3>
                             </div>
 
-                            <p
-                                data-aos="fade-up"
-                                data-aos-delay="300"
+                            <p data-aos="fade-up" data-aos-delay="300"
                                 style={{ fontFamily: "var(--font-poppins)" }}
                                 className='text-[16px] text-[#C0C0C0]'>
                                 I grew up in Kathmandu Valley, where physical discipline is woven into daily life - from the terraced farmlands to the trekking trials of the Himalayas. That environment my discipline.
@@ -203,7 +199,7 @@ const Form = () => {
                                         style={{ fontFamily: "var(--font-poppins)" }}
                                         className="mt-1 inline-block text-base font-medium text-[#FFF7DF] transition-colors duration-300 hover:text-[#E8A428]"
                                     >
-                                        maharjanprabin111@gmail.com
+                                        prabinxfitness@gmail.com
                                     </a>
                                 </div>
                             </div>

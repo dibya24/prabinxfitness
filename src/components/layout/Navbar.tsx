@@ -15,6 +15,10 @@ const navLinks = [
     href: "#coaching",
   },
   {
+    title: "Mistakes",
+    href: "#mistakes",
+  },
+  {
     title: "Results",
     href: "#results",
   },

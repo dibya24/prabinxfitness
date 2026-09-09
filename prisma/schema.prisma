@@ -144,3 +144,42 @@ model WhyChooseSection {
   description     String
   updatedAt       DateTime @updatedAt
 }
+
+
+
+
+
+
+
+model MistakeSection {
+  id              String   @id @default(cuid())
+  backgroundTitle String?  @default("COMMON ERRORS")
+  title           String   @default("MISTAKES TO")
+  highlightText   String?  @default("AVOID")
+  titleEnd        String?  @default("AS A BEGINNER")
+  description     String?
+  ctaText         String?
+  ctaButtonText   String?
+  ctaButtonLink   String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  mistakes        Mistake[]
+}
+
+model Mistake {
+  id          String   @id @default(cuid())
+  tag         String?
+  title       String
+  description String?
+  solution    String?
+  coachTip    String?
+  order       Int      @default(0)
+
+  sectionId   String
+  section     MistakeSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

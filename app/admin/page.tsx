@@ -5,9 +5,19 @@ import NextImage from "next/image";
 import {
   Save, Plus, Trash2, Upload, Video, CheckCircle, AlertCircle, RefreshCw, Pencil, X,
   Dumbbell, Apple, MonitorSmartphone, Trophy, Flame, Zap, Users, Target, Activity, Heart, Award, ShieldCheck, Layers,
-  Star, Repeat
+  Star, Repeat, AlertTriangle, Lightbulb, CheckCircle2, SlidersHorizontal, Moon
 } from "lucide-react";
-import { Stat, ServiceCard, Testimonial, GalleryItem, WhyChooseSection, WhyChooseFeature, MarqueeItem, Consultation } from "@prisma/client";
+import { Stat, ServiceCard, Testimonial, GalleryItem, WhyChooseSection, WhyChooseFeature, MarqueeItem, Consultation, MistakeSection, Mistake } from "@prisma/client";
+
+const MISTAKE_TAG_OPTIONS = [
+  "FORM & TECHNIQUE",
+  "PROGRAMMING",
+  "NUTRITION",
+  "RECOVERY",
+  "MINDSET",
+  "EXERCISE BALANCE",
+  "CUSTOM",
+];
 
 // this is test
 
@@ -65,6 +75,18 @@ export default function AdminPage() {
   });
   const [whyChooseFeatures, setWhyChooseFeatures] = useState<WhyChooseFeature[]>([]);
   const [marqueeItems, setMarqueeItems] = useState<MarqueeItem[]>([]);
+  const [mistakeSection, setMistakeSection] = useState({
+    backgroundTitle: "",
+    title: "",
+    highlightText: "",
+    titleEnd: "",
+    description: "",
+    ctaText: "",
+    ctaButtonText: "",
+    ctaButtonLink: "",
+    isActive: true,
+  });
+  const [mistakes, setMistakes] = useState<Mistake[]>([]);
 
   // Temp State for Adding Items
   const [newStat, setNewStat] = useState({ title: "", subtitle: "", dark: false });
@@ -75,6 +97,15 @@ export default function AdminPage() {
   });
   const [newWhyChooseFeature, setNewWhyChooseFeature] = useState({ title: "", desc: "", side: "LEFT", topPos: "50%", order: 1 });
   const [newMarqueeItem, setNewMarqueeItem] = useState({ label: "", icon: "Star", customIcon: "", order: 1 });
+  const [newMistake, setNewMistake] = useState({
+    tag: "FORM & TECHNIQUE",
+    customTag: "",
+    title: "",
+    description: "",
+    solution: "",
+    coachTip: "",
+    order: 1,
+  });
 
   // Edit Modal States
   const [editingService, setEditingService] = useState<ServiceCard | null>(null);
@@ -84,6 +115,9 @@ export default function AdminPage() {
   const [editingMarqueeItem, setEditingMarqueeItem] = useState<MarqueeItem | null>(null);
   const [editingMarqueeIsCustom, setEditingMarqueeIsCustom] = useState(false);
   const [editingMarqueeCustomIcon, setEditingMarqueeCustomIcon] = useState("");
+  const [editingMistake, setEditingMistake] = useState<Mistake | null>(null);
+  const [editingMistakeIsCustomTag, setEditingMistakeIsCustomTag] = useState(false);
+  const [editingMistakeCustomTag, setEditingMistakeCustomTag] = useState("");
   const [consultations, setConsultations] = useState<Consultation[]>([]);
 
   // User Management State
@@ -116,6 +150,22 @@ export default function AdminPage() {
         setWhyChooseSection(data.whyChooseSection);
         setWhyChooseFeatures(data.whyChooseFeatures);
         setMarqueeItems(data.marqueeItems);
+        if (data.mistakeSection) {
+          setMistakeSection({
+            backgroundTitle: data.mistakeSection.backgroundTitle || "",
+            title: data.mistakeSection.title || "",
+            highlightText: data.mistakeSection.highlightText || "",
+            titleEnd: data.mistakeSection.titleEnd || "",
+            description: data.mistakeSection.description || "",
+            ctaText: data.mistakeSection.ctaText || "",
+            ctaButtonText: data.mistakeSection.ctaButtonText || "",
+            ctaButtonLink: data.mistakeSection.ctaButtonLink || "",
+            isActive: data.mistakeSection.isActive ?? true,
+          });
+        }
+        if (data.mistakes) {
+          setMistakes(data.mistakes);
+        }
         setCurrentUser(data.currentUser);
       } else {
         showFeedback("error", data.error || "Failed to load content data");
@@ -512,6 +562,70 @@ export default function AdminPage() {
     await handleSave("marquee", updatedItems, "Marquee item deleted successfully!");
   };
 
+  // Mistake Actions
+  const handleAddMistake = async () => {
+    if (!newMistake.title.trim() || !newMistake.description.trim() || !newMistake.solution.trim()) {
+      showFeedback("error", "Please provide a title, beginner mistake description, and correct solution.");
+      return;
+    }
+    const tagName = newMistake.tag === "CUSTOM" && newMistake.customTag.trim()
+      ? newMistake.customTag.trim().toUpperCase()
+      : newMistake.tag;
+
+    const updatedMistakes = [
+      ...mistakes,
+      {
+        id: `temp-${Date.now()}`,
+        tag: tagName,
+        title: newMistake.title.trim(),
+        description: newMistake.description.trim(),
+        solution: newMistake.solution.trim(),
+        coachTip: newMistake.coachTip.trim(),
+        order: Number(newMistake.order) || mistakes.length + 1,
+        sectionId: "",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      } as Mistake,
+    ];
+
+    const success = await handleSave("mistakes", { sectionInfo: mistakeSection, items: updatedMistakes }, "Mistake added successfully!");
+    if (success) {
+      setNewMistake({
+        tag: "FORM & TECHNIQUE",
+        customTag: "",
+        title: "",
+        description: "",
+        solution: "",
+        coachTip: "",
+        order: mistakes.length + 2,
+      });
+    }
+  };
+
+  const handleUpdateMistake = async () => {
+    if (!editingMistake || !editingMistake.title.trim() || !editingMistake.description?.trim() || !editingMistake.solution?.trim()) {
+      showFeedback("error", "Title, mistake description, and solution are required.");
+      return;
+    }
+    const tagName = editingMistakeIsCustomTag && editingMistakeCustomTag.trim()
+      ? editingMistakeCustomTag.trim().toUpperCase()
+      : editingMistake.tag;
+
+    const updatedMistakes = mistakes.map((m) =>
+      m.id === editingMistake.id ? { ...editingMistake, tag: tagName } : m
+    );
+    const success = await handleSave("mistakes", { sectionInfo: mistakeSection, items: updatedMistakes }, "Mistake updated successfully!");
+    if (success) {
+      setEditingMistake(null);
+    }
+  };
+
+  const handleDeleteMistake = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this mistake item?")) return;
+    const updatedMistakes = mistakes.filter((m) => m.id !== id);
+    await handleSave("mistakes", { sectionInfo: mistakeSection, items: updatedMistakes }, "Mistake deleted successfully!");
+  };
+
   // Consultation Actions
   const handleUpdateConsultationStatus = async (id: number, status: string) => {
     setSaving(true);
@@ -564,6 +678,7 @@ export default function AdminPage() {
     { id: "hero", label: "Hero" },
     { id: "about", label: "About & Stats" },
     { id: "services", label: "Services" },
+    { id: "mistakes", label: "Mistakes & Fixes" },
     { id: "whychoose", label: "Why Choose Me" },
     { id: "marquee", label: "Marquee Strip" },
     { id: "testimonials", label: "Testimonials" },
@@ -676,6 +791,21 @@ export default function AdminPage() {
             </h3>
             <p className="mt-2 text-xs leading-relaxed text-slate-500">
               Add, edit, or remove personal training and remote coaching packages, titles, features, and icons.
+            </p>
+          </div>
+
+          <div
+            onClick={() => setActiveTab("mistakes")}
+            className="group cursor-pointer rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300"
+          >
+            <p className="text-[10px] font-bold uppercase tracking-[2px] text-[#E8A428] mb-1">Manage</p>
+            <h3
+              style={{ fontFamily: "var(--font-oswald)" }}
+              className="text-xl font-extrabold text-slate-900 uppercase">
+              Mistakes & Fixes ({mistakes.length})
+            </h3>
+            <p className="mt-2 text-xs leading-relaxed text-slate-500">
+              Manage beginner workout mistakes, science-backed solutions, coach tips, and CTA coaching banner.
             </p>
           </div>
 
@@ -1162,6 +1292,335 @@ export default function AdminPage() {
                       <span>{saving ? "Saving..." : "Add & Save Service"}</span>
                     </button>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MISTAKES & SOLUTIONS EDITOR ================= */}
+      {activeTab === "mistakes" && (
+        <div className="space-y-6">
+          {/* Section 1: Header & Banner Settings */}
+          <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
+            <div className="flex items-center justify-between mb-6 pb-2 border-b border-slate-100">
+              <div>
+                <h3 className="text-lg font-bold text-slate-900 uppercase">Edit Mistakes Section Header & CTA Banner</h3>
+                <p className="text-xs text-slate-500 mt-0.5">Customize headlines, watermark background, subtext description, and call-to-action button.</p>
+              </div>
+              <label className="flex items-center gap-2 cursor-pointer select-none bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg">
+                <input
+                  type="checkbox"
+                  checked={mistakeSection.isActive}
+                  onChange={(e) => setMistakeSection({ ...mistakeSection, isActive: e.target.checked })}
+                  className="rounded border-gray-300 text-[#E8A428] focus:ring-[#E8A428] w-4 h-4 cursor-pointer"
+                />
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-700">Section Visible</span>
+              </label>
+            </div>
+
+            <div className="space-y-6">
+              <div className="grid gap-6 sm:grid-cols-2">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Background Title (Watermark)</label>
+                  <input
+                    type="text"
+                    value={mistakeSection.backgroundTitle}
+                    onChange={(e) => setMistakeSection({ ...mistakeSection, backgroundTitle: e.target.value })}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
+                    placeholder="e.g. COMMON ERRORS"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Main Heading Line 1</label>
+                  <input
+                    type="text"
+                    value={mistakeSection.title}
+                    onChange={(e) => setMistakeSection({ ...mistakeSection, title: e.target.value })}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
+                    placeholder="e.g. MISTAKES TO"
+                  />
+                </div>
+              </div>
+
+              <div className="grid gap-6 sm:grid-cols-2">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Highlight Accent Text</label>
+                  <input
+                    type="text"
+                    value={mistakeSection.highlightText}
+                    onChange={(e) => setMistakeSection({ ...mistakeSection, highlightText: e.target.value })}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
+                    placeholder="e.g. AVOID"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Main Heading Line 1 End</label>
+                  <input
+                    type="text"
+                    value={mistakeSection.titleEnd}
+                    onChange={(e) => setMistakeSection({ ...mistakeSection, titleEnd: e.target.value })}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
+                    placeholder="e.g. AS A BEGINNER"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Section Subtext Description</label>
+                <textarea
+                  value={mistakeSection.description}
+                  onChange={(e) => setMistakeSection({ ...mistakeSection, description: e.target.value })}
+                  rows={2}
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#E8A428] focus:outline-none"
+                  placeholder="Starting your fitness journey is exciting, but common pitfalls can stall your progress..."
+                />
+              </div>
+
+              {/* Bottom CTA Banner Options */}
+              <div className="rounded-xl bg-gradient-to-r from-amber-50/70 to-slate-50 border border-amber-200/70 p-5 space-y-4">
+                <div className="flex items-center gap-2 text-[#E8A428]">
+                  <Lightbulb size={16} />
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800">Bottom Call-to-Action Banner</h4>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Banner Subtext / Pitch</label>
+                  <input
+                    type="text"
+                    value={mistakeSection.ctaText}
+                    onChange={(e) => setMistakeSection({ ...mistakeSection, ctaText: e.target.value })}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-xs text-slate-800 focus:border-[#E8A428] focus:outline-none"
+                    placeholder="Stop guessing your workouts. Train with a proven, personalized plan built for your body."
+                  />
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Button Label</label>
+                    <input
+                      type="text"
+                      value={mistakeSection.ctaButtonText}
+                      onChange={(e) => setMistakeSection({ ...mistakeSection, ctaButtonText: e.target.value })}
+                      className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-xs text-slate-800 focus:border-[#E8A428] focus:outline-none"
+                      placeholder="e.g. Get Personalized Coaching"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">Button Link (WhatsApp or Page URL)</label>
+                    <input
+                      type="text"
+                      value={mistakeSection.ctaButtonLink}
+                      onChange={(e) => setMistakeSection({ ...mistakeSection, ctaButtonLink: e.target.value })}
+                      className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-xs text-slate-800 focus:border-[#E8A428] focus:outline-none"
+                      placeholder="https://wa.me/971558663590?text=..."
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-slate-100 flex justify-end">
+                <button
+                  onClick={() => handleSave("mistakes", { sectionInfo: mistakeSection, items: mistakes }, "Mistake Section header & settings saved!")}
+                  disabled={saving}
+                  className="flex items-center gap-2 cursor-pointer rounded-lg bg-[#E8A428] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-amber-600 transition disabled:opacity-50"
+                >
+                  <Save size={14} />
+                  <span>Save Section Settings</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 2: Manage Existing Mistakes */}
+          <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
+            <div className="flex items-center justify-between mb-6 pb-2 border-b border-slate-100">
+              <h3 className="text-lg font-bold text-slate-900 uppercase">Manage Beginner Mistakes ({mistakes.length})</h3>
+            </div>
+
+            {mistakes.length === 0 ? (
+              <p className="text-xs text-slate-400 py-6 text-center italic">No mistakes added yet. Use the form below to create one.</p>
+            ) : (
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+                {mistakes.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition group"
+                  >
+                    <div className="space-y-3">
+                      {/* Badge and Order */}
+                      <div className="flex items-center justify-between">
+                        <span className="rounded-full bg-amber-50 border border-amber-200/80 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-800">
+                          {item.tag || "FITNESS TIP"}
+                        </span>
+                        <span className="text-[10px] font-bold text-slate-400">Order #{item.order}</span>
+                      </div>
+
+                      {/* Title */}
+                      <h4
+                        style={{ fontFamily: "var(--font-oswald)" }}
+                        className="text-base font-bold text-slate-900 uppercase leading-snug"
+                      >
+                        {item.title}
+                      </h4>
+
+                      {/* The Mistake Description */}
+                      <div className="rounded-lg bg-red-50/70 border border-red-200/70 p-3 space-y-1">
+                        <div className="flex items-center gap-1.5 text-red-600 text-[10px] font-bold uppercase tracking-wider">
+                          <AlertTriangle size={13} />
+                          <span>The Beginner Mistake</span>
+                        </div>
+                        <p className="text-xs text-slate-700 line-clamp-3 leading-relaxed">
+                          {item.description}
+                        </p>
+                      </div>
+
+                      {/* The Solution */}
+                      <div className="rounded-lg bg-emerald-50/70 border border-emerald-200/70 p-3 space-y-1">
+                        <div className="flex items-center gap-1.5 text-emerald-700 text-[10px] font-bold uppercase tracking-wider">
+                          <CheckCircle2 size={13} />
+                          <span>The Correct Solution</span>
+                        </div>
+                        <p className="text-xs text-slate-700 line-clamp-3 leading-relaxed">
+                          {item.solution}
+                        </p>
+                      </div>
+
+                      {/* Coach Tip */}
+                      {item.coachTip && (
+                        <div className="rounded-lg bg-slate-50 border border-slate-200 p-2.5 flex items-start gap-1.5 text-slate-600 text-[11px] leading-snug">
+                          <Lightbulb size={13} className="text-[#E8A428] shrink-0 mt-0.5" />
+                          <p className="italic">
+                            <strong className="text-slate-800 not-italic">Coach Tip:</strong> {item.coachTip}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Action buttons */}
+                    <div className="flex items-center justify-end gap-2 pt-4 mt-4 border-t border-slate-100">
+                      <button
+                        onClick={() => {
+                          setEditingMistake(item);
+                          const isPreset = MISTAKE_TAG_OPTIONS.includes(item.tag || "");
+                          setEditingMistakeIsCustomTag(!isPreset);
+                          setEditingMistakeCustomTag(!isPreset ? item.tag || "" : "");
+                        }}
+                        className="flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-bold text-slate-600 hover:bg-slate-100 transition cursor-pointer"
+                      >
+                        <Pencil size={12} />
+                        <span>Edit</span>
+                      </button>
+                      <button
+                        onClick={() => handleDeleteMistake(item.id)}
+                        className="flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-bold text-red-600 hover:bg-red-50 transition cursor-pointer"
+                      >
+                        <Trash2 size={12} />
+                        <span>Delete</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Section 3: Add New Mistake Form */}
+            <div className="rounded-xl border border-slate-200 bg-slate-50/60 p-6">
+              <h4 className="text-sm font-bold uppercase tracking-wider text-slate-900 mb-4 pb-2 border-b border-slate-200 flex items-center gap-2">
+                <Plus size={16} className="text-[#E8A428]" />
+                <span>Add New Beginner Mistake</span>
+              </h4>
+
+              <div className="space-y-4">
+                <div className="grid gap-4 sm:grid-cols-3">
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Category Tag</label>
+                    <select
+                      value={newMistake.tag}
+                      onChange={(e) => setNewMistake({ ...newMistake, tag: e.target.value })}
+                      className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-slate-800 focus:outline-none cursor-pointer"
+                    >
+                      {MISTAKE_TAG_OPTIONS.map((tag) => (
+                        <option key={tag} value={tag}>{tag}</option>
+                      ))}
+                    </select>
+
+                    {newMistake.tag === "CUSTOM" && (
+                      <input
+                        type="text"
+                        value={newMistake.customTag}
+                        onChange={(e) => setNewMistake({ ...newMistake, customTag: e.target.value })}
+                        className="mt-2 w-full rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs text-slate-800 focus:outline-none"
+                        placeholder="e.g. CARDIO TECHNIQUE"
+                      />
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Mistake Title</label>
+                    <input
+                      type="text"
+                      value={newMistake.title}
+                      onChange={(e) => setNewMistake({ ...newMistake, title: e.target.value })}
+                      className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                      placeholder="e.g. Ego Lifting & Sacrificing Form"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Display Order</label>
+                    <input
+                      type="number"
+                      value={newMistake.order}
+                      onChange={(e) => setNewMistake({ ...newMistake, order: parseInt(e.target.value) || 1 })}
+                      className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">The Beginner Mistake (Description)</label>
+                  <textarea
+                    value={newMistake.description}
+                    onChange={(e) => setNewMistake({ ...newMistake, description: e.target.value })}
+                    rows={2}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                    placeholder="Describe what beginners typically do wrong..."
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">The Correct Solution</label>
+                  <textarea
+                    value={newMistake.solution}
+                    onChange={(e) => setNewMistake({ ...newMistake, solution: e.target.value })}
+                    rows={2}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                    placeholder="Explain the science-backed, safe fix..."
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Coach Tip (Optional Quick Rule)</label>
+                  <input
+                    type="text"
+                    value={newMistake.coachTip}
+                    onChange={(e) => setNewMistake({ ...newMistake, coachTip: e.target.value })}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                    placeholder="e.g. Tension builds muscle; momentum only strains joints."
+                  />
+                </div>
+
+                <div className="flex justify-end pt-2">
+                  <button
+                    onClick={handleAddMistake}
+                    disabled={saving}
+                    className="flex items-center gap-1.5 cursor-pointer rounded-lg bg-slate-900 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-slate-800 transition disabled:opacity-50"
+                  >
+                    <Plus size={14} />
+                    <span>{saving ? "Saving..." : "Add & Save Mistake"}</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -2566,6 +3025,123 @@ export default function AdminPage() {
                 onClick={handleUpdateMarqueeItem}
                 disabled={saving}
                 className="rounded-lg bg-[#E8A428] px-5 py-2 text-xs font-bold uppercase text-white hover:bg-red-700 disabled:opacity-50"
+              >
+                {saving ? "Saving..." : "Save Changes"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= EDIT MODAL: MISTAKE ================= */}
+      {editingMistake && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="w-full max-w-xl rounded-2xl bg-white p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b pb-3">
+              <h3 className="text-base font-extrabold uppercase text-slate-900">Edit Mistake & Solution</h3>
+              <button onClick={() => setEditingMistake(null)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Category Tag</label>
+                <select
+                  value={editingMistakeIsCustomTag ? "CUSTOM" : (editingMistake.tag || "FORM & TECHNIQUE")}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val === "CUSTOM") {
+                      setEditingMistakeIsCustomTag(true);
+                      if (!editingMistakeCustomTag) {
+                        setEditingMistakeCustomTag(editingMistake.tag || "");
+                      }
+                    } else {
+                      setEditingMistakeIsCustomTag(false);
+                      setEditingMistake({ ...editingMistake, tag: val });
+                    }
+                  }}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-xs text-slate-800 focus:outline-none cursor-pointer"
+                >
+                  {MISTAKE_TAG_OPTIONS.map((tag) => (
+                    <option key={tag} value={tag}>{tag}</option>
+                  ))}
+                </select>
+
+                {editingMistakeIsCustomTag && (
+                  <input
+                    type="text"
+                    value={editingMistakeCustomTag}
+                    onChange={(e) => setEditingMistakeCustomTag(e.target.value)}
+                    className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-1.5 text-xs text-slate-800 focus:outline-none"
+                    placeholder="Custom Tag (e.g. CARDIO)"
+                  />
+                )}
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Display Order</label>
+                <input
+                  type="number"
+                  value={editingMistake.order}
+                  onChange={(e) => setEditingMistake({ ...editingMistake, order: parseInt(e.target.value) || 0 })}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Mistake Title</label>
+              <input
+                type="text"
+                value={editingMistake.title}
+                onChange={(e) => setEditingMistake({ ...editingMistake, title: e.target.value })}
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-xs text-slate-800 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">The Beginner Mistake (Description)</label>
+              <textarea
+                value={editingMistake.description || ""}
+                onChange={(e) => setEditingMistake({ ...editingMistake, description: e.target.value })}
+                rows={3}
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-xs text-slate-800 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">The Correct Solution</label>
+              <textarea
+                value={editingMistake.solution || ""}
+                onChange={(e) => setEditingMistake({ ...editingMistake, solution: e.target.value })}
+                rows={3}
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-xs text-slate-800 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Coach Tip</label>
+              <input
+                type="text"
+                value={editingMistake.coachTip || ""}
+                onChange={(e) => setEditingMistake({ ...editingMistake, coachTip: e.target.value })}
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-xs text-slate-800 focus:outline-none"
+                placeholder="Coach Tip..."
+              />
+            </div>
+
+            <div className="flex justify-end gap-3 pt-3 border-t">
+              <button
+                onClick={() => setEditingMistake(null)}
+                className="rounded-lg border border-slate-300 px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleUpdateMistake}
+                disabled={saving}
+                className="rounded-lg bg-[#E8A428] px-5 py-2 text-xs font-bold uppercase text-white hover:bg-amber-600 disabled:opacity-50 cursor-pointer"
               >
                 {saving ? "Saving..." : "Save Changes"}
               </button>

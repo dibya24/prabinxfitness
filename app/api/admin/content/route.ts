@@ -52,6 +52,13 @@ export async function GET() {
     const whyChooseFeatures = await prisma.whyChooseFeature.findMany({ orderBy: { order: "asc" } });
     const marqueeItems = await prisma.marqueeItem.findMany({ orderBy: { order: "asc" } });
     const footerSection = await prisma.footerSection.findFirst();
+    const mistakeSection = await prisma.mistakeSection.findFirst({
+      include: {
+        mistakes: {
+          orderBy: { order: "asc" },
+        },
+      },
+    });
 
     // 2. Map default values if DB is empty
     const defaultSeo = {
@@ -230,6 +237,28 @@ export async function GET() {
       designerUrl: "https://dibyamaharjan.com",
     };
 
+    const defaultMistakeSection = {
+      backgroundTitle: CONTENT.mistakes.heading.backgroundTitle,
+      title: CONTENT.mistakes.heading.title,
+      highlightText: CONTENT.mistakes.heading.highlightText,
+      titleEnd: CONTENT.mistakes.heading.titleEnd,
+      description: CONTENT.mistakes.description,
+      ctaText: CONTENT.mistakes.ctaText,
+      ctaButtonText: CONTENT.mistakes.ctaButtonText,
+      ctaButtonLink: CONTENT.mistakes.ctaButtonLink,
+      isActive: true,
+    };
+
+    const defaultMistakes = CONTENT.mistakes.items.map((m, idx) => ({
+      id: m.id || String(idx + 1),
+      tag: m.tag,
+      title: m.title,
+      description: m.description,
+      solution: m.solution,
+      coachTip: m.coachTip || "",
+      order: m.order ?? idx + 1,
+    }));
+
     return NextResponse.json({
       seo: seo || defaultSeo,
       hero: hero || defaultHero,
@@ -244,6 +273,8 @@ export async function GET() {
       whyChooseFeatures: whyChooseFeatures.length ? whyChooseFeatures : defaultWhyChooseFeatures,
       marqueeItems: marqueeItems.length ? marqueeItems : defaultMarquee,
       footerSection: footerSection || defaultFooter,
+      mistakeSection: mistakeSection || defaultMistakeSection,
+      mistakes: mistakeSection?.mistakes?.length ? mistakeSection.mistakes : defaultMistakes,
       currentUser,
     });
   } catch (error: unknown) {
@@ -505,6 +536,61 @@ export async function POST(req: Request) {
           },
         });
         break;
+
+      case "mistakes": {
+        const { sectionInfo, items } = data;
+        let existingSection = await prisma.mistakeSection.findFirst();
+        if (!existingSection) {
+          existingSection = await prisma.mistakeSection.create({
+            data: {
+              backgroundTitle: sectionInfo?.backgroundTitle || "COMMON ERRORS",
+              title: sectionInfo?.title || "MISTAKES TO",
+              highlightText: sectionInfo?.highlightText || "AVOID",
+              titleEnd: sectionInfo?.titleEnd || "AS A BEGINNER",
+              description: sectionInfo?.description || null,
+              ctaText: sectionInfo?.ctaText || null,
+              ctaButtonText: sectionInfo?.ctaButtonText || null,
+              ctaButtonLink: sectionInfo?.ctaButtonLink || null,
+              isActive: sectionInfo?.isActive ?? true,
+            },
+          });
+        } else {
+          existingSection = await prisma.mistakeSection.update({
+            where: { id: existingSection.id },
+            data: {
+              backgroundTitle: sectionInfo?.backgroundTitle ?? existingSection.backgroundTitle,
+              title: sectionInfo?.title ?? existingSection.title,
+              highlightText: sectionInfo?.highlightText ?? existingSection.highlightText,
+              titleEnd: sectionInfo?.titleEnd ?? existingSection.titleEnd,
+              description: sectionInfo?.description ?? existingSection.description,
+              ctaText: sectionInfo?.ctaText ?? existingSection.ctaText,
+              ctaButtonText: sectionInfo?.ctaButtonText ?? existingSection.ctaButtonText,
+              ctaButtonLink: sectionInfo?.ctaButtonLink ?? existingSection.ctaButtonLink,
+              isActive: typeof sectionInfo?.isActive === "boolean" ? sectionInfo.isActive : existingSection.isActive,
+            },
+          });
+        }
+
+        if (items && Array.isArray(items)) {
+          await prisma.$transaction([
+            prisma.mistake.deleteMany({
+              where: { sectionId: existingSection.id },
+            }),
+            prisma.mistake.createMany({
+              data: items.map((m: { tag?: string; title: string; description?: string; solution?: string; coachTip?: string; order?: number }, idx: number) => ({
+                sectionId: existingSection.id,
+                tag: m.tag || "FITNESS TIP",
+                title: m.title,
+                description: m.description || "",
+                solution: m.solution || "",
+                coachTip: m.coachTip || "",
+                order: Number(m.order) || idx + 1,
+              })),
+            }),
+          ]);
+        }
+        break;
+      }
 
       default:
         return NextResponse.json({ error: "Invalid section specified" }, { status: 400 });
