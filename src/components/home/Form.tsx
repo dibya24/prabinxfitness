@@ -66,8 +66,8 @@ const Form = () => {
                         },
                         publicKey
                     );
-                } catch (emailErr) {
-                    console.error("EmailJS sending error:", emailErr);
+                } catch (emailErr: any) {
+                    console.error("EmailJS sending error:", emailErr?.text || emailErr?.message || emailErr);
                 }
             }
 
