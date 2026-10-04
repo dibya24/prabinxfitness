@@ -96,7 +96,7 @@ export default function Mistake({ sectionData }: MistakeProps) {
     // Filter categories
     const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
 
-    // Extract unique categories
+    // Extract unique categories sdfsdlfdskfnslkdfsd
     const categories = useMemo(() => {
         const set = new Set<string>();
         rawMistakes.forEach((m) => {
